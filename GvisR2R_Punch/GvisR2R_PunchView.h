@@ -253,6 +253,7 @@ class CGvisR2R_PunchView : public CFormView
 	void DoInterlock();
 
 	void DoSaftySens();
+	void DoDoorSens();
 
 	void DoModeSel();		// SliceIo[0]
 	void DoMainSw();		// SliceIo[0]

@@ -931,10 +931,12 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 		}
 
 
-		//		ChkEmg();
 		//		SetMpeIO();
-		//		ChkDoor();
+
+		ChkEmg();
 		ChkSaftySen();
+		ChkDoor();
+
 		if (m_bTIM_DISP_STATUS)
 			SetTimer(TIM_DISP_STATUS, 100, NULL);
 	}
@@ -3022,130 +3024,259 @@ unsigned long CGvisR2R_PunchView::ChkDoor() // 0: All Closed , Open Door Index :
 {
 	unsigned long ulOpenDoor = 0;
 
-	if (pDoc->WorkingInfo.LastJob.bAoiDrSen)
+	if (pDoc->WorkingInfo.LastJob.bAoiUpDrSen)
 	{
-		if (pDoc->Status.bDoorAoi[DOOR_FM_AOI] && !pDoc->Status.bDoorAoiF[DOOR_FM_AOI])
+		if (pDoc->Status.bDoorAoi[DOOR_FM_AOI_UP] && !pDoc->Status.bDoorAoiF[DOOR_FM_AOI_UP])
 		{
 			ulOpenDoor |= (0x01 << 0);
-			pDoc->Status.bDoorAoiF[DOOR_FM_AOI] = TRUE;
+			pDoc->Status.bDoorAoiF[DOOR_FM_AOI_UP] = TRUE;
 			Buzzer(FALSE, 0);
 			Sleep(300);
 		}
-		else if (!pDoc->Status.bDoorAoi[DOOR_FM_AOI] && pDoc->Status.bDoorAoiF[DOOR_FM_AOI])
+		else if (!pDoc->Status.bDoorAoi[DOOR_FM_AOI_UP] && pDoc->Status.bDoorAoiF[DOOR_FM_AOI_UP])
 		{
 			ulOpenDoor &= ~(0x01 << 0);
-			pDoc->Status.bDoorAoiF[DOOR_FM_AOI] = FALSE;
+			pDoc->Status.bDoorAoiF[DOOR_FM_AOI_UP] = FALSE;
 			m_bSwStopNow = TRUE;
 			m_bSwRunF = FALSE;
 			Stop();
 			pView->DispStsBar(_T("정지-5"), 0);
 			DispMain(_T("정 지"), RGB_RED);
-			MsgBox(_T("일시정지 - 검사부 전면 중앙 도어 Open"));
+			MsgBox(_T("일시정지 - 검사부 상 전면 중앙 도어 Open"));
 			TowerLamp(RGB_RED, TRUE);
 			Buzzer(TRUE, 0);
 		}
 
-		if (pDoc->Status.bDoorAoi[DOOR_FL_AOI] && !pDoc->Status.bDoorAoiF[DOOR_FL_AOI])
+		if (pDoc->Status.bDoorAoi[DOOR_FL_AOI_UP] && !pDoc->Status.bDoorAoiF[DOOR_FL_AOI_UP])
 		{
 			ulOpenDoor |= (0x01 << 1);
-			pDoc->Status.bDoorAoiF[DOOR_FL_AOI] = TRUE;
+			pDoc->Status.bDoorAoiF[DOOR_FL_AOI_UP] = TRUE;
 			Buzzer(FALSE, 0);
 			Sleep(300);
 		}
-		else if (!pDoc->Status.bDoorAoi[DOOR_FL_AOI] && pDoc->Status.bDoorAoiF[DOOR_FL_AOI])
+		else if (!pDoc->Status.bDoorAoi[DOOR_FL_AOI_UP] && pDoc->Status.bDoorAoiF[DOOR_FL_AOI_UP])
 		{
 			ulOpenDoor &= ~(0x01 << 1);
-			pDoc->Status.bDoorAoiF[DOOR_FL_AOI] = FALSE;
+			pDoc->Status.bDoorAoiF[DOOR_FL_AOI_UP] = FALSE;
 			m_bSwStopNow = TRUE;
 			m_bSwRunF = FALSE;
 			Stop();
 			pView->DispStsBar(_T("정지-6"), 0);
 			DispMain(_T("정 지"), RGB_RED);
-			MsgBox(_T("일시정지 - 검사부 전면 좌측 도어 Open"));
+			MsgBox(_T("일시정지 - 검사부 상 전면 좌측 도어 Open"));
 			TowerLamp(RGB_RED, TRUE);
 			Buzzer(TRUE, 0);
 		}
 
-		if (pDoc->Status.bDoorAoi[DOOR_FR_AOI] && !pDoc->Status.bDoorAoiF[DOOR_FR_AOI])
+		if (pDoc->Status.bDoorAoi[DOOR_FR_AOI_UP] && !pDoc->Status.bDoorAoiF[DOOR_FR_AOI_UP])
 		{
 			ulOpenDoor |= (0x01 << 2);
-			pDoc->Status.bDoorAoiF[DOOR_FR_AOI] = TRUE;
+			pDoc->Status.bDoorAoiF[DOOR_FR_AOI_UP] = TRUE;
 			Buzzer(FALSE, 0);
 			Sleep(300);
 		}
-		else if (!pDoc->Status.bDoorAoi[DOOR_FR_AOI] && pDoc->Status.bDoorAoiF[DOOR_FR_AOI])
+		else if (!pDoc->Status.bDoorAoi[DOOR_FR_AOI_UP] && pDoc->Status.bDoorAoiF[DOOR_FR_AOI_UP])
 		{
 			ulOpenDoor &= ~(0x01 << 2);
-			pDoc->Status.bDoorAoiF[DOOR_FR_AOI] = FALSE;
+			pDoc->Status.bDoorAoiF[DOOR_FR_AOI_UP] = FALSE;
 			m_bSwStopNow = TRUE;
 			m_bSwRunF = FALSE;
 			Stop();
 			pView->DispStsBar(_T("정지-7"), 0);
 			DispMain(_T("정 지"), RGB_RED);
-			MsgBox(_T("일시정지 - 검사부 전면 우측 도어 Open"));
+			MsgBox(_T("일시정지 - 검사부 상 전면 우측 도어 Open"));
 			TowerLamp(RGB_RED, TRUE);
 			Buzzer(TRUE, 0);
 		}
 
-		if (pDoc->Status.bDoorAoi[DOOR_BM_AOI] && !pDoc->Status.bDoorAoiF[DOOR_BM_AOI])
+		if (pDoc->Status.bDoorAoi[DOOR_BM_AOI_UP] && !pDoc->Status.bDoorAoiF[DOOR_BM_AOI_UP])
 		{
 			ulOpenDoor |= (0x01 << 3);
-			pDoc->Status.bDoorAoiF[DOOR_BM_AOI] = TRUE;
+			pDoc->Status.bDoorAoiF[DOOR_BM_AOI_UP] = TRUE;
 			Buzzer(FALSE, 0);
 			Sleep(300);
 		}
-		else if (!pDoc->Status.bDoorAoi[DOOR_BM_AOI] && pDoc->Status.bDoorAoiF[DOOR_BM_AOI])
+		else if (!pDoc->Status.bDoorAoi[DOOR_BM_AOI_UP] && pDoc->Status.bDoorAoiF[DOOR_BM_AOI_UP])
 		{
 			ulOpenDoor &= ~(0x01 << 3);
-			pDoc->Status.bDoorAoiF[DOOR_BM_AOI] = FALSE;
+			pDoc->Status.bDoorAoiF[DOOR_BM_AOI_UP] = FALSE;
 			m_bSwStopNow = TRUE;
 			m_bSwRunF = FALSE;
 			Stop();
 			pView->DispStsBar(_T("정지-8"), 0);
 			DispMain(_T("정 지"), RGB_RED);
-			MsgBox(_T("일시정지 - 검사부 후면 중앙 도어 Open"));
+			MsgBox(_T("일시정지 - 검사부 상 후면 중앙 도어 Open"));
 			TowerLamp(RGB_RED, TRUE);
 			Buzzer(TRUE, 0);
 		}
 
-		if (pDoc->Status.bDoorAoi[DOOR_BL_AOI] && !pDoc->Status.bDoorAoiF[DOOR_BL_AOI])
+		if (pDoc->Status.bDoorAoi[DOOR_BL_AOI_UP] && !pDoc->Status.bDoorAoiF[DOOR_BL_AOI_UP])
 		{
 			ulOpenDoor |= (0x01 << 4);
-			pDoc->Status.bDoorAoiF[DOOR_BL_AOI] = TRUE;
+			pDoc->Status.bDoorAoiF[DOOR_BL_AOI_UP] = TRUE;
 			Buzzer(FALSE, 0);
 			Sleep(300);
 		}
-		else if (!pDoc->Status.bDoorAoi[DOOR_BL_AOI] && pDoc->Status.bDoorAoiF[DOOR_BL_AOI])
+		else if (!pDoc->Status.bDoorAoi[DOOR_BL_AOI_UP] && pDoc->Status.bDoorAoiF[DOOR_BL_AOI_UP])
 		{
 			ulOpenDoor &= ~(0x01 << 4);
-			pDoc->Status.bDoorAoiF[DOOR_BL_AOI] = FALSE;
+			pDoc->Status.bDoorAoiF[DOOR_BL_AOI_UP] = FALSE;
 			m_bSwStopNow = TRUE;
 			m_bSwRunF = FALSE;
 			Stop();
 			pView->DispStsBar(_T("정지-9"), 0);
 			DispMain(_T("정 지"), RGB_RED);
-			MsgBox(_T("일시정지 - 검사부 후면 좌측 도어 Open"));
+			MsgBox(_T("일시정지 - 검사부 상 후면 좌측 도어 Open"));
 			TowerLamp(RGB_RED, TRUE);
 			Buzzer(TRUE, 0);
 		}
 
-		if (pDoc->Status.bDoorAoi[DOOR_BR_AOI] && !pDoc->Status.bDoorAoiF[DOOR_BR_AOI])
+		if (pDoc->Status.bDoorAoi[DOOR_BR_AOI_UP] && !pDoc->Status.bDoorAoiF[DOOR_BR_AOI_UP])
 		{
 			ulOpenDoor |= (0x01 << 5);
-			pDoc->Status.bDoorAoiF[DOOR_BR_AOI] = TRUE;
+			pDoc->Status.bDoorAoiF[DOOR_BR_AOI_UP] = TRUE;
 			Buzzer(FALSE, 0);
 			Sleep(300);
 		}
-		else if (!pDoc->Status.bDoorAoi[DOOR_BR_AOI] && pDoc->Status.bDoorAoiF[DOOR_BR_AOI])
+		else if (!pDoc->Status.bDoorAoi[DOOR_BR_AOI_UP] && pDoc->Status.bDoorAoiF[DOOR_BR_AOI_UP])
 		{
 			ulOpenDoor &= ~(0x01 << 5);
-			pDoc->Status.bDoorAoiF[DOOR_BR_AOI] = FALSE;
+			pDoc->Status.bDoorAoiF[DOOR_BR_AOI_UP] = FALSE;
 			m_bSwStopNow = TRUE;
 			m_bSwRunF = FALSE;
 			Stop();
 			pView->DispStsBar(_T("정지-10"), 0);
 			DispMain(_T("정 지"), RGB_RED);
-			MsgBox(_T("일시정지 - 검사부 후면 우측 도어 Open"));
+			MsgBox(_T("일시정지 - 검사부 상 후면 우측 도어 Open"));
+			TowerLamp(RGB_RED, TRUE);
+			Buzzer(TRUE, 0);
+		}
+	}
+
+	if (pDoc->WorkingInfo.LastJob.bAoiDnDrSen)
+	{
+		if (pDoc->Status.bDoorAoi[DOOR_FM_AOI_DN] && !pDoc->Status.bDoorAoiF[DOOR_FM_AOI_DN])
+		{
+			ulOpenDoor |= (0x01 << 0);
+			pDoc->Status.bDoorAoiF[DOOR_FM_AOI_DN] = TRUE;
+			Buzzer(FALSE, 0);
+			Sleep(300);
+		}
+		else if (!pDoc->Status.bDoorAoi[DOOR_FM_AOI_DN] && pDoc->Status.bDoorAoiF[DOOR_FM_AOI_DN])
+		{
+			ulOpenDoor &= ~(0x01 << 0);
+			pDoc->Status.bDoorAoiF[DOOR_FM_AOI_DN] = FALSE;
+			m_bSwStopNow = TRUE;
+			m_bSwRunF = FALSE;
+			Stop();
+			pView->DispStsBar(_T("정지-5"), 0);
+			DispMain(_T("정 지"), RGB_RED);
+			MsgBox(_T("일시정지 - 검사부 하 전면 중앙 도어 Open"));
+			TowerLamp(RGB_RED, TRUE);
+			Buzzer(TRUE, 0);
+		}
+
+		if (pDoc->Status.bDoorAoi[DOOR_FL_AOI_DN] && !pDoc->Status.bDoorAoiF[DOOR_FL_AOI_DN])
+		{
+			ulOpenDoor |= (0x01 << 1);
+			pDoc->Status.bDoorAoiF[DOOR_FL_AOI_DN] = TRUE;
+			Buzzer(FALSE, 0);
+			Sleep(300);
+		}
+		else if (!pDoc->Status.bDoorAoi[DOOR_FL_AOI_DN] && pDoc->Status.bDoorAoiF[DOOR_FL_AOI_DN])
+		{
+			ulOpenDoor &= ~(0x01 << 1);
+			pDoc->Status.bDoorAoiF[DOOR_FL_AOI_DN] = FALSE;
+			m_bSwStopNow = TRUE;
+			m_bSwRunF = FALSE;
+			Stop();
+			pView->DispStsBar(_T("정지-6"), 0);
+			DispMain(_T("정 지"), RGB_RED);
+			MsgBox(_T("일시정지 - 검사부 하 전면 좌측 도어 Open"));
+			TowerLamp(RGB_RED, TRUE);
+			Buzzer(TRUE, 0);
+		}
+
+		if (pDoc->Status.bDoorAoi[DOOR_FR_AOI_DN] && !pDoc->Status.bDoorAoiF[DOOR_FR_AOI_DN])
+		{
+			ulOpenDoor |= (0x01 << 2);
+			pDoc->Status.bDoorAoiF[DOOR_FR_AOI_DN] = TRUE;
+			Buzzer(FALSE, 0);
+			Sleep(300);
+		}
+		else if (!pDoc->Status.bDoorAoi[DOOR_FR_AOI_DN] && pDoc->Status.bDoorAoiF[DOOR_FR_AOI_DN])
+		{
+			ulOpenDoor &= ~(0x01 << 2);
+			pDoc->Status.bDoorAoiF[DOOR_FR_AOI_DN] = FALSE;
+			m_bSwStopNow = TRUE;
+			m_bSwRunF = FALSE;
+			Stop();
+			pView->DispStsBar(_T("정지-7"), 0);
+			DispMain(_T("정 지"), RGB_RED);
+			MsgBox(_T("일시정지 - 검사부 하 전면 우측 도어 Open"));
+			TowerLamp(RGB_RED, TRUE);
+			Buzzer(TRUE, 0);
+		}
+
+		if (pDoc->Status.bDoorAoi[DOOR_BM_AOI_DN] && !pDoc->Status.bDoorAoiF[DOOR_BM_AOI_DN])
+		{
+			ulOpenDoor |= (0x01 << 3);
+			pDoc->Status.bDoorAoiF[DOOR_BM_AOI_DN] = TRUE;
+			Buzzer(FALSE, 0);
+			Sleep(300);
+		}
+		else if (!pDoc->Status.bDoorAoi[DOOR_BM_AOI_DN] && pDoc->Status.bDoorAoiF[DOOR_BM_AOI_DN])
+		{
+			ulOpenDoor &= ~(0x01 << 3);
+			pDoc->Status.bDoorAoiF[DOOR_BM_AOI_DN] = FALSE;
+			m_bSwStopNow = TRUE;
+			m_bSwRunF = FALSE;
+			Stop();
+			pView->DispStsBar(_T("정지-8"), 0);
+			DispMain(_T("정 지"), RGB_RED);
+			MsgBox(_T("일시정지 - 검사부 하 후면 중앙 도어 Open"));
+			TowerLamp(RGB_RED, TRUE);
+			Buzzer(TRUE, 0);
+		}
+
+		if (pDoc->Status.bDoorAoi[DOOR_BL_AOI_DN] && !pDoc->Status.bDoorAoiF[DOOR_BL_AOI_DN])
+		{
+			ulOpenDoor |= (0x01 << 4);
+			pDoc->Status.bDoorAoiF[DOOR_BL_AOI_DN] = TRUE;
+			Buzzer(FALSE, 0);
+			Sleep(300);
+		}
+		else if (!pDoc->Status.bDoorAoi[DOOR_BL_AOI_DN] && pDoc->Status.bDoorAoiF[DOOR_BL_AOI_DN])
+		{
+			ulOpenDoor &= ~(0x01 << 4);
+			pDoc->Status.bDoorAoiF[DOOR_BL_AOI_DN] = FALSE;
+			m_bSwStopNow = TRUE;
+			m_bSwRunF = FALSE;
+			Stop();
+			pView->DispStsBar(_T("정지-9"), 0);
+			DispMain(_T("정 지"), RGB_RED);
+			MsgBox(_T("일시정지 - 검사부 하 후면 좌측 도어 Open"));
+			TowerLamp(RGB_RED, TRUE);
+			Buzzer(TRUE, 0);
+		}
+
+		if (pDoc->Status.bDoorAoi[DOOR_BR_AOI_DN] && !pDoc->Status.bDoorAoiF[DOOR_BR_AOI_DN])
+		{
+			ulOpenDoor |= (0x01 << 5);
+			pDoc->Status.bDoorAoiF[DOOR_BR_AOI_DN] = TRUE;
+			Buzzer(FALSE, 0);
+			Sleep(300);
+		}
+		else if (!pDoc->Status.bDoorAoi[DOOR_BR_AOI_DN] && pDoc->Status.bDoorAoiF[DOOR_BR_AOI_DN])
+		{
+			ulOpenDoor &= ~(0x01 << 5);
+			pDoc->Status.bDoorAoiF[DOOR_BR_AOI_DN] = FALSE;
+			m_bSwStopNow = TRUE;
+			m_bSwRunF = FALSE;
+			Stop();
+			pView->DispStsBar(_T("정지-10"), 0);
+			DispMain(_T("정 지"), RGB_RED);
+			MsgBox(_T("일시정지 - 검사부 하 후면 우측 도어 Open"));
 			TowerLamp(RGB_RED, TRUE);
 			Buzzer(TRUE, 0);
 		}
@@ -3233,6 +3364,93 @@ unsigned long CGvisR2R_PunchView::ChkDoor() // 0: All Closed , Open Door Index :
 			pView->DispStsBar(_T("정지-14"), 0);
 			DispMain(_T("정 지"), RGB_RED);
 			MsgBox(_T("일시정지 - 마킹부 후면 우측 도어 Open"));
+			TowerLamp(RGB_RED, TRUE);
+			Buzzer(TRUE, 0);
+		}
+	}
+
+	if (pDoc->WorkingInfo.LastJob.bEngvDrSen)
+	{
+		if (pDoc->Status.bDoorEngv[DOOR_FL_ENGV] && !pDoc->Status.bDoorEngvF[DOOR_FL_ENGV])
+		{
+			ulOpenDoor |= (0x01 << 6);
+			pDoc->Status.bDoorEngvF[DOOR_FL_ENGV] = TRUE;
+			Buzzer(FALSE, 0);
+			Sleep(300);
+		}
+		else if (!pDoc->Status.bDoorEngv[DOOR_FL_ENGV] && pDoc->Status.bDoorEngvF[DOOR_FL_ENGV])
+		{
+			ulOpenDoor &= ~(0x01 << 6);
+			pDoc->Status.bDoorEngvF[DOOR_FL_ENGV] = FALSE;
+			m_bSwStopNow = TRUE;
+			m_bSwRunF = FALSE;
+			Stop();
+			pView->DispStsBar(_T("정지-11"), 0);
+			DispMain(_T("정 지"), RGB_RED);
+			MsgBox(_T("일시정지 - 각인부 전면 좌측 도어 Open"));
+			TowerLamp(RGB_RED, TRUE);
+			Buzzer(TRUE, 0);
+		}
+
+		if (pDoc->Status.bDoorEngv[DOOR_FR_ENGV] && !pDoc->Status.bDoorEngvF[DOOR_FR_ENGV])
+		{
+			ulOpenDoor |= (0x01 << 7);
+			pDoc->Status.bDoorEngvF[DOOR_FR_ENGV] = TRUE;
+			Buzzer(FALSE, 0);
+			Sleep(300);
+		}
+		else if (!pDoc->Status.bDoorEngv[DOOR_FR_ENGV] && pDoc->Status.bDoorEngvF[DOOR_FR_ENGV])
+		{
+			ulOpenDoor &= ~(0x01 << 7);
+			pDoc->Status.bDoorEngvF[DOOR_FR_ENGV] = FALSE;
+			m_bSwStopNow = TRUE;
+			m_bSwRunF = FALSE;
+			Stop();
+			pView->DispStsBar(_T("정지-12"), 0);
+			DispMain(_T("정 지"), RGB_RED);
+			MsgBox(_T("일시정지 - 각인부 전면 우측 도어 Open"));
+			TowerLamp(RGB_RED, TRUE);
+			Buzzer(TRUE, 0);
+		}
+
+		if (pDoc->Status.bDoorEngv[DOOR_BL_ENGV] && !pDoc->Status.bDoorEngvF[DOOR_BL_ENGV])
+		{
+			ulOpenDoor |= (0x01 << 8);
+			pDoc->Status.bDoorEngvF[DOOR_BL_ENGV] = TRUE;
+			Buzzer(FALSE, 0);
+			Sleep(300);
+		}
+		else if (!pDoc->Status.bDoorEngv[DOOR_BL_ENGV] && pDoc->Status.bDoorEngvF[DOOR_BL_ENGV])
+		{
+			ulOpenDoor &= ~(0x01 << 8);
+			pDoc->Status.bDoorEngvF[DOOR_BL_ENGV] = FALSE;
+			m_bSwStopNow = TRUE;
+			m_bSwRunF = FALSE;
+			Stop();
+			pView->DispStsBar(_T("정지-13"), 0);
+			DispMain(_T("정 지"), RGB_RED);
+			MsgBox(_T("일시정지 - 각인부 후면 좌측 도어 Open"));
+			TowerLamp(RGB_RED, TRUE);
+			Buzzer(TRUE, 0);
+		}
+
+		if (pDoc->Status.bDoorEngv[DOOR_BR_ENGV] && !pDoc->Status.bDoorEngvF[DOOR_BR_ENGV])
+		{
+			ulOpenDoor |= (0x01 << 9);
+			pDoc->Status.bDoorEngvF[DOOR_BR_ENGV] = TRUE;
+			Buzzer(FALSE, 0);
+			Sleep(300);
+		}
+		else if (!pDoc->Status.bDoorEngv[DOOR_BR_ENGV] && pDoc->Status.bDoorEngvF[DOOR_BR_ENGV])
+		{
+			ulOpenDoor &= ~(0x01 << 9);
+			pDoc->Status.bDoorEngvF[DOOR_BR_ENGV] = FALSE;
+			m_bSwStopNow = TRUE;
+			m_bSwRunF = FALSE;
+			Stop();
+			pView->DispStsBar(_T("정지-14"), 0);
+			DispMain(_T("정 지"), RGB_RED);
+			MsgBox(_T("일시정지 - 각인부 후면 우측 도어 Open"));
 			TowerLamp(RGB_RED, TRUE);
 			Buzzer(TRUE, 0);
 		}
@@ -3434,45 +3652,89 @@ unsigned long CGvisR2R_PunchView::ChkDoor() // 0: All Closed , Open Door Index :
 
 void CGvisR2R_PunchView::ChkEmg()
 {
-	if (pDoc->Status.bEmgAoi[EMG_F_AOI] && !pDoc->Status.bEmgAoiF[EMG_F_AOI])
+	if (pDoc->Status.bEmgAoi[EMG_F_AOI_UP] && !pDoc->Status.bEmgAoiF[EMG_F_AOI_UP])
 	{
-		SwAoiEmg(TRUE);
-		pDoc->Status.bEmgAoiF[EMG_F_AOI] = TRUE;
+		//SwAoiEmg(TRUE);
+		pDoc->Status.bEmgAoiF[EMG_F_AOI_UP] = TRUE;
 		m_bSwStopNow = TRUE;
 		m_bSwRunF = FALSE;
 		Stop();
 		pView->DispStsBar(_T("정지-23"), 0);
 		DispMain(_T("정 지"), RGB_RED);
-		MsgBox(_T("비상정지 - 검사부 전면 스위치"));
+		MsgBox(_T("비상정지 - 검사부 상 전면 스위치"));
 		TowerLamp(RGB_RED, TRUE);
 		Buzzer(TRUE, 0);
 	}
-	else if (!pDoc->Status.bEmgAoi[EMG_F_AOI] && pDoc->Status.bEmgAoiF[EMG_F_AOI])
+	else if (!pDoc->Status.bEmgAoi[EMG_F_AOI_UP] && pDoc->Status.bEmgAoiF[EMG_F_AOI_UP])
 	{
-		SwAoiEmg(FALSE);
-		pDoc->Status.bEmgAoiF[EMG_F_AOI] = FALSE;
+		//SwAoiEmg(FALSE);
+		pDoc->Status.bEmgAoiF[EMG_F_AOI_UP] = FALSE;
 		Buzzer(FALSE, 0);
 		Sleep(300);
 		ResetMotion();
 	}
 
-	if (pDoc->Status.bEmgAoi[EMG_B_AOI] && !pDoc->Status.bEmgAoiF[EMG_B_AOI])
+	if (pDoc->Status.bEmgAoi[EMG_B_AOI_UP] && !pDoc->Status.bEmgAoiF[EMG_B_AOI_UP])
 	{
-		SwAoiEmg(TRUE);
-		pDoc->Status.bEmgAoiF[EMG_B_AOI] = TRUE;
+		//SwAoiEmg(TRUE);
+		pDoc->Status.bEmgAoiF[EMG_B_AOI_UP] = TRUE;
 		m_bSwStopNow = TRUE;
 		m_bSwRunF = FALSE;
 		Stop();
 		pView->DispStsBar(_T("정지-24"), 0);
 		DispMain(_T("정 지"), RGB_RED);
-		MsgBox(_T("비상정지 - 검사부 후면 스위치"));
+		MsgBox(_T("비상정지 - 검사부 상 후면 스위치"));
 		TowerLamp(RGB_RED, TRUE);
 		Buzzer(TRUE, 0);
 	}
-	else if (!pDoc->Status.bEmgAoi[EMG_B_AOI] && pDoc->Status.bEmgAoiF[EMG_B_AOI])
+	else if (!pDoc->Status.bEmgAoi[EMG_B_AOI_UP] && pDoc->Status.bEmgAoiF[EMG_B_AOI_UP])
 	{
-		SwAoiEmg(FALSE);
-		pDoc->Status.bEmgAoiF[EMG_B_AOI] = FALSE;
+		//SwAoiEmg(FALSE);
+		pDoc->Status.bEmgAoiF[EMG_B_AOI_UP] = FALSE;
+		Buzzer(FALSE, 0);
+		Sleep(300);
+		ResetMotion();
+	}
+
+	if (pDoc->Status.bEmgAoi[EMG_F_AOI_DN] && !pDoc->Status.bEmgAoiF[EMG_F_AOI_DN])
+	{
+		//SwAoiEmg(TRUE);
+		pDoc->Status.bEmgAoiF[EMG_F_AOI_DN] = TRUE;
+		m_bSwStopNow = TRUE;
+		m_bSwRunF = FALSE;
+		Stop();
+		pView->DispStsBar(_T("정지-23"), 0);
+		DispMain(_T("정 지"), RGB_RED);
+		MsgBox(_T("비상정지 - 검사부 하 전면 스위치"));
+		TowerLamp(RGB_RED, TRUE);
+		Buzzer(TRUE, 0);
+	}
+	else if (!pDoc->Status.bEmgAoi[EMG_F_AOI_DN] && pDoc->Status.bEmgAoiF[EMG_F_AOI_DN])
+	{
+		//SwAoiEmg(FALSE);
+		pDoc->Status.bEmgAoiF[EMG_F_AOI_DN] = FALSE;
+		Buzzer(FALSE, 0);
+		Sleep(300);
+		ResetMotion();
+	}
+
+	if (pDoc->Status.bEmgAoi[EMG_B_AOI_DN] && !pDoc->Status.bEmgAoiF[EMG_B_AOI_DN])
+	{
+		//SwAoiEmg(TRUE);
+		pDoc->Status.bEmgAoiF[EMG_B_AOI_DN] = TRUE;
+		m_bSwStopNow = TRUE;
+		m_bSwRunF = FALSE;
+		Stop();
+		pView->DispStsBar(_T("정지-24"), 0);
+		DispMain(_T("정 지"), RGB_RED);
+		MsgBox(_T("비상정지 - 검사부 하 후면 스위치"));
+		TowerLamp(RGB_RED, TRUE);
+		Buzzer(TRUE, 0);
+	}
+	else if (!pDoc->Status.bEmgAoi[EMG_B_AOI_DN] && pDoc->Status.bEmgAoiF[EMG_B_AOI_DN])
+	{
+		//SwAoiEmg(FALSE);
+		pDoc->Status.bEmgAoiF[EMG_B_AOI_DN] = FALSE;
 		Buzzer(FALSE, 0);
 		Sleep(300);
 		ResetMotion();
@@ -3480,7 +3742,7 @@ void CGvisR2R_PunchView::ChkEmg()
 
 	if (pDoc->Status.bEmgMk[EMG_M_MK] && !pDoc->Status.bEmgMkF[EMG_M_MK])
 	{
-		SwAoiEmg(TRUE);
+		//SwAoiEmg(TRUE);
 		pDoc->Status.bEmgMkF[EMG_M_MK] = TRUE;
 		m_bSwStopNow = TRUE;
 		m_bSwRunF = FALSE;
@@ -3493,7 +3755,7 @@ void CGvisR2R_PunchView::ChkEmg()
 	}
 	else if (!pDoc->Status.bEmgMk[EMG_M_MK] && pDoc->Status.bEmgMkF[EMG_M_MK])
 	{
-		SwAoiEmg(FALSE);
+		//SwAoiEmg(FALSE);
 		pDoc->Status.bEmgMkF[EMG_M_MK] = FALSE;
 		Buzzer(FALSE, 0);
 		Sleep(300);
@@ -3502,7 +3764,7 @@ void CGvisR2R_PunchView::ChkEmg()
 
 	if (pDoc->Status.bEmgMk[EMG_B_MK] && !pDoc->Status.bEmgMkF[EMG_B_MK])
 	{
-		SwAoiEmg(TRUE);
+		//SwAoiEmg(TRUE);
 		pDoc->Status.bEmgMkF[EMG_B_MK] = TRUE;
 		m_bSwStopNow = TRUE;
 		m_bSwRunF = FALSE;
@@ -3515,7 +3777,7 @@ void CGvisR2R_PunchView::ChkEmg()
 	}
 	else if (!pDoc->Status.bEmgMk[EMG_B_MK] && pDoc->Status.bEmgMkF[EMG_B_MK])
 	{
-		SwAoiEmg(FALSE);
+		//SwAoiEmg(FALSE);
 		pDoc->Status.bEmgMkF[EMG_B_MK] = FALSE;
 		Buzzer(FALSE, 0);
 		Sleep(300);
@@ -3524,7 +3786,7 @@ void CGvisR2R_PunchView::ChkEmg()
 
 	if (pDoc->Status.bEmgUc && !pDoc->Status.bEmgUcF)
 	{
-		SwAoiEmg(TRUE);
+		//SwAoiEmg(TRUE);
 		pDoc->Status.bEmgUcF = TRUE;
 		m_bSwStopNow = TRUE;
 		m_bSwRunF = FALSE;
@@ -3537,7 +3799,7 @@ void CGvisR2R_PunchView::ChkEmg()
 	}
 	else if (!pDoc->Status.bEmgUc && pDoc->Status.bEmgUcF)
 	{
-		SwAoiEmg(FALSE);
+		//SwAoiEmg(FALSE);
 		pDoc->Status.bEmgUcF = FALSE;
 		Buzzer(FALSE, 0);
 		Sleep(300);
@@ -3546,7 +3808,7 @@ void CGvisR2R_PunchView::ChkEmg()
 
 	if (pDoc->Status.bEmgRc && !pDoc->Status.bEmgRcF)
 	{
-		SwAoiEmg(TRUE);
+		//SwAoiEmg(TRUE);
 		pDoc->Status.bEmgRcF = TRUE;
 		m_bSwStopNow = TRUE;
 		m_bSwRunF = FALSE;
@@ -3559,8 +3821,48 @@ void CGvisR2R_PunchView::ChkEmg()
 	}
 	else if (!pDoc->Status.bEmgRc && pDoc->Status.bEmgRcF)
 	{
-		SwAoiEmg(FALSE);
+		//SwAoiEmg(FALSE);
 		pDoc->Status.bEmgRcF = FALSE;
+		Buzzer(FALSE, 0);
+		Sleep(300);
+		ResetMotion();
+	}
+
+	if (pDoc->Status.bEmgEngv[0] && !pDoc->Status.bEmgEngvF[0])
+	{
+		pDoc->Status.bEmgEngvF[0] = TRUE;
+		m_bSwStopNow = TRUE;
+		m_bSwRunF = FALSE;
+		Stop();
+		pView->DispStsBar(_T("정지-29"), 0);
+		DispMain(_T("정 지"), RGB_RED);
+		MsgBox(_T("비상정지 - 각인부 모니터"));
+		TowerLamp(RGB_RED, TRUE);
+		Buzzer(TRUE, 0);
+	}
+	else if (!pDoc->Status.bEmgEngv[0] && pDoc->Status.bEmgEngvF[0])
+	{
+		pDoc->Status.bEmgEngvF[0] = FALSE;
+		Buzzer(FALSE, 0);
+		Sleep(300);
+		ResetMotion();
+	}
+
+	if (pDoc->Status.bEmgEngv[1] && !pDoc->Status.bEmgEngvF[1])
+	{
+		pDoc->Status.bEmgEngvF[1] = TRUE;
+		m_bSwStopNow = TRUE;
+		m_bSwRunF = FALSE;
+		Stop();
+		pView->DispStsBar(_T("정지-30"), 0);
+		DispMain(_T("정 지"), RGB_RED);
+		MsgBox(_T("비상정지 - 각인부 스위치"));
+		TowerLamp(RGB_RED, TRUE);
+		Buzzer(TRUE, 0);
+	}
+	else if (!pDoc->Status.bEmgEngv[1] && pDoc->Status.bEmgEngvF[1])
+	{
+		pDoc->Status.bEmgEngvF[1] = FALSE;
 		Buzzer(FALSE, 0);
 		Sleep(300);
 		ResetMotion();
@@ -3656,10 +3958,11 @@ void CGvisR2R_PunchView::ChkBufDn()
 
 void CGvisR2R_PunchView::DoIO()
 {
-	//	DoEmgSens();
 	//	ChkEmg();
 
-	DoSaftySens(); //20220603
+	DoEmgSens();	//20220607
+	DoSaftySens();	//20220603
+	DoDoorSens();	//20220607
 
 	DoModeSel();
 	DoMainSw();
@@ -4002,6 +4305,183 @@ void CGvisR2R_PunchView::DoSaftySens()
 	{
 		*usInF &= ~(0x01 << 8);
 		pDoc->Status.bSensSaftyMk = FALSE;
+	}
+}
+
+void CGvisR2R_PunchView::DoDoorSens()
+{
+	unsigned short usIn;
+	unsigned short *usInF;
+
+	if (!pDoc->m_pMpeIb || !pDoc->m_pMpeIF)
+		return;
+
+	usIn = pDoc->m_pMpeIb[1];
+	usInF = &pDoc->m_pMpeIF[1];
+
+	if ((usIn & (0x01 << 12)) && !(*usInF & (0x01 << 12)))		// 언코일러 전면 도어 센서
+	{
+		*usInF |= (0x01 << 12);
+		pDoc->Status.bDoorUc[DOOR_FL_UC] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 언코일러 측면 도어 센서
+	{
+		*usInF &= ~(0x01 << 13);
+		pDoc->Status.bDoorUc[DOOR_FR_UC] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 14)) && (*usInF & (0x01 << 14)))	// 언코일러 후면 도어 센서(좌)
+	{
+		*usInF &= ~(0x01 << 14);
+		pDoc->Status.bDoorUc[DOOR_BL_UC] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 15)) && (*usInF & (0x01 << 15)))	// 언코일러 후면 도어 센서(우)
+	{
+		*usInF &= ~(0x01 << 15);
+		pDoc->Status.bDoorUc[DOOR_BR_UC] = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[7];
+	usInF = &pDoc->m_pMpeIF[7];
+
+	if ((usIn & (0x01 << 10)) && !(*usInF & (0x01 << 10)))		// 마킹부 도어 센서 1 
+	{
+		*usInF |= (0x01 << 10);
+		pDoc->Status.bDoorMk[DOOR_FL_MK] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 11)) && (*usInF & (0x01 << 11)))	// 마킹부 도어 센서 2
+	{
+		*usInF &= ~(0x01 << 11);
+		pDoc->Status.bDoorMk[DOOR_FR_MK] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 12)) && (*usInF & (0x01 << 12)))	// 마킹부 도어 센서 3
+	{
+		*usInF &= ~(0x01 << 12);
+		pDoc->Status.bDoorMk[DOOR_BL_MK] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 마킹부 도어 센서 4
+	{
+		*usInF &= ~(0x01 << 13);
+		pDoc->Status.bDoorMk[DOOR_BR_MK] = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[11];
+	usInF = &pDoc->m_pMpeIF[11];
+
+	if ((usIn & (0x01 << 10)) && !(*usInF & (0x01 << 10)))		// 검사부 상 도어 센서 1 
+	{
+		*usInF |= (0x01 << 10);
+		pDoc->Status.bDoorMk[DOOR_FL_AOI_UP] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 11)) && (*usInF & (0x01 << 11)))	// 검사부 상 도어 센서 2
+	{
+		*usInF &= ~(0x01 << 11);
+		pDoc->Status.bDoorMk[DOOR_FR_AOI_UP] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 12)) && (*usInF & (0x01 << 12)))	// 검사부 상 도어 센서 3
+	{
+		*usInF &= ~(0x01 << 12);
+		pDoc->Status.bDoorMk[DOOR_BL_AOI_UP] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 검사부 상 도어 센서 4
+	{
+		*usInF &= ~(0x01 << 13);
+		pDoc->Status.bDoorMk[DOOR_BR_AOI_UP] = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[15];
+	usInF = &pDoc->m_pMpeIF[15];
+
+	if ((usIn & (0x01 << 10)) && !(*usInF & (0x01 << 10)))		// 검사부 상 도어 센서 1 
+	{
+		*usInF |= (0x01 << 10);
+		pDoc->Status.bDoorAoi[DOOR_FL_AOI_UP] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 11)) && (*usInF & (0x01 << 11)))	// 검사부 상 도어 센서 2
+	{
+		*usInF &= ~(0x01 << 11);
+		pDoc->Status.bDoorAoi[DOOR_FR_AOI_UP] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 12)) && (*usInF & (0x01 << 12)))	// 검사부 상 도어 센서 3
+	{
+		*usInF &= ~(0x01 << 12);
+		pDoc->Status.bDoorAoi[DOOR_BL_AOI_UP] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 검사부 상 도어 센서 4
+	{
+		*usInF &= ~(0x01 << 13);
+		pDoc->Status.bDoorAoi[DOOR_BR_AOI_UP] = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[15];
+	usInF = &pDoc->m_pMpeIF[15];
+
+	if ((usIn & (0x01 << 10)) && !(*usInF & (0x01 << 10)))		// 검사부 하 도어 센서 1 
+	{
+		*usInF |= (0x01 << 10);
+		pDoc->Status.bDoorAoi[DOOR_FL_AOI_DN] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 11)) && (*usInF & (0x01 << 11)))	// 검사부 하 도어 센서 2
+	{
+		*usInF &= ~(0x01 << 11);
+		pDoc->Status.bDoorAoi[DOOR_FR_AOI_DN] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 12)) && (*usInF & (0x01 << 12)))	// 검사부 하 도어 센서 3
+	{
+		*usInF &= ~(0x01 << 12);
+		pDoc->Status.bDoorAoi[DOOR_BL_AOI_DN] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 검사부 하 도어 센서 4
+	{
+		*usInF &= ~(0x01 << 13);
+		pDoc->Status.bDoorAoi[DOOR_BR_AOI_DN] = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[17];
+	usInF = &pDoc->m_pMpeIF[17];
+
+	if ((usIn & (0x01 << 12)) && !(*usInF & (0x01 << 12)))		// 리코일러 전면 도어 센서
+	{
+		*usInF |= (0x01 << 12);
+		pDoc->Status.bDoorRe[DOOR_FL_RC] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 리코일러 측면 도어 센서
+	{
+		*usInF &= ~(0x01 << 13);
+		pDoc->Status.bDoorRe[DOOR_FR_RC] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 14)) && (*usInF & (0x01 << 14)))	// 리코일러 후면 도어 센서(좌)
+	{
+		*usInF &= ~(0x01 << 14);
+		pDoc->Status.bDoorRe[DOOR_BL_RC] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 15)) && (*usInF & (0x01 << 15)))	// 리코일러 후면 도어 센서(우)
+	{
+		*usInF &= ~(0x01 << 15);
+		pDoc->Status.bDoorRe[DOOR_BR_RC] = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[27];
+	usInF = &pDoc->m_pMpeIF[27];
+
+	if ((usIn & (0x01 << 10)) && !(*usInF & (0x01 << 10)))		// 각인부 도어 센서 1
+	{
+		*usInF |= (0x01 << 10);
+		pDoc->Status.bDoorEngv[DOOR_FL_ENGV] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 11)) && (*usInF & (0x01 << 11)))	// 각인부 도어 센서 2
+	{
+		*usInF &= ~(0x01 << 11);
+		pDoc->Status.bDoorEngv[DOOR_FR_ENGV] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 12)) && (*usInF & (0x01 << 12)))	// 각인부 도어 센서 3
+	{
+		*usInF &= ~(0x01 << 12);
+		pDoc->Status.bDoorEngv[DOOR_BL_ENGV] = FALSE;
+	}
+	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 각인부 도어 센서 4
+	{
+		*usInF &= ~(0x01 << 13);
+		pDoc->Status.bDoorEngv[DOOR_BR_ENGV] = FALSE;
 	}
 }
 
@@ -4673,30 +5153,127 @@ void CGvisR2R_PunchView::DoEmgSens()
 	// 	if(!pDoc->m_pSliceIo || !pDoc->m_pSliceIoF)
 	// 		return;
 
-
-
 	// 	unsigned short usIn = pDoc->m_pSliceIo[4];
 	// 	unsigned short *usInF = &pDoc->m_pSliceIoF[4];
 
 	//unsigned short usIn = 0;
 	//unsigned short *usInF = NULL;
 
-	unsigned short usIn = pDoc->m_pMpeIb[4];
-	unsigned short *usInF = &pDoc->m_pMpeIF[4];
+	unsigned short usIn, *usInF;
 
+	if (!pDoc->m_pMpeIb || !pDoc->m_pMpeIF)
+		return;
 
+	usIn = pDoc->m_pMpeIb[0];
+	usInF = &pDoc->m_pMpeIF[0];
 
-	if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))
+	if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))		// 언코일러 비상정지 스위치
 	{
-		*usInF |= (0x01 << 0);								// 검사부 비상정지 스위치(스위치)
-		pDoc->Status.bEmgAoi[EMG_F_AOI] = TRUE;
-		// 		pDoc->m_pSliceIo[9] |= (0x01<<14);
+		*usInF |= (0x01 << 0);						
+		pDoc->Status.bEmgUc = TRUE;
 	}
 	else if (!(usIn & (0x01 << 0)) && (*usInF & (0x01 << 0)))
 	{
 		*usInF &= ~(0x01 << 0);
-		pDoc->Status.bEmgAoi[EMG_F_AOI] = FALSE;
-		// 		pDoc->m_pSliceIo[9] &= ~(0x01<<14);
+		pDoc->Status.bEmgUc = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[4];
+	usInF = &pDoc->m_pMpeIF[4];
+
+	if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))		// 마킹부 비상정지 스위치(모니터부)
+	{
+		*usInF |= (0x01 << 0);						
+		pDoc->Status.bEmgMk[EMG_M_MK] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 0)) && (*usInF & (0x01 << 0)))
+	{
+		*usInF &= ~(0x01 << 0);
+		pDoc->Status.bEmgMk[EMG_M_MK] = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[5];
+	usInF = &pDoc->m_pMpeIF[5];
+
+	if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))		// 마킹부 비상정지 스위치(스위치부)	
+	{
+		*usInF |= (0x01 << 0);						
+		pDoc->Status.bEmgMk[EMG_B_MK] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 0)) && (*usInF & (0x01 << 0)))
+	{
+		*usInF &= ~(0x01 << 0);
+		pDoc->Status.bEmgMk[EMG_B_MK] = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[8];
+	usInF = &pDoc->m_pMpeIF[8];
+
+	if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))		// 검사부 상 비상정지 스위치(후면) 
+	{
+		*usInF |= (0x01 << 0);						
+		pDoc->Status.bEmgAoi[EMG_B_AOI_UP] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 0)) && (*usInF & (0x01 << 0)))
+	{
+		*usInF &= ~(0x01 << 0);
+		pDoc->Status.bEmgAoi[EMG_B_AOI_UP] = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[12];
+	usInF = &pDoc->m_pMpeIF[12];
+
+	if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))		// 검사부 하 비상정지 스위치(후면) 
+	{
+		*usInF |= (0x01 << 0);						
+		pDoc->Status.bEmgAoi[EMG_B_AOI_DN] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 0)) && (*usInF & (0x01 << 0)))
+	{
+		*usInF &= ~(0x01 << 0);
+		pDoc->Status.bEmgAoi[EMG_B_AOI_DN] = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[16];
+	usInF = &pDoc->m_pMpeIF[16];
+
+	if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))		// 리코일러 비상정지 스위치
+	{
+		*usInF |= (0x01 << 0);
+		pDoc->Status.bEmgRc = TRUE;
+	}
+	else if (!(usIn & (0x01 << 0)) && (*usInF & (0x01 << 0)))
+	{
+		*usInF &= ~(0x01 << 0);
+		pDoc->Status.bEmgRc = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[24];
+	usInF = &pDoc->m_pMpeIF[24];
+
+	if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))		// 각인부 비상정지 스위치(모니터부)
+	{
+		*usInF |= (0x01 << 0);
+		pDoc->Status.bEmgEngv[0] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 0)) && (*usInF & (0x01 << 0)))
+	{
+		*usInF &= ~(0x01 << 0);
+		pDoc->Status.bEmgEngv[0] = FALSE;
+	}
+
+	usIn = pDoc->m_pMpeIb[25];
+	usInF = &pDoc->m_pMpeIF[25];
+
+	if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))		// 각인부 비상정지 스위치(스위치부)
+	{
+		*usInF |= (0x01 << 0);
+		pDoc->Status.bEmgEngv[1] = TRUE;
+	}
+	else if (!(usIn & (0x01 << 0)) && (*usInF & (0x01 << 0)))
+	{
+		*usInF &= ~(0x01 << 0);
+		pDoc->Status.bEmgEngv[1] = FALSE;
 	}
 
 }

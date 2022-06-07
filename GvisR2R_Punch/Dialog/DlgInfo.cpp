@@ -511,7 +511,7 @@ void CDlgInfo::Disp()
 	else
 		myBtn[4].SetCheck(FALSE);
 
-	if(pDoc->WorkingInfo.LastJob.bAoiDrSen)
+	if(pDoc->WorkingInfo.LastJob.bAoiUpDrSen)
 		myBtn[5].SetCheck(TRUE);
 	else
 		myBtn[5].SetCheck(FALSE);
@@ -541,7 +541,8 @@ void CDlgInfo::Disp()
 	else
 		myBtn[10].SetCheck(FALSE);
 
-	if(pDoc->WorkingInfo.LastJob.bAoiSftySen)
+	//if(pDoc->WorkingInfo.LastJob.bAoiSftySen)
+	if (pDoc->WorkingInfo.LastJob.bAoiDnDrSen)
 		myBtn[11].SetCheck(TRUE);
 	else
 		myBtn[11].SetCheck(FALSE);
@@ -890,21 +891,21 @@ void CDlgInfo::OnChk004()
 void CDlgInfo::OnChk005() 
 {
 	// TODO: Add your control notification handler code here
-	if(myBtn[5].GetCheck())
+	if(myBtn[5].GetCheck())		// 상면 AOI DOOR SENSOR
 	{
-		pDoc->WorkingInfo.LastJob.bAoiDrSen = TRUE;
-		pDoc->Status.bDoorAoiF[DOOR_FM_AOI] = TRUE;
-		pDoc->Status.bDoorAoiF[DOOR_FL_AOI] = TRUE;
-		pDoc->Status.bDoorAoiF[DOOR_FR_AOI] = TRUE;
-		pDoc->Status.bDoorAoiF[DOOR_BM_AOI] = TRUE;
-		pDoc->Status.bDoorAoiF[DOOR_BL_AOI] = TRUE;
-		pDoc->Status.bDoorAoiF[DOOR_BR_AOI] = TRUE;
+		pDoc->WorkingInfo.LastJob.bAoiUpDrSen = TRUE;
+		pDoc->Status.bDoorAoiF[DOOR_FM_AOI_UP] = TRUE;
+		pDoc->Status.bDoorAoiF[DOOR_FL_AOI_UP] = TRUE;
+		pDoc->Status.bDoorAoiF[DOOR_FR_AOI_UP] = TRUE;
+		pDoc->Status.bDoorAoiF[DOOR_BM_AOI_UP] = TRUE;
+		pDoc->Status.bDoorAoiF[DOOR_BL_AOI_UP] = TRUE;
+		pDoc->Status.bDoorAoiF[DOOR_BR_AOI_UP] = TRUE;
 	}
 	else
-		pDoc->WorkingInfo.LastJob.bAoiDrSen = FALSE;
+		pDoc->WorkingInfo.LastJob.bAoiUpDrSen = FALSE;
 
-	CString sData = pDoc->WorkingInfo.LastJob.bAoiDrSen ? _T("1") : _T("0");
-	::WritePrivateProfileString(_T("Last Job"), _T("Use Aoi Door Sensor"), sData, PATH_WORKING_INFO);	
+	CString sData = pDoc->WorkingInfo.LastJob.bAoiUpDrSen ? _T("1") : _T("0");
+	::WritePrivateProfileString(_T("Last Job"), _T("Use AoiUp Door Sensor"), sData, PATH_WORKING_INFO);	
 }
 
 void CDlgInfo::OnChk006() 
@@ -956,26 +957,40 @@ void CDlgInfo::OnChk007()
 // }
 void CDlgInfo::OnChk008() 
 {
-	if(myBtn[8].GetCheck())
-		pDoc->WorkingInfo.LastJob.bBufDrSen = TRUE;
-	else
-		pDoc->WorkingInfo.LastJob.bBufDrSen = FALSE;
+	//if(myBtn[8].GetCheck())
+	//	pDoc->WorkingInfo.LastJob.bBufDrSen = TRUE;
+	//else
+	//	pDoc->WorkingInfo.LastJob.bBufDrSen = FALSE;
 
-	CString sData = pDoc->WorkingInfo.LastJob.bBufDrSen ? _T("1") : _T("0");
-	::WritePrivateProfileString(_T("Last Job"), _T("Use Buffer Door Sensor"), sData, PATH_WORKING_INFO);	
+	//CString sData = pDoc->WorkingInfo.LastJob.bBufDrSen ? _T("1") : _T("0");
+	//::WritePrivateProfileString(_T("Last Job"), _T("Use Buffer Door Sensor"), sData, PATH_WORKING_INFO);	
 
 }
 
 void CDlgInfo::OnChk009() 
 {
 	// TODO: Add your control notification handler code here
-	if(myBtn[9].GetCheck())
-		pDoc->WorkingInfo.LastJob.bStopFixDef = TRUE;
+	if (myBtn[9].GetCheck())
+	{
+		pDoc->WorkingInfo.LastJob.bEngvDrSen = TRUE;
+		pDoc->Status.bDoorEngvF[DOOR_FL_ENGV] = TRUE;
+		pDoc->Status.bDoorEngvF[DOOR_FR_ENGV] = TRUE;
+		pDoc->Status.bDoorEngvF[DOOR_BL_ENGV] = TRUE;
+		pDoc->Status.bDoorEngvF[DOOR_BR_ENGV] = TRUE;
+	}
 	else
-		pDoc->WorkingInfo.LastJob.bStopFixDef = FALSE;
+		pDoc->WorkingInfo.LastJob.bEngvDrSen = FALSE;
 
-	CString sData = pDoc->WorkingInfo.LastJob.bStopFixDef ? _T("1") : _T("0");
-	::WritePrivateProfileString(_T("Last Job"), _T("Use Fix Defect Stop"), sData, PATH_WORKING_INFO);	
+	CString sData = pDoc->WorkingInfo.LastJob.bEngvDrSen ? _T("1") : _T("0");
+	::WritePrivateProfileString(_T("Last Job"), _T("Use Engrave Door Sensor"), sData, PATH_WORKING_INFO);
+
+	//if(myBtn[9].GetCheck())
+	//	pDoc->WorkingInfo.LastJob.bStopFixDef = TRUE;
+	//else
+	//	pDoc->WorkingInfo.LastJob.bStopFixDef = FALSE;
+
+	//CString sData = pDoc->WorkingInfo.LastJob.bStopFixDef ? _T("1") : _T("0");
+	//::WritePrivateProfileString(_T("Last Job"), _T("Use Fix Defect Stop"), sData, PATH_WORKING_INFO);	
 }
 
 void CDlgInfo::OnChk010() 
@@ -993,13 +1008,30 @@ void CDlgInfo::OnChk010()
 void CDlgInfo::OnChk011() 
 {
 	// TODO: Add your control notification handler code here
-	if(myBtn[11].GetCheck())
-		pDoc->WorkingInfo.LastJob.bAoiSftySen = TRUE;
+	if (myBtn[11].GetCheck())		// 하면 AOI DOOR SENSOR
+	{
+		pDoc->WorkingInfo.LastJob.bAoiDnDrSen = TRUE;
+		pDoc->Status.bDoorAoiF[DOOR_FM_AOI_DN] = TRUE;
+		pDoc->Status.bDoorAoiF[DOOR_FL_AOI_DN] = TRUE;
+		pDoc->Status.bDoorAoiF[DOOR_FR_AOI_DN] = TRUE;
+		pDoc->Status.bDoorAoiF[DOOR_BM_AOI_DN] = TRUE;
+		pDoc->Status.bDoorAoiF[DOOR_BL_AOI_DN] = TRUE;
+		pDoc->Status.bDoorAoiF[DOOR_BR_AOI_DN] = TRUE;
+	}
 	else
-		pDoc->WorkingInfo.LastJob.bAoiSftySen = FALSE;
+		pDoc->WorkingInfo.LastJob.bAoiDnDrSen = FALSE;
 
-	CString sData = pDoc->WorkingInfo.LastJob.bAoiSftySen ? _T("1") : _T("0");
-	::WritePrivateProfileString(_T("Last Job"), _T("Use Aoi Safty Sensor"), sData, PATH_WORKING_INFO);	
+	CString sData = pDoc->WorkingInfo.LastJob.bAoiDnDrSen ? _T("1") : _T("0");
+	::WritePrivateProfileString(_T("Last Job"), _T("Use AoiDn Door Sensor"), sData, PATH_WORKING_INFO);
+
+
+	//if(myBtn[11].GetCheck())
+	//	pDoc->WorkingInfo.LastJob.bAoiSftySen = TRUE;
+	//else
+	//	pDoc->WorkingInfo.LastJob.bAoiSftySen = FALSE;
+
+	//CString sData = pDoc->WorkingInfo.LastJob.bAoiSftySen ? _T("1") : _T("0");
+	//::WritePrivateProfileString(_T("Last Job"), _T("Use Aoi Safty Sensor"), sData, PATH_WORKING_INFO);	
 }
 
 void CDlgInfo::OnBtnExit() 

@@ -1313,15 +1313,25 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 	else
 		WorkingInfo.LastJob.bMkDrSen = TRUE;
 
-	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Use Aoi Door Sensor"), NULL, szData, sizeof(szData), sPath))
-		WorkingInfo.LastJob.bAoiDrSen = _ttoi(szData) ? TRUE : FALSE;
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Use AoiUp Door Sensor"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.bAoiUpDrSen = _ttoi(szData) ? TRUE : FALSE;
 	else
-		WorkingInfo.LastJob.bAoiDrSen = TRUE;
+		WorkingInfo.LastJob.bAoiUpDrSen = TRUE;
+
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Use AoiDn Door Sensor"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.bAoiDnDrSen = _ttoi(szData) ? TRUE : FALSE;
+	else
+		WorkingInfo.LastJob.bAoiDnDrSen = TRUE;
 
 	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Use Uncoiler Door Sensor"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.LastJob.bUclDrSen = _ttoi(szData) ? TRUE : FALSE;
 	else
 		WorkingInfo.LastJob.bUclDrSen = TRUE;
+
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Use Engrave Door Sensor"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.bEngvDrSen = _ttoi(szData) ? TRUE : FALSE;
+	else
+		WorkingInfo.LastJob.bEngvDrSen = TRUE;
 
 	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Use Buffer Door Sensor"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.LastJob.bBufDrSen = _ttoi(szData) ? TRUE : FALSE;
@@ -3059,8 +3069,14 @@ void CGvisR2R_PunchDoc::SaveWorkingInfo()
 	sData.Format(_T("%d"), WorkingInfo.LastJob.bMkDrSen ? 1 : 0);
 	::WritePrivateProfileString(_T("Last Job"), _T("Use Marking Door Sensor"), sData, sPath);
 
-	sData.Format(_T("%d"), WorkingInfo.LastJob.bAoiDrSen ? 1 : 0);
+	sData.Format(_T("%d"), WorkingInfo.LastJob.bAoiUpDrSen ? 1 : 0);
 	::WritePrivateProfileString(_T("Last Job"), _T("Use Aoi Door Sensor"), sData, sPath);
+
+	sData.Format(_T("%d"), WorkingInfo.LastJob.bAoiDnDrSen ? 1 : 0);
+	::WritePrivateProfileString(_T("Last Job"), _T("Use Aoi Door Sensor"), sData, sPath);
+
+	sData.Format(_T("%d"), WorkingInfo.LastJob.bEngvDrSen ? 1 : 0);
+	::WritePrivateProfileString(_T("Last Job"), _T("Use Engrave Door Sensor"), sData, sPath);
 
 	sData.Format(_T("%d"), WorkingInfo.LastJob.bUclDrSen ? 1 : 0);
 	::WritePrivateProfileString(_T("Last Job"), _T("Use Uncoiler Door Sensor"), sData, sPath);
