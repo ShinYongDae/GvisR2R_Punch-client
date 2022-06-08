@@ -21,6 +21,7 @@
 
 #include "Dialog/DlgInfo.h"
 #include "Dialog/DlgUtil04.h"
+#include "Dialog/DlgUtil07.h"
 #include "Dialog/DlgMyPassword.h"
 #include "Dialog/DlgProgress.h"
 #include "Dialog/DlgMyMsgSub00.h"
@@ -1816,6 +1817,13 @@ void CGvisR2R_PunchView::DispIo()
 {
 	ClrDispMsg();
 	CDlgUtil04 Dlg;
+	Dlg.DoModal();
+}
+
+void CGvisR2R_PunchView::DispDatabaseConnection()
+{
+	ClrDispMsg();
+	CDlgUtil07 Dlg;
 	Dlg.DoModal();
 }
 

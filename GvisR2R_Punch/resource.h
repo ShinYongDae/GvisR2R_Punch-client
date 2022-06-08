@@ -101,6 +101,8 @@
 #define IDD_DIALOG1                     348
 #define IDD_PROGRESS                    348
 #define IDD_DLG_CLIENT                  350
+#define IDD_DIALOG2                     352
+#define IDD_DLG_UTIL_07                 352
 #define IDC_SVR_PORT                    374
 #define IDC_TXT_MESSAGE                 376
 #define IDC_BTN_START                   486
@@ -1264,14 +1266,16 @@
 #define ID_32774                        32774
 #define ID_TESTIOLIST                   32775
 #define ID_TEST_IO                      32776
+#define ID_DATABASECONNECTION           32777
+#define ID_DATABASE_CONNECTION          32778
 #define ID_INDICATOR_PROGRESS_PANE      61204
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        352
-#define _APS_NEXT_COMMAND_VALUE         32777
+#define _APS_NEXT_RESOURCE_VALUE        354
+#define _APS_NEXT_COMMAND_VALUE         32779
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

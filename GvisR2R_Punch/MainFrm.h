@@ -55,6 +55,7 @@ public:
 	afx_msg void OnDestroy();
 	virtual BOOL DestroyWindow();
 	virtual void PostNcDestroy();
+	afx_msg void OnDatabaseConnection();
 	afx_msg void OnTestIo();
 	afx_msg void OnAppMinimize();
 	afx_msg void OnSize(UINT nType, int cx, int cy);

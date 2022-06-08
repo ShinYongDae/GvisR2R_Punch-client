@@ -457,6 +457,7 @@ public:
 	LONG OnQuitDispMsg(UINT wParam, LONG lParam);
 	void ShowDlg(int nID);
 	void DispIo();
+	void DispDatabaseConnection();
 
 	void TowerLamp(COLORREF color, BOOL bOn, BOOL bWink = FALSE);
 	void DispTowerWinker();

@@ -259,6 +259,7 @@
     <ClInclude Include="Dialog\DlgUtil03.h" />
     <ClInclude Include="Dialog\DlgUtil04.h" />
     <ClInclude Include="Dialog\DlgUtil05.h" />
+    <ClInclude Include="Dialog\DlgUtil07.h" />
     <ClInclude Include="Dialog\Label.h" />
     <ClInclude Include="Dialog\MyBtn.h" />
     <ClInclude Include="Dialog\MyEdit.h" />
@@ -344,6 +345,7 @@
     <ClCompile Include="Dialog\DlgUtil03.cpp" />
     <ClCompile Include="Dialog\DlgUtil04.cpp" />
     <ClCompile Include="Dialog\DlgUtil05.cpp" />
+    <ClCompile Include="Dialog\DlgUtil07.cpp" />
     <ClCompile Include="Dialog\Label.cpp" />
     <ClCompile Include="Dialog\MyBtn.cpp" />
     <ClCompile Include="Dialog\MyEdit.cpp" />
