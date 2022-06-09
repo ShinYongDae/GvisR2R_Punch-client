@@ -2,13 +2,7 @@ Debug/
 ipch/
 x64/
 GvisR2R_Punch.sdf
-<<<<<<< HEAD
 GvisR2R_Punch.VC.db
-
-=======
-GvisR2R_Punch.sln
->>>>>>> 95a6e75528a9b206e70f94c91aaef090216bdb4f
-
 GvisR2R_Punch/dll/
 GvisR2R_Punch/x64/
 .vs/
