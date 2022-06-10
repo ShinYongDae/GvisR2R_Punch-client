@@ -1243,9 +1243,12 @@ void SaveLog(CString strMsg, int nType)
 	if (file.Open(szFile, CFile::modeCreate | CFile::modeNoTruncate | CFile::modeWrite | CFile::shareDenyNone) == 0)
 		return;
 
+	char cameraKey[1024];
+	StringToChar(strContents, cameraKey);
+
 	file.SeekToEnd();
 	int nLenth = strContents.GetLength();
-	file.Write(StringToChar(strContents), nLenth);
+	file.Write(cameraKey, nLenth);
 	file.Flush();
 	file.Close();
 }
