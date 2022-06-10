@@ -324,6 +324,8 @@ CGvisR2R_PunchDoc::~CGvisR2R_PunchDoc()
 				m_pPcr[i][k] = NULL;
 			}
 		}
+		//delete[] m_pPcr[i];
+		//m_pPcr[i] = NULL;
 	}
 }
 

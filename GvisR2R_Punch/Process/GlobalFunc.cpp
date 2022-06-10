@@ -1209,51 +1209,43 @@ void SaveLog(CString strMsg, int nType)
 {
 	CSafeLock lock(&g_LogLock);
 
-	char szFile[MAX_PATH] = { 0, };
-	char szPath[MAX_PATH] = { 0, };
-	char* pszPos = NULL;
+	TCHAR szFile[MAX_PATH] = { 0, };
+	TCHAR szPath[MAX_PATH] = { 0, };
+	TCHAR* pszPos = NULL;
 
-	//TCHAR szPath[MAX_PATH] = { 0, };
+	//GetModuleFileName(NULL, szPath, MAX_PATH);
+	//pszPos = _tcsrchr(szPath, '\\');
 
-	GetModuleFileName(NULL, CharToTCHAR(szPath), MAX_PATH);
-	pszPos = strrchr(szPath, '\\');
-	*pszPos = NULL;
+	//*pszPos = NULL;
 
-	sprintf(szPath, "C:\\AoiLog");
-	CreateDirectory(CharToTCHAR(szPath), NULL);
+	_stprintf(szPath, _T("C:\\AoiLog"));
+	COleDateTime time = COleDateTime::GetCurrentTime();
 
 	switch (nType)
 	{
 	case 0:
-		sprintf(szFile, "%s\\%s.txt", szPath, COleDateTime::GetCurrentTime().Format( _T("%Y%m%d") ));
+		_stprintf(szFile, _T("%s\\%s.txt"), szPath, COleDateTime::GetCurrentTime().Format(_T("%Y%m%d")));
 		break;
-
-	//case THETA_ADJUST:	//140502 jsy
-	//	sprintf(szPath, "C:\\AoiLog\\ThetaAdjust");
-	//	CreateDirectory(szPath, NULL);
-	//	sprintf(szFile, "%s\\%s.txt", szPath, COleDateTime::GetCurrentTime().Format("%Y%m%d"));
-	//	break;
-
-	//case CALIBF_ADJUST: //140527 lgh add 
-	//	sprintf(szPath, "C:\\AoiLog\\CalibF");
-	//	CreateDirectory(szPath, NULL);
-	//	sprintf(szFile, "%s\\CalibF.txt", szPath);
-	//	break;
 	}
 
 	CString strDate;
 	CString strContents;
+	CTime now;
 
-	strDate.Format(_T("%s: "), COleDateTime::GetCurrentTime().Format( _T("%Y/%m/%d %H:%M:%S") ));
+	strDate.Format(_T("%s: "), COleDateTime::GetCurrentTime().Format(_T("%Y/%m/%d %H:%M:%S")));
 	strContents = strDate;
 	strContents += strMsg;
 	strContents += _T("\r\n");
+	strContents += _T("\r\n");
+
 	CFile file;
-	if (file.Open(CharToTCHAR(szFile), CFile::modeCreate | CFile::modeNoTruncate | CFile::modeWrite | CFile::shareDenyNone) == 0)
+
+	if (file.Open(szFile, CFile::modeCreate | CFile::modeNoTruncate | CFile::modeWrite | CFile::shareDenyNone) == 0)
 		return;
 
 	file.SeekToEnd();
-	file.Write(strContents, strContents.GetLength());
+	int nLenth = strContents.GetLength();
+	file.Write(StringToChar(strContents), nLenth);
 	file.Flush();
 	file.Close();
 }

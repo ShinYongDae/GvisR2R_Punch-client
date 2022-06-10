@@ -582,10 +582,12 @@ BOOL CDlgMenu05::MakeResult() // TRUE: Make Result, FALSE: Load Result or Failed
 	m_nEntireStripNum = 0;
 
 	if(m_sModel.IsEmpty())
-		AfxMessageBox(_T("모델 정보가 없습니다."));
+		pView->MsgBox(_T("모델 정보가 없습니다."));
+		//AfxMessageBox(_T("모델 정보가 없습니다."));
 
 	if(m_sLot.IsEmpty())
-		AfxMessageBox(_T("로트 정보가 없습니다."));
+		pView->MsgBox(_T("로트 정보가 없습니다."));
+		//AfxMessageBox(_T("로트 정보가 없습니다."));
 
 	strPath.Format(_T("%s%s\\%s\\%s"), pDoc->WorkingInfo.System.sPathOldFile, 
 								   m_sModel, m_sLot, m_sLayer);
@@ -1479,7 +1481,8 @@ void CDlgMenu05::DisplayReelMapUser()
 		sModel = CString(szData); 
 	else
 	{
-		AfxMessageBox(_T("Model 정보가 없습니다."));
+		pView->MsgBox(_T("Model 정보가 없습니다."));
+		//AfxMessageBox(_T("Model 정보가 없습니다."));
 		return;
 	}
 
@@ -1487,7 +1490,8 @@ void CDlgMenu05::DisplayReelMapUser()
 		sLot = CString(szData); 
 	else
 	{
-		AfxMessageBox(_T("Lot 정보가 없습니다."));
+		pView->MsgBox(_T("Lot 정보가 없습니다."));
+		//AfxMessageBox(_T("Lot 정보가 없습니다."));
 		return;
 	}
 	
@@ -1495,7 +1499,8 @@ void CDlgMenu05::DisplayReelMapUser()
 		sLayer[0] = CString(szData); 
 	else
 	{
-		AfxMessageBox(_T("상면레이어 정보가 없습니다."));
+		pView->MsgBox(_T("상면레이어 정보가 없습니다."));
+		//AfxMessageBox(_T("상면레이어 정보가 없습니다."));
 		return;
 	}
 	
@@ -1505,14 +1510,16 @@ void CDlgMenu05::DisplayReelMapUser()
 			sLayer[1] = CString(szData); 
 		else
 		{
-			AfxMessageBox(_T("하면레이어 정보가 없습니다."));
+			pView->MsgBox(_T("하면레이어 정보가 없습니다."));
+			//AfxMessageBox(_T("하면레이어 정보가 없습니다."));
 			return;
 		}
 	}
 
 	if (0 >= ::GetPrivateProfileString(_T("Info"), _T("Marked Shot"), NULL, szData, sizeof(szData), sReelmapSrc))
 	{
-		AfxMessageBox(_T("릴맵에 Marked Shot 정보가 없습니다."));
+		pView->MsgBox(_T("릴맵에 Marked Shot 정보가 없습니다."));
+		//AfxMessageBox(_T("릴맵에 Marked Shot 정보가 없습니다."));
 		return;
 	}
 
@@ -1697,7 +1704,8 @@ void CDlgMenu05::OnBtnSearch()
 	int nSel = ((CListBox*)GetDlgItem(IDC_LIST_LOT))->FindString(-1, lpszItem );
 	if(LB_ERR == nSel)
 	{
-		AfxMessageBox(_T("해당 로트를 찾지 못했습니다."));
+		pView->MsgBox(_T("해당 로트를 찾지 못했습니다."));
+		//AfxMessageBox(_T("해당 로트를 찾지 못했습니다."));
 		return;
 	}
 	((CListBox*)GetDlgItem(IDC_LIST_LOT))->SetCurSel(nSel);
@@ -1715,13 +1723,15 @@ void CDlgMenu05::OnChkReelmap()
 	{
 		if(m_nCurSelLotIdx < 0)
 		{
-			AfxMessageBox(_T("로트를 선택해 주세요."));
+			pView->MsgBox(_T("로트를 선택해 주세요."));
+			//AfxMessageBox(_T("로트를 선택해 주세요."));
 			((CButton*)GetDlgItem(IDC_CHK_REELMAP))->SetCheck(FALSE);
 			return;
 		}
 		if(m_nCurSelLayerIdx < 0)
 		{
-			AfxMessageBox(_T("레이어를 선택해 주세요."));
+			pView->MsgBox(_T("레이어를 선택해 주세요."));
+			//AfxMessageBox(_T("레이어를 선택해 주세요."));
 			((CButton*)GetDlgItem(IDC_CHK_REELMAP))->SetCheck(FALSE);
 			return;
 		}
@@ -1864,13 +1874,15 @@ void CDlgMenu05::OnSelchangeComboLayer()
 		{
 			if(m_nCurSelLotIdx < 0)
 			{
-				AfxMessageBox(_T("로트를 선택해 주세요."));
+				pView->MsgBox(_T("로트를 선택해 주세요."));
+				//AfxMessageBox(_T("로트를 선택해 주세요."));
 				((CButton*)GetDlgItem(IDC_CHK_REELMAP))->SetCheck(FALSE);
 				return;
 			}
 			if(m_nCurSelLayerIdx < 0)
 			{
-				AfxMessageBox(_T("레이어를 선택해 주세요."));
+				pView->MsgBox(_T("레이어를 선택해 주세요."));
+				//AfxMessageBox(_T("레이어를 선택해 주세요."));
 				((CButton*)GetDlgItem(IDC_CHK_REELMAP))->SetCheck(FALSE);
 				return;
 			}
@@ -2624,13 +2636,16 @@ void CDlgMenu05::OnStcProc()
 	CString sMsg;	
 
 	if(m_sModel.IsEmpty())
-		AfxMessageBox(_T("모델 정보가 없습니다."));
+		pView->MsgBox(_T("모델 정보가 없습니다."));
+		//AfxMessageBox(_T("모델 정보가 없습니다."));
 
 	if(m_sLot.IsEmpty())
-		AfxMessageBox(_T("로트 정보가 없습니다."));
+		pView->MsgBox(_T("로트 정보가 없습니다."));
+		//AfxMessageBox(_T("로트 정보가 없습니다."));
 
 	if(sData.IsEmpty())
-		AfxMessageBox(_T("공정코드 정보가 없습니다."));
+		pView->MsgBox(_T("공정코드 정보가 없습니다."));
+		//AfxMessageBox(_T("공정코드 정보가 없습니다."));
 
 	if(m_sProcessNum.Compare(sData)) // FALSE: Ideal Equal, TRUE: Different. 
 	{

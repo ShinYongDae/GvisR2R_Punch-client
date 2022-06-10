@@ -2552,15 +2552,15 @@ BOOL CDlgMenu03::DoReset()
 		BOOL bExistSup, bExistBup, bExistSdn, bExistBdn;
 
 		pView->m_nDebugStep = 6; pView->DispThreadTick();
-		bExistSup = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsShareUp + "*.pcr");
+		bExistSup = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsShareUp + _T("*.pcr"));
 		pView->m_nDebugStep = 7; pView->DispThreadTick();
-		bExistBup = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsBufUp + "*.pcr");
+		bExistBup = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsBufUp + _T("*.pcr"));
 		if(bDualTest)
 		{
 			pView->m_nDebugStep = 8; pView->DispThreadTick();
-			bExistSdn = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsShareDn + "*.pcr");
+			bExistSdn = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsShareDn + _T("*.pcr"));
 			pView->m_nDebugStep = 9; pView->DispThreadTick();
-			bExistBdn = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsBufDn + "*.pcr");
+			bExistBdn = cFile.FindFile(pDoc->WorkingInfo.System.sPathVrsBufDn + _T("*.pcr"));
 			if(bExistSup || bExistSdn ||
 				bExistBup || bExistBdn)
 			{

@@ -27,7 +27,8 @@ CMyGL::CMyGL(CWnd* pParent)
 
 	RECT rt={0,0,0,0};
 	if(!Create(NULL, NULL, WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN, rt, pParent, 0))
-		AfxMessageBox(_T("CMyGL::Create() Failed!!!"));
+		pView->MsgBox(_T("CMyGL::Create() Failed!!!"));
+		//AfxMessageBox(_T("CMyGL::Create() Failed!!!"));
 
 	m_hDC = NULL;
 	m_hRC = NULL;

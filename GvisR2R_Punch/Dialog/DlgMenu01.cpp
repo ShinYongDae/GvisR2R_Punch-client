@@ -1317,7 +1317,8 @@ void CDlgMenu01::DispMkInfo(int nSerial)
 {
 	if(nSerial <= 0)
 	{
-		AfxMessageBox(_T("Serial Error.2"));
+		pView->MsgBox(_T("Serial Error.2"));
+		//AfxMessageBox(_T("Serial Error.2"));
 		return;
 	}
 
@@ -1332,7 +1333,8 @@ void CDlgMenu01::DispMkInfoUp(int nSerial)
 {
 	if(nSerial <= 0)
 	{
-		AfxMessageBox(_T("Serial Error.3"));
+		pView->MsgBox(_T("Serial Error.3"));
+		//AfxMessageBox(_T("Serial Error.3"));
 		return;
 	}
 
@@ -1430,7 +1432,8 @@ void CDlgMenu01::DispMkInfoDn(int nSerial)
 
 	if(nSerial <= 0)
 	{
-		AfxMessageBox(_T("Serial Error.4"));
+		pView->MsgBox(_T("Serial Error.4"));
+		//AfxMessageBox(_T("Serial Error.4"));
 		return;
 	}
 
@@ -1541,7 +1544,8 @@ void CDlgMenu01::ShowDefInfoUp(int nIdx) // nIdx : 0 ~ 11 (12ea)
 		return;
 	if(!pDoc->m_pReelMap)
 	{
-		AfxMessageBox(_T("Not created Reelmap."));
+		pView->MsgBox(_T("Not created Reelmap."));
+		//AfxMessageBox(_T("Not created Reelmap."));
 		return;
 	}
 
@@ -1593,7 +1597,8 @@ void CDlgMenu01::ShowDefInfoDn(int nIdx) // nIdx : 0 ~ 11 (12ea)
 		return;
 	if(!pDoc->m_pReelMap)
 	{
-		AfxMessageBox(_T("Not created Reelmap."));
+		pView->MsgBox(_T("Not created Reelmap."));
+		//AfxMessageBox(_T("Not created Reelmap."));
 		return;
 	}
 
@@ -2562,7 +2567,8 @@ BOOL CDlgMenu01::SetSerial(int nSerial, BOOL bDumy)
 {
 	if(nSerial <= 0)
 	{
-		AfxMessageBox(_T("Serial Error.5"));
+		pView->MsgBox(_T("Serial Error.5"));
+		//AfxMessageBox(_T("Serial Error.5"));
 		return 0;
 	}
 
@@ -2599,7 +2605,8 @@ BOOL CDlgMenu01::SetSerialReelmap(int nSerial, BOOL bDumy)
 {
 	if(nSerial <= 0)
 	{
-		AfxMessageBox(_T("Serial Error.6"));
+		pView->MsgBox(_T("Serial Error.6"));
+		//AfxMessageBox(_T("Serial Error.6"));
 		return 0;
 	}
 
@@ -2617,7 +2624,8 @@ BOOL CDlgMenu01::SetSerialMkInfo(int nSerial, BOOL bDumy)
 {
 	if(nSerial <= 0)
 	{
-		AfxMessageBox(_T("Serial Error.7"));
+		pView->MsgBox(_T("Serial Error.7"));
+		//AfxMessageBox(_T("Serial Error.7"));
 		return 0;
 	}
 

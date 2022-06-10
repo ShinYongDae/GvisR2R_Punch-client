@@ -783,8 +783,10 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 			m_bStopFeeding = FALSE;
 			m_pMpe->Write(_T("MB440115"), 0); // 마킹부Feeding금지
 			m_nStepInitView++;
-			m_pDlgMenu02->SetJogSpd(_tstoi(pDoc->WorkingInfo.LastJob.sJogSpd));
-			m_pDlgMenu03->InitRelation();
+			if(m_pDlgMenu02)
+				m_pDlgMenu02->SetJogSpd(_tstoi(pDoc->WorkingInfo.LastJob.sJogSpd));
+			if (m_pDlgMenu03)
+				m_pDlgMenu03->InitRelation();
 			//m_pMotion->SetFeedRate(MS_X0Y0, 1.0);
 			//Sleep(30);
 			//m_pMotion->SetFeedRate(MS_X1Y1, 1.0);
