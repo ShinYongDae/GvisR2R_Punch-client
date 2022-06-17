@@ -4299,6 +4299,8 @@ void CGvisR2R_PunchView::DoSaftySens()
 	if (!pDoc->m_pMpeIb || !pDoc->m_pMpeIF)
 		return;
 
+	if (!IsRun())
+		return;
 	//BOOL bOn = pDoc->m_pMpeIb[7] & (0x01 << 8) ? TRUE : FALSE;	// 마킹부 안전 센서 1
 	//BOOL bOnF = pDoc->m_pMpeIF[7] & (0x01 << 8) ? TRUE : FALSE;	// 마킹부 안전 센서 1
 
@@ -4326,6 +4328,9 @@ void CGvisR2R_PunchView::DoDoorSens()
 	if (!pDoc->m_pMpeIb || !pDoc->m_pMpeIF)
 		return;
 
+	if (!IsRun())
+		return;
+
 	usIn = pDoc->m_pMpeIb[1];
 	usInF = &pDoc->m_pMpeIF[1];
 
@@ -4334,15 +4339,38 @@ void CGvisR2R_PunchView::DoDoorSens()
 		*usInF |= (0x01 << 12);
 		pDoc->Status.bDoorUc[DOOR_FL_UC] = TRUE;
 	}
+	else if (!(usIn & (0x01 << 12)) && (*usInF & (0x01 << 12)))	// 언코일러 전면 도어 센서
+	{
+		*usInF &= ~(0x01 << 12);
+		pDoc->Status.bDoorUc[DOOR_FL_UC] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 13)) && !(*usInF & (0x01 << 13)))		// 언코일러 측면 도어 센서
+	{
+		*usInF |= (0x01 << 13);
+		pDoc->Status.bDoorUc[DOOR_FR_UC] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 언코일러 측면 도어 센서
 	{
 		*usInF &= ~(0x01 << 13);
 		pDoc->Status.bDoorUc[DOOR_FR_UC] = FALSE;
 	}
+
+	if ((usIn & (0x01 << 14)) && !(*usInF & (0x01 << 14)))		// 언코일러 후면 도어 센서(좌)
+	{
+		*usInF |= (0x01 << 14);
+		pDoc->Status.bDoorUc[DOOR_BL_UC] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 14)) && (*usInF & (0x01 << 14)))	// 언코일러 후면 도어 센서(좌)
 	{
 		*usInF &= ~(0x01 << 14);
 		pDoc->Status.bDoorUc[DOOR_BL_UC] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 15)) && !(*usInF & (0x01 << 15)))		// 언코일러 후면 도어 센서(우)
+	{
+		*usInF |= (0x01 << 15);
+		pDoc->Status.bDoorUc[DOOR_BR_UC] = TRUE;
 	}
 	else if (!(usIn & (0x01 << 15)) && (*usInF & (0x01 << 15)))	// 언코일러 후면 도어 센서(우)
 	{
@@ -4358,15 +4386,38 @@ void CGvisR2R_PunchView::DoDoorSens()
 		*usInF |= (0x01 << 10);
 		pDoc->Status.bDoorMk[DOOR_FL_MK] = TRUE;
 	}
+	else if (!(usIn & (0x01 << 10)) && (*usInF & (0x01 << 10)))	// 마킹부 도어 센서 1 
+	{
+		*usInF &= ~(0x01 << 10);
+		pDoc->Status.bDoorMk[DOOR_FL_MK] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 11)) && !(*usInF & (0x01 << 11)))		// 마킹부 도어 센서 2 
+	{
+		*usInF |= (0x01 << 11);
+		pDoc->Status.bDoorMk[DOOR_FR_MK] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 11)) && (*usInF & (0x01 << 11)))	// 마킹부 도어 센서 2
 	{
 		*usInF &= ~(0x01 << 11);
 		pDoc->Status.bDoorMk[DOOR_FR_MK] = FALSE;
 	}
+
+	if ((usIn & (0x01 << 12)) && !(*usInF & (0x01 << 12)))		// 마킹부 도어 센서 3 
+	{
+		*usInF |= (0x01 << 12);
+		pDoc->Status.bDoorMk[DOOR_BL_MK] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 12)) && (*usInF & (0x01 << 12)))	// 마킹부 도어 센서 3
 	{
 		*usInF &= ~(0x01 << 12);
 		pDoc->Status.bDoorMk[DOOR_BL_MK] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 13)) && !(*usInF & (0x01 << 13)))		// 마킹부 도어 센서 4 
+	{
+		*usInF |= (0x01 << 13);
+		pDoc->Status.bDoorMk[DOOR_BR_MK] = TRUE;
 	}
 	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 마킹부 도어 센서 4
 	{
@@ -4382,15 +4433,38 @@ void CGvisR2R_PunchView::DoDoorSens()
 		*usInF |= (0x01 << 10);
 		pDoc->Status.bDoorMk[DOOR_FL_AOI_UP] = TRUE;
 	}
+	else if (!(usIn & (0x01 << 10)) && (*usInF & (0x01 << 10)))	// 검사부 상 도어 센서 1
+	{
+		*usInF &= ~(0x01 << 10);
+		pDoc->Status.bDoorMk[DOOR_FL_AOI_UP] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 11)) && !(*usInF & (0x01 << 11)))		// 검사부 상 도어 센서 2 
+	{
+		*usInF |= (0x01 << 11);
+		pDoc->Status.bDoorMk[DOOR_FR_AOI_UP] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 11)) && (*usInF & (0x01 << 11)))	// 검사부 상 도어 센서 2
 	{
 		*usInF &= ~(0x01 << 11);
 		pDoc->Status.bDoorMk[DOOR_FR_AOI_UP] = FALSE;
 	}
+
+	if ((usIn & (0x01 << 12)) && !(*usInF & (0x01 << 12)))		// 검사부 상 도어 센서 3 
+	{
+		*usInF |= (0x01 << 12);
+		pDoc->Status.bDoorMk[DOOR_BL_AOI_UP] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 12)) && (*usInF & (0x01 << 12)))	// 검사부 상 도어 센서 3
 	{
 		*usInF &= ~(0x01 << 12);
 		pDoc->Status.bDoorMk[DOOR_BL_AOI_UP] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 13)) && !(*usInF & (0x01 << 13)))		// 검사부 상 도어 센서 4 
+	{
+		*usInF |= (0x01 << 13);
+		pDoc->Status.bDoorMk[DOOR_BR_AOI_UP] = TRUE;
 	}
 	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 검사부 상 도어 센서 4
 	{
@@ -4406,15 +4480,38 @@ void CGvisR2R_PunchView::DoDoorSens()
 		*usInF |= (0x01 << 10);
 		pDoc->Status.bDoorAoi[DOOR_FL_AOI_UP] = TRUE;
 	}
+	else if (!(usIn & (0x01 << 10)) && (*usInF & (0x01 << 10)))	// 검사부 상 도어 센서 1
+	{
+		*usInF &= ~(0x01 << 11);
+		pDoc->Status.bDoorAoi[DOOR_FL_AOI_UP] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 11)) && !(*usInF & (0x01 << 11)))		// 검사부 상 도어 센서 2 
+	{
+		*usInF |= (0x01 << 11);
+		pDoc->Status.bDoorAoi[DOOR_FR_AOI_UP] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 11)) && (*usInF & (0x01 << 11)))	// 검사부 상 도어 센서 2
 	{
 		*usInF &= ~(0x01 << 11);
 		pDoc->Status.bDoorAoi[DOOR_FR_AOI_UP] = FALSE;
 	}
+
+	if ((usIn & (0x01 << 12)) && !(*usInF & (0x01 << 12)))		// 검사부 상 도어 센서 3 
+	{
+		*usInF |= (0x01 << 12);
+		pDoc->Status.bDoorAoi[DOOR_BL_AOI_UP] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 12)) && (*usInF & (0x01 << 12)))	// 검사부 상 도어 센서 3
 	{
 		*usInF &= ~(0x01 << 12);
 		pDoc->Status.bDoorAoi[DOOR_BL_AOI_UP] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 13)) && !(*usInF & (0x01 << 13)))		// 검사부 상 도어 센서 4 
+	{
+		*usInF |= (0x01 << 13);
+		pDoc->Status.bDoorAoi[DOOR_BR_AOI_UP] = TRUE;
 	}
 	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 검사부 상 도어 센서 4
 	{
@@ -4430,15 +4527,38 @@ void CGvisR2R_PunchView::DoDoorSens()
 		*usInF |= (0x01 << 10);
 		pDoc->Status.bDoorAoi[DOOR_FL_AOI_DN] = TRUE;
 	}
+	else if (!(usIn & (0x01 << 10)) && (*usInF & (0x01 << 10)))	// 검사부 하 도어 센서 1
+	{
+		*usInF &= ~(0x01 << 10);
+		pDoc->Status.bDoorAoi[DOOR_FL_AOI_DN] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 11)) && !(*usInF & (0x01 << 11)))		// 검사부 하 도어 센서 2 
+	{
+		*usInF |= (0x01 << 11);
+		pDoc->Status.bDoorAoi[DOOR_FR_AOI_DN] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 11)) && (*usInF & (0x01 << 11)))	// 검사부 하 도어 센서 2
 	{
 		*usInF &= ~(0x01 << 11);
 		pDoc->Status.bDoorAoi[DOOR_FR_AOI_DN] = FALSE;
 	}
+
+	if ((usIn & (0x01 << 12)) && !(*usInF & (0x01 << 12)))		// 검사부 하 도어 센서 3 
+	{
+		*usInF |= (0x01 << 12);
+		pDoc->Status.bDoorAoi[DOOR_BL_AOI_DN] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 12)) && (*usInF & (0x01 << 12)))	// 검사부 하 도어 센서 3
 	{
 		*usInF &= ~(0x01 << 12);
 		pDoc->Status.bDoorAoi[DOOR_BL_AOI_DN] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 13)) && !(*usInF & (0x01 << 13)))		// 검사부 하 도어 센서 4 
+	{
+		*usInF |= (0x01 << 13);
+		pDoc->Status.bDoorAoi[DOOR_BR_AOI_DN] = TRUE;
 	}
 	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 검사부 하 도어 센서 4
 	{
@@ -4454,15 +4574,38 @@ void CGvisR2R_PunchView::DoDoorSens()
 		*usInF |= (0x01 << 12);
 		pDoc->Status.bDoorRe[DOOR_FL_RC] = TRUE;
 	}
+	else if (!(usIn & (0x01 << 12)) && (*usInF & (0x01 << 12)))	// 리코일러 전면 도어 센서
+	{
+		*usInF &= ~(0x01 << 12);
+		pDoc->Status.bDoorRe[DOOR_FL_RC] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 13)) && !(*usInF & (0x01 << 13)))		// 리코일러 측면 도어 센서
+	{
+		*usInF |= (0x01 << 13);
+		pDoc->Status.bDoorRe[DOOR_FR_RC] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 리코일러 측면 도어 센서
 	{
 		*usInF &= ~(0x01 << 13);
 		pDoc->Status.bDoorRe[DOOR_FR_RC] = FALSE;
 	}
+
+	if ((usIn & (0x01 << 14)) && !(*usInF & (0x01 << 14)))		// 리코일러 후면 도어 센서
+	{
+		*usInF |= (0x01 << 14);
+		pDoc->Status.bDoorRe[DOOR_BL_RC] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 14)) && (*usInF & (0x01 << 14)))	// 리코일러 후면 도어 센서(좌)
 	{
 		*usInF &= ~(0x01 << 14);
 		pDoc->Status.bDoorRe[DOOR_BL_RC] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 15)) && !(*usInF & (0x01 << 15)))		// 리코일러 후면 도어 센서(우)
+	{
+		*usInF |= (0x01 << 15);
+		pDoc->Status.bDoorRe[DOOR_BR_RC] = TRUE;
 	}
 	else if (!(usIn & (0x01 << 15)) && (*usInF & (0x01 << 15)))	// 리코일러 후면 도어 센서(우)
 	{
@@ -4478,15 +4621,38 @@ void CGvisR2R_PunchView::DoDoorSens()
 		*usInF |= (0x01 << 10);
 		pDoc->Status.bDoorEngv[DOOR_FL_ENGV] = TRUE;
 	}
+	else if (!(usIn & (0x01 << 10)) && (*usInF & (0x01 << 10)))	// 각인부 도어 센서 1
+	{
+		*usInF &= ~(0x01 << 10);
+		pDoc->Status.bDoorEngv[DOOR_FL_ENGV] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 11)) && !(*usInF & (0x01 << 11)))		// 각인부 도어 센서 2
+	{
+		*usInF |= (0x01 << 11);
+		pDoc->Status.bDoorEngv[DOOR_FR_ENGV] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 11)) && (*usInF & (0x01 << 11)))	// 각인부 도어 센서 2
 	{
 		*usInF &= ~(0x01 << 11);
 		pDoc->Status.bDoorEngv[DOOR_FR_ENGV] = FALSE;
 	}
+
+	if ((usIn & (0x01 << 12)) && !(*usInF & (0x01 << 12)))		// 각인부 도어 센서 3
+	{
+		*usInF |= (0x01 << 12);
+		pDoc->Status.bDoorEngv[DOOR_BL_ENGV] = TRUE;
+	}
 	else if (!(usIn & (0x01 << 12)) && (*usInF & (0x01 << 12)))	// 각인부 도어 센서 3
 	{
 		*usInF &= ~(0x01 << 12);
 		pDoc->Status.bDoorEngv[DOOR_BL_ENGV] = FALSE;
+	}
+
+	if ((usIn & (0x01 << 13)) && !(*usInF & (0x01 << 13)))		// 각인부 도어 센서 4
+	{
+		*usInF |= (0x01 << 13);
+		pDoc->Status.bDoorEngv[DOOR_BR_ENGV] = TRUE;
 	}
 	else if (!(usIn & (0x01 << 13)) && (*usInF & (0x01 << 13)))	// 각인부 도어 센서 4
 	{
@@ -5258,33 +5424,33 @@ void CGvisR2R_PunchView::DoEmgSens()
 		pDoc->Status.bEmgRc = FALSE;
 	}
 
-	usIn = pDoc->m_pMpeIb[24];
-	usInF = &pDoc->m_pMpeIF[24];
+	//usIn = pDoc->m_pMpeIb[24];
+	//usInF = &pDoc->m_pMpeIF[24];
 
-	if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))		// 각인부 비상정지 스위치(모니터부)
-	{
-		*usInF |= (0x01 << 0);
-		pDoc->Status.bEmgEngv[0] = TRUE;
-	}
-	else if (!(usIn & (0x01 << 0)) && (*usInF & (0x01 << 0)))
-	{
-		*usInF &= ~(0x01 << 0);
-		pDoc->Status.bEmgEngv[0] = FALSE;
-	}
+	//if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))		// 각인부 비상정지 스위치(모니터부)
+	//{
+	//	*usInF |= (0x01 << 0);
+	//	pDoc->Status.bEmgEngv[0] = TRUE;
+	//}
+	//else if (!(usIn & (0x01 << 0)) && (*usInF & (0x01 << 0)))
+	//{
+	//	*usInF &= ~(0x01 << 0);
+	//	pDoc->Status.bEmgEngv[0] = FALSE;
+	//}
 
-	usIn = pDoc->m_pMpeIb[25];
-	usInF = &pDoc->m_pMpeIF[25];
+	//usIn = pDoc->m_pMpeIb[25];
+	//usInF = &pDoc->m_pMpeIF[25];
 
-	if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))		// 각인부 비상정지 스위치(스위치부)
-	{
-		*usInF |= (0x01 << 0);
-		pDoc->Status.bEmgEngv[1] = TRUE;
-	}
-	else if (!(usIn & (0x01 << 0)) && (*usInF & (0x01 << 0)))
-	{
-		*usInF &= ~(0x01 << 0);
-		pDoc->Status.bEmgEngv[1] = FALSE;
-	}
+	//if ((usIn & (0x01 << 0)) && !(*usInF & (0x01 << 0)))		// 각인부 비상정지 스위치(스위치부)
+	//{
+	//	*usInF |= (0x01 << 0);
+	//	pDoc->Status.bEmgEngv[1] = TRUE;
+	//}
+	//else if (!(usIn & (0x01 << 0)) && (*usInF & (0x01 << 0)))
+	//{
+	//	*usInF &= ~(0x01 << 0);
+	//	pDoc->Status.bEmgEngv[1] = FALSE;
+	//}
 
 }
 

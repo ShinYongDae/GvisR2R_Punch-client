@@ -169,8 +169,8 @@ BOOL CDlgInfo::OnInitDialog()
 // 	GetDlgItem(IDC_STC_0020)->ShowWindow(SW_HIDE);
 // 	GetDlgItem(IDC_STC_0021)->ShowWindow(SW_HIDE);
 // 
-// 	GetDlgItem(IDC_STC_0043)->ShowWindow(SW_HIDE);
-// 	GetDlgItem(IDC_CHK_008)->ShowWindow(SW_HIDE);
+ 	GetDlgItem(IDC_STC_0043)->ShowWindow(SW_HIDE);
+ 	GetDlgItem(IDC_CHK_008)->ShowWindow(SW_HIDE);
  	GetDlgItem(IDC_STC_0044)->ShowWindow(SW_HIDE);
  	GetDlgItem(IDC_CHK_009)->ShowWindow(SW_HIDE);
 // 	GetDlgItem(IDC_STC_0046)->ShowWindow(SW_HIDE);

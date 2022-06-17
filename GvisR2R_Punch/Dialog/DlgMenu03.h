@@ -11,8 +11,8 @@
 #include "MyLabel.h"
 #include "MyGroup.h"
 
-#define MAX_MENU03_STC				(61+13+4+13)
-#define MAX_MENU03_BTN				(55+13+4+13)
+#define MAX_MENU03_STC				93
+#define MAX_MENU03_BTN				87
 #define MAX_MENU03_GRP				10
 
 #define TIM_MENU03_DISP				300

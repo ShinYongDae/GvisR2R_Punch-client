@@ -696,6 +696,7 @@ struct stLastJob
 	CString sEngraveOrgX, sEngraveOrgY, sEngravePosOffsetX, sEngravePosOffsetY, sEngravePosTheta;
 	int nAlignMethode;
 	BOOL bAoiUpCleanRoler, bAoiDnCleanRoler;
+	BOOL bEngraveCleanner, bAoiDnCleanner;
 
 	stLastJob()
 	{
@@ -730,6 +731,7 @@ struct stLastJob
 		bDualTest = TRUE; bSampleTest = FALSE;
 		bCore150Recoiler = FALSE; bCore150Uncoiler = FALSE;
 		sSampleTestShotNum = _T("");
+		bEngraveCleanner = FALSE; bAoiDnCleanner = FALSE;
 
 		bUse2Layer = FALSE;
 
@@ -1133,8 +1135,8 @@ typedef enum {
 }  DOOR_RC;
 typedef enum {
 	DOOR_FL_ENGV = 0, DOOR_FR_ENGV = 1,
-	DOOR_S_ENGV = 2, DOOR_BL_ENGV = 3, DOOR_BR_ENGV = 4
-}  DOOR_ENGV;
+	DOOR_BL_ENGV = 2, DOOR_BR_ENGV = 3
+}  DOOR_ENGV;//DOOR_S_ENGV = 2, 
 
 typedef enum { EMG_M_MK = 0, EMG_B_MK = 1 }  EMG_MK;
 typedef enum { EMG_F_AOI_UP = 0, EMG_B_AOI_UP = 1 }  EMG_AOI_UP;

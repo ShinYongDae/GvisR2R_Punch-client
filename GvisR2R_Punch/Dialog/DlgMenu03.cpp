@@ -829,6 +829,16 @@ void CDlgMenu03::InitBtn()
 	myBtn[84].SetBoarder(FALSE);
 	myBtn[84].SetBtnType(BTN_TYPE_DEFAULT);
 
+	myBtn[85].SubclassDlgItem(IDC_CHK_87, this);
+	myBtn[85].SetHwnd(this->GetSafeHwnd(), IDC_CHK_87);
+	myBtn[85].SetBoarder(FALSE);
+	myBtn[85].SetBtnType(BTN_TYPE_DEFAULT);
+
+	myBtn[86].SubclassDlgItem(IDC_CHK_88, this);
+	myBtn[86].SetHwnd(this->GetSafeHwnd(), IDC_CHK_87);
+	myBtn[86].SetBoarder(FALSE);
+	myBtn[86].SetBtnType(BTN_TYPE_DEFAULT);
+
 	int i;
 	for (i = 0; i < MAX_MENU03_BTN; i++)
 	{
@@ -853,20 +863,20 @@ void CDlgMenu03::InitStatic()
 	myStcTitle[37].SubclassDlgItem(IDC_STC_03_, this);		// 1회운전
 	myStcTitle[38].SubclassDlgItem(IDC_STC_04_, this);		// 수동
 
-															// TorqueMotor
+	// TorqueMotor
 	myStcTitle[2].SubclassDlgItem(IDC_STC_000_2, this);		// 펀칭부
 	myStcTitle[3].SubclassDlgItem(IDC_STC_01_2, this);		// 검사부
 	myStcTitle[78].SubclassDlgItem(IDC_STC_000_9, this);	// 각인부
 
-															// InductionMotor
+	// InductionMotor
 	myStcTitle[74].SubclassDlgItem(IDC_STC_000_6, this);	// Recoiler역방향
 	myStcTitle[75].SubclassDlgItem(IDC_STC_01_3, this);		// Uncoiler역방향
 
-															// Core150mm
+	// Core150mm
 	myStcTitle[76].SubclassDlgItem(IDC_STC_000_7, this);	// Recoiler
 	myStcTitle[77].SubclassDlgItem(IDC_STC_01_4, this);		// Uncoiler
 
-															// Recoiler
+	// Recoiler
 	myStcTitle[4].SubclassDlgItem(IDC_STC_10_, this);		// 연동선택
 	myStcTitle[5].SubclassDlgItem(IDC_STC_12_2, this);		// 정회전
 	myStcTitle[6].SubclassDlgItem(IDC_STC_12_, this);		// 역회전
@@ -882,7 +892,7 @@ void CDlgMenu03::InitStatic()
 	myStcTitle[72].SubclassDlgItem(IDC_STC_12_55, this);	// Rewinder동작
 	myStcTitle[73].SubclassDlgItem(IDC_STC_12_56, this);	// Rewinder제품간지
 
-															// Punching
+	// Punching
 	myStcTitle[9].SubclassDlgItem(IDC_STC_20_, this);		// 연동선택
 	myStcTitle[10].SubclassDlgItem(IDC_STC_12_6, this);		// 정회전
 	myStcTitle[11].SubclassDlgItem(IDC_STC_12_5, this);		// 역회전
@@ -896,7 +906,7 @@ void CDlgMenu03::InitStatic()
 	myStcTitle[57].SubclassDlgItem(IDC_STC_12_42, this);	// 피딩클램프
 	myStcTitle[58].SubclassDlgItem(IDC_STC_12_41, this);	// 텐션클램프
 
-															// AOI하
+	// AOI하
 	myStcTitle[61].SubclassDlgItem(IDC_STC_30_2, this);		// 연동선택
 	myStcTitle[62].SubclassDlgItem(IDC_STC_12_46, this);	// 정회전
 	myStcTitle[63].SubclassDlgItem(IDC_STC_12_45, this);	// 역회전
@@ -909,7 +919,7 @@ void CDlgMenu03::InitStatic()
 	myStcTitle[70].SubclassDlgItem(IDC_STC_12_51, this);	// 한판넬이송
 	myStcTitle[71].SubclassDlgItem(IDC_STC_12_52, this);	// 레이져마크
 
-															// AOI상
+	// AOI상
 	myStcTitle[17].SubclassDlgItem(IDC_STC_30_, this);		// 연동선택
 	myStcTitle[18].SubclassDlgItem(IDC_STC_12_13, this);	// 정회전
 	myStcTitle[19].SubclassDlgItem(IDC_STC_12_11, this);	// 역회전
@@ -922,7 +932,7 @@ void CDlgMenu03::InitStatic()
 	myStcTitle[59].SubclassDlgItem(IDC_STC_12_44, this);	// 피딩클램프
 	myStcTitle[60].SubclassDlgItem(IDC_STC_12_43, this);	// 텐션클램프
 
-															// Uncoiler
+	// Uncoiler
 	myStcTitle[25].SubclassDlgItem(IDC_STC_40_, this);		// 연동선택
 	myStcTitle[26].SubclassDlgItem(IDC_STC_12_20, this);	// 정회전
 	myStcTitle[27].SubclassDlgItem(IDC_STC_12_18, this);	// 역회전
@@ -938,9 +948,7 @@ void CDlgMenu03::InitStatic()
 	myStcTitle[45].SubclassDlgItem(IDC_STC_12_30, this);	// 간지휠역회전
 	myStcTitle[46].SubclassDlgItem(IDC_STC_12_31, this);	// 정지
 
-
-
-															// Engraving
+	// Engraving
 	myStcTitle[79].SubclassDlgItem(IDC_STC_20_2, this);		// 연동선택
 	myStcTitle[80].SubclassDlgItem(IDC_STC_12_58, this);	// 정회전
 	myStcTitle[81].SubclassDlgItem(IDC_STC_12_57, this);	// 역회전
@@ -953,6 +961,10 @@ void CDlgMenu03::InitStatic()
 	myStcTitle[88].SubclassDlgItem(IDC_STC_12_64, this);	// 레이져마크
 	myStcTitle[89].SubclassDlgItem(IDC_STC_12_66, this);	// 피딩클램프
 	myStcTitle[90].SubclassDlgItem(IDC_STC_12_65, this);	// 텐션클램프
+
+	// 세정기
+	myStcTitle[91].SubclassDlgItem(IDC_STC_000_10, this);	// 각인부 세정기
+	myStcTitle[92].SubclassDlgItem(IDC_STC_000_11, this);	// AOI(하) 세정기
 
 	for (int i = 0; i < MAX_MENU03_STC; i++)
 	{
@@ -1338,6 +1350,37 @@ void CDlgMenu03::Disp()
 			pView->m_pMpe->Write(_T("MB440154"), 1);
 		else
 			pView->m_pMpe->Write(_T("MB440154"), 0);
+	}
+
+
+	// 각인부 세정기 ON (PC가 ON/OFF시킴)
+
+	bOn = pDoc->WorkingInfo.LastJob.bEngraveCleanner;
+	if (myBtn[85].GetImageBk() != bOn)
+		myBtn[85].SetCheck(bOn);
+
+	bOn = (pDoc->m_pMpeSignal[5] & (0x01 << 14)) > 0 ? TRUE : FALSE;
+	if (bOn != pDoc->WorkingInfo.LastJob.bEngraveCleanner)
+	{
+		if (pDoc->WorkingInfo.LastJob.bEngraveCleanner)
+			pView->m_pMpe->Write(_T("MB44016E"), 1);
+		else
+			pView->m_pMpe->Write(_T("MB44016E"), 0);
+	}
+
+	// AOI(하) 세정기 ON (PC가 ON/OFF시킴)
+
+	bOn = pDoc->WorkingInfo.LastJob.bAoiDnCleanner;
+	if (myBtn[86].GetImageBk() != bOn)
+		myBtn[86].SetCheck(bOn);
+
+	bOn = (pDoc->m_pMpeSignal[5] & (0x01 << 15)) > 0 ? TRUE : FALSE;
+	if (bOn != pDoc->WorkingInfo.LastJob.bAoiDnCleanner)
+	{
+		if (pDoc->WorkingInfo.LastJob.bAoiDnCleanner)
+			pView->m_pMpe->Write(_T("MB44016F"), 1);
+		else
+			pView->m_pMpe->Write(_T("MB44016F"), 0);
 	}
 
 	
@@ -1848,6 +1891,35 @@ LRESULT CDlgMenu03::OnMyBtnDown(WPARAM wPara, LPARAM lPara)
 				pView->m_pMpe->Write(_T("MB440154"), 0);
 			}
 			break;
+
+		// [각인부 세정기]
+		case IDC_CHK_87:	// 각인부 세정기 ON (PC가 ON/OFF시킴)
+			if (!(pDoc->m_pMpeSignal[5] & (0x01 << 14)))
+			{
+				pDoc->WorkingInfo.LastJob.bEngraveCleanner = TRUE;
+				pView->m_pMpe->Write(_T("MB44016E"), 1);
+			}
+			else
+			{
+				pDoc->WorkingInfo.LastJob.bEngraveCleanner = FALSE;
+				pView->m_pMpe->Write(_T("MB44016E"), 0);
+			}
+			break;
+
+			// [AOI(하) 세정기]
+		case IDC_CHK_88:	// AOI(하) 세정기 ON (PC가 ON/OFF시킴)
+			if (!(pDoc->m_pMpeSignal[5] & (0x01 << 15)))
+			{
+				pDoc->WorkingInfo.LastJob.bAoiDnCleanner = TRUE;
+				pView->m_pMpe->Write(_T("MB44016F"), 1);
+			}
+			else
+			{
+				pDoc->WorkingInfo.LastJob.bAoiDnCleanner = FALSE;
+				pView->m_pMpe->Write(_T("MB44016F"), 0);
+			}
+			break;
+
 
 		// [One Metal]
 		case IDC_CHK_68:

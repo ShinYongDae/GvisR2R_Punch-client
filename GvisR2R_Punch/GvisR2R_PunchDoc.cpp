@@ -1505,6 +1505,16 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 	else
 		WorkingInfo.LastJob.nAlignMethode = TWO_POINT;
 
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Engrave Cleanner"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.bEngraveCleanner = _ttoi(szData);
+	else
+		WorkingInfo.LastJob.bEngraveCleanner = FALSE;
+
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("AoiDn Cleanner"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.bAoiDnCleanner = _ttoi(szData);
+	else
+		WorkingInfo.LastJob.bAoiDnCleanner = FALSE;
+
 
 	// [Motion]
 	if (0 < ::GetPrivateProfileString(_T("Motion"), _T("BUFFER_ROLLAR_HOMMING_RUN"), NULL, szData, sizeof(szData), sPath))
@@ -3154,6 +3164,12 @@ void CGvisR2R_PunchDoc::SaveWorkingInfo()
 
 	sData = WorkingInfo.LastJob.sPartialSpd;
 	::WritePrivateProfileString(_T("Last Job"), _T("Partial Speed"), sData, sPath);
+
+	sData.Format(_T("%d"), WorkingInfo.LastJob.bEngraveCleanner ? 1 : 0);
+	::WritePrivateProfileString(_T("Last Job"), _T("Engrave Cleanner"), sData, sPath);
+
+	sData.Format(_T("%d"), WorkingInfo.LastJob.bAoiDnCleanner ? 1 : 0);
+	::WritePrivateProfileString(_T("Last Job"), _T("AoiDn Cleanner"), sData, sPath);
 
 
 
