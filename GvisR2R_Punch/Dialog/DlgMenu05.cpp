@@ -1429,7 +1429,7 @@ void CDlgMenu05::DisplayReelMapData()
 			nRSize++;
 		}
 
-		strReelMapData.Format(_T("%s"), FileData);
+		strReelMapData.Format(_T("%s"), CharToString(FileData));
 
 /*
 		fseek(fp, 0, SEEK_END);

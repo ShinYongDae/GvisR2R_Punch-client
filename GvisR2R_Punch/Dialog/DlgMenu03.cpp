@@ -219,6 +219,8 @@ void CDlgMenu03::LoadImg()
 		case 73:	// 정회전-Engraving
 		case 74:	// 역회전-Engraving
 		case 83:	// TorqueMotor-Engraving
+		case 85:	// 초음파세정기-Engrave
+		case 86:	// 초음파세정기-AOI_DN
 			myBtn[i].LoadBkImage(IMG_CIR_GRN_OFF_DlgMenu03, BTN_IMG_UP);
 			myBtn[i].LoadBkImage(IMG_CIR_GRN_ON_DlgMenu03, BTN_IMG_DN);
 			break;
@@ -2542,6 +2544,27 @@ void CDlgMenu03::SetMkOnePnl(BOOL bOn)
 	sData.Format(_T("%d"), pDoc->WorkingInfo.LastJob.bMkOnePnl?1:0);
 	::WritePrivateProfileString(_T("Last Job"), _T("Marking One Pannel Move On"), sData, sPath);
 
+}
+
+
+void CDlgMenu03::SetEngraveCleanner(BOOL bOn)
+{
+	pView->m_pMpe->Write(_T("MB44016E"), bOn ? 1 : 0); // [각인부 세정기]
+
+	CString sData, sPath = PATH_WORKING_INFO;
+	pDoc->WorkingInfo.LastJob.bEngraveCleanner = bOn;
+	sData.Format(_T("%d"), pDoc->WorkingInfo.LastJob.bEngraveCleanner ? 1 : 0);
+	::WritePrivateProfileString(_T("Last Job"), _T("Engrave Cleanner"), sData, sPath);
+}
+
+void CDlgMenu03::SetAoiDnCleanner(BOOL bOn)
+{
+	pView->m_pMpe->Write(_T("MB44016F"), bOn ? 1 : 0); // [AOI(하) 세정기]
+
+	CString sData, sPath = PATH_WORKING_INFO;
+	pDoc->WorkingInfo.LastJob.bAoiDnCleanner = bOn;
+	sData.Format(_T("%d"), pDoc->WorkingInfo.LastJob.bAoiDnCleanner ? 1 : 0);
+	::WritePrivateProfileString(_T("Last Job"), _T("AoiDn Cleanner"), sData, sPath);
 }
 
 void CDlgMenu03::SetAoiOnePnl(BOOL bOn)

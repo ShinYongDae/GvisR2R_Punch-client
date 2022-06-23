@@ -696,6 +696,7 @@ struct stLastJob
 	CString sEngraveOrgX, sEngraveOrgY, sEngravePosOffsetX, sEngravePosOffsetY, sEngravePosTheta;
 	int nAlignMethode;
 	BOOL bAoiUpCleanRoler, bAoiDnCleanRoler;
+	BOOL bUseEngraveCleanner, bUseAoiDnCleanner;
 	BOOL bEngraveCleanner, bAoiDnCleanner;
 
 	stLastJob()
@@ -731,6 +732,7 @@ struct stLastJob
 		bDualTest = TRUE; bSampleTest = FALSE;
 		bCore150Recoiler = FALSE; bCore150Uncoiler = FALSE;
 		sSampleTestShotNum = _T("");
+		bUseEngraveCleanner = FALSE; bUseAoiDnCleanner = FALSE;
 		bEngraveCleanner = FALSE; bAoiDnCleanner = FALSE;
 
 		bUse2Layer = FALSE;

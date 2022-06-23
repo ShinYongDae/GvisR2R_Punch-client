@@ -1505,6 +1505,16 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 	else
 		WorkingInfo.LastJob.nAlignMethode = TWO_POINT;
 
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Use Engrave Cleanner"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.bUseEngraveCleanner = _ttoi(szData);
+	else
+		WorkingInfo.LastJob.bUseEngraveCleanner = FALSE;
+
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Use AoiDn Cleanner"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.bUseAoiDnCleanner = _ttoi(szData);
+	else
+		WorkingInfo.LastJob.bUseAoiDnCleanner = FALSE;
+
 	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Engrave Cleanner"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.LastJob.bEngraveCleanner = _ttoi(szData);
 	else

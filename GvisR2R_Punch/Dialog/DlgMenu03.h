@@ -268,6 +268,8 @@ public:
 	BOOL IsEngraveTblVac();
 	BOOL IsEngraveTblBlw();
 
+	void SetEngraveCleanner(BOOL bOn);
+	void SetAoiDnCleanner(BOOL bOn);
 
 // Dialog Data
 	//{{AFX_DATA(CDlgMenu03)

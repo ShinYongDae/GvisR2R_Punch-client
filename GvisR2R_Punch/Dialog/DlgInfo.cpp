@@ -87,6 +87,8 @@ BEGIN_MESSAGE_MAP(CDlgInfo, CDialog)
 	ON_BN_CLICKED(IDC_CHK_2_POINT_ALIGN, &CDlgInfo::OnBnClickedChk2PointAlign)
 	ON_BN_CLICKED(IDC_CHK_86, &CDlgInfo::OnBnClickedChk86)
 	ON_BN_CLICKED(IDC_CHK_85, &CDlgInfo::OnBnClickedChk85)
+	ON_BN_CLICKED(IDC_CHK_1187, &CDlgInfo::OnBnClickedChk1187)
+	ON_BN_CLICKED(IDC_CHK_1188, &CDlgInfo::OnBnClickedChk1188)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -266,6 +268,14 @@ void CDlgInfo::InitBtn()
 	myBtn[20].SetHwnd(this->GetSafeHwnd(), IDC_CHK_1186);
 	myBtn[20].SetBtnType(BTN_TYPE_CHECK);
 
+	myBtn[21].SubclassDlgItem(IDC_CHK_1187, this); //AOI초음파세정기
+	myBtn[21].SetHwnd(this->GetSafeHwnd(), IDC_CHK_1187);
+	myBtn[21].SetBtnType(BTN_TYPE_CHECK);
+
+	myBtn[22].SubclassDlgItem(IDC_CHK_1188, this); //각인부초음파세정기
+	myBtn[22].SetHwnd(this->GetSafeHwnd(), IDC_CHK_1188);
+	myBtn[22].SetBtnType(BTN_TYPE_CHECK);
+
 
 	int i;
 	for(i=0; i<MAX_INFO_BTN; i++)
@@ -357,6 +367,8 @@ void CDlgInfo::InitStcTitle()
 	myStcTitle[48].SubclassDlgItem(IDC_STC_65, this);
 	myStcTitle[49].SubclassDlgItem(IDC_STC_1145, this); //하면AOI 클린롤러
 	myStcTitle[50].SubclassDlgItem(IDC_STC_1146, this); //상면AOI 클린롤러
+	myStcTitle[51].SubclassDlgItem(IDC_STC_1145, this); //AOI초음파세정기
+	myStcTitle[52].SubclassDlgItem(IDC_STC_1146, this); //각인부초음파세정기
 
 	for(int i=0; i<MAX_INFO_STC; i++)
 	{
@@ -1327,3 +1339,41 @@ void CDlgInfo::OnBnClickedChk86()
 	::WritePrivateProfileString(_T("Last Job"), _T("Use Up Aoi CleanRoler"), sData, PATH_WORKING_INFO);
 }
 
+
+
+void CDlgInfo::OnBnClickedChk1187()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (myBtn[21].GetCheck()) //AOI초음파세정기
+	{
+		pDoc->WorkingInfo.LastJob.bUseAoiDnCleanner = TRUE;
+		pView->m_pMpe->Write(_T("MB000000"), 1);
+	}
+	else
+	{
+		pDoc->WorkingInfo.LastJob.bUseAoiDnCleanner = FALSE;
+		pView->m_pMpe->Write(_T("MB000000"), 0);
+	}
+
+	CString sData = pDoc->WorkingInfo.LastJob.bUseAoiDnCleanner ? _T("1") : _T("0");
+	::WritePrivateProfileString(_T("Last Job"), _T("Use AoiDn Cleanner"), sData, PATH_WORKING_INFO);
+}
+
+
+void CDlgInfo::OnBnClickedChk1188()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (myBtn[22].GetCheck()) //각인부초음파세정기
+	{
+		pDoc->WorkingInfo.LastJob.bUseEngraveCleanner = TRUE;
+		pView->m_pMpe->Write(_T("MB000000"), 1);
+	}
+	else
+	{
+		pDoc->WorkingInfo.LastJob.bUseEngraveCleanner = FALSE;
+		pView->m_pMpe->Write(_T("MB000000"), 0);
+	}
+
+	CString sData = pDoc->WorkingInfo.LastJob.bUseEngraveCleanner ? _T("1") : _T("0");
+	::WritePrivateProfileString(_T("Last Job"), _T("Use Engrave Cleanner"), sData, PATH_WORKING_INFO);
+}

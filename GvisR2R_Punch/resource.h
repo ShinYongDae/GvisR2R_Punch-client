@@ -767,9 +767,11 @@
 #define IDC_STC_12_17                   1239
 #define IDC_STC_70                      1239
 #define IDC_STC_UTIL04_8                1239
+#define IDC_STC_1147                    1239
 #define IDC_CHK_17                      1240
 #define IDC_STC_71                      1240
 #define IDC_STC_UTIL04_9                1240
+#define IDC_STC_1148                    1240
 #define IDC_STC_12_19                   1241
 #define IDC_STC_72                      1241
 #define IDC_STC_UTIL04_10               1241
@@ -1259,6 +1261,8 @@
 #define IDC_CHK_1185                    1837
 #define IDC_CHK_86                      1838
 #define IDC_CHK_1186                    1838
+#define IDC_CHK_1187                    1839
+#define IDC_CHK_1188                    1840
 #define IDC_STATIC_SERVER_PORT          2557
 #define IDC_STATIC_MY_IP_ADDR           2558
 #define IDC_STATIC_RECV_MSG_FROM_SERVER 2559

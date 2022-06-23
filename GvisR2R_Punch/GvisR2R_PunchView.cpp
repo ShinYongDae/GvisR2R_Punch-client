@@ -16342,7 +16342,7 @@ void CGvisR2R_PunchView::Mk2PtAlignPt0()
 				}
 				else
 				{
-					if (MoveAlign1(0) && MoveAlign0(0)) // if (MoveAlign1(0)) // 20220526
+					if (MoveAlign1(0))	// Move - Cam1 - Pt0
 						m_nMkStAuto++;
 				}
 			}
@@ -16360,7 +16360,7 @@ void CGvisR2R_PunchView::Mk2PtAlignPt0()
 				}
 				else
 				{
-					if (MoveAlign1(0) && MoveAlign0(0)) // if (MoveAlign1(0)) // 20220526
+					if (MoveAlign1(0)) 	// Move - Cam1 - Pt0
 						m_nMkStAuto++;
 				}
 			}
@@ -16370,7 +16370,7 @@ void CGvisR2R_PunchView::Mk2PtAlignPt0()
 				m_nMkStAuto++;
 			break;
 		case MK_ST + (Mk2PtIdx::Move0Cam0) :	// Move - Cam0 - Pt0
-			//if (MoveAlign0(0))	// 20220526
+			if (MoveAlign0(0))
 				m_nMkStAuto++;
 			break;
 		case MK_ST + (Mk2PtIdx::Move0Cam0) + 1:
@@ -16440,9 +16440,9 @@ void CGvisR2R_PunchView::Mk2PtAlignPt0()
 						m_bSkipAlign[0][1] = FALSE;
 						m_bSkipAlign[0][2] = FALSE;
 						m_bSkipAlign[0][3] = FALSE;
-						//m_nMkStAuto = MK_ST + (Mk2PtIdx::Align0_0); // TwoPointAlign0(0) 으로 진행. - 카메라 재정렬
+						m_nMkStAuto = MK_ST + (Mk2PtIdx::Align0_0); // TwoPointAlign0(0) 으로 진행. - 카메라 재정렬
 						//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move0Cam0); // TwoPointAlign0(0) 으로 진행. - 카메라 재정렬
-						m_nMkStAuto = MK_ST + (Mk2PtIdx::Move0Cam1); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
+						//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move0Cam1); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
 						Stop();
 						TowerLamp(RGB_YELLOW, TRUE);
 					}
@@ -16454,9 +16454,9 @@ void CGvisR2R_PunchView::Mk2PtAlignPt0()
 					m_bReAlign[0][0] = TRUE;
 					m_bSkipAlign[0][0] = FALSE;
 					m_bSkipAlign[0][1] = FALSE;
-					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Align0_0); // TwoPointAlign0(0) 으로 진행. - 카메라 재정렬
+					m_nMkStAuto = MK_ST + (Mk2PtIdx::Align0_0); // TwoPointAlign0(0) 으로 진행. - 카메라 재정렬
 					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move0Cam0); // TwoPointAlign0(0) 으로 진행. - 카메라 재정렬
-					m_nMkStAuto = MK_ST + (Mk2PtIdx::Move0Cam1); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
+					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move0Cam1); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
 					Stop();
 					TowerLamp(RGB_YELLOW, TRUE);
 				}
@@ -16497,8 +16497,8 @@ void CGvisR2R_PunchView::Mk2PtAlignPt0()
 						m_bSkipAlign[1][1] = FALSE;
 						m_bSkipAlign[1][2] = FALSE;
 						m_bSkipAlign[1][3] = FALSE;
-						//m_nMkStAuto = MK_ST + (Mk2PtIdx::Align1_0); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
-						m_nMkStAuto = MK_ST + (Mk2PtIdx::Move0Cam1); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
+						m_nMkStAuto = MK_ST + (Mk2PtIdx::Align1_0); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
+						//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move0Cam1); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
 						Stop();
 						TowerLamp(RGB_YELLOW, TRUE);
 					}
@@ -16512,8 +16512,8 @@ void CGvisR2R_PunchView::Mk2PtAlignPt0()
 					m_bSkipAlign[1][1] = FALSE;
 					m_bSkipAlign[1][2] = FALSE;
 					m_bSkipAlign[1][3] = FALSE;
-					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Align1_0); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
-					m_nMkStAuto = MK_ST + (Mk2PtIdx::Move0Cam1); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
+					m_nMkStAuto = MK_ST + (Mk2PtIdx::Align1_0); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
+					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move0Cam1); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
 					Stop();
 					TowerLamp(RGB_YELLOW, TRUE);
 				}
@@ -16537,8 +16537,8 @@ void CGvisR2R_PunchView::Mk2PtAlignPt0()
 				}
 				else
 				{
-					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Align1_0); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
-					m_nMkStAuto = MK_ST + (Mk2PtIdx::Move0Cam1); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
+					m_nMkStAuto = MK_ST + (Mk2PtIdx::Align1_0); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
+					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move0Cam1); // TwoPointAlign1(0) 으로 진행. - 카메라 재정렬
 				}
 			}
 			else
@@ -16576,7 +16576,7 @@ void CGvisR2R_PunchView::Mk2PtAlignPt1()
 				}
 				else
 				{
-					if (MoveAlign1(1) && MoveAlign0(1))	// Move - Cam1 - Pt1 // if (MoveAlign1(1)) // 20220526
+					if (MoveAlign1(1))	// Move - Cam1 - Pt1
 						m_nMkStAuto++;
 				}
 			}
@@ -16594,7 +16594,7 @@ void CGvisR2R_PunchView::Mk2PtAlignPt1()
 				}
 				else
 				{
-					if (MoveAlign1(1) && MoveAlign0(1))	// Move - Cam1 - Pt1 // if (MoveAlign1(1))  // 20220526
+					if (MoveAlign1(1))	// Move - Cam1 - Pt1
 						m_nMkStAuto++;
 				}
 			}
@@ -16604,7 +16604,7 @@ void CGvisR2R_PunchView::Mk2PtAlignPt1()
 				m_nMkStAuto++;
 			break;
 		case MK_ST + (Mk2PtIdx::Move1Cam0) :
-			//if (MoveAlign0(1))	// Move - Cam0 - Pt1  // 20220526
+			if (MoveAlign0(1))	// Move - Cam0 - Pt1
 				m_nMkStAuto++;
 			break;
 		case MK_ST + (Mk2PtIdx::Move1Cam0) + 1:
@@ -16685,9 +16685,9 @@ void CGvisR2R_PunchView::Mk2PtAlignPt1()
 					{
 						m_bReAlign[0][1] = TRUE;
 						m_bSkipAlign[0][1] = FALSE;
-						//m_nMkStAuto = MK_ST + (Mk2PtIdx::Align0_1); // TwoPointAlign0(1) 으로 진행. - 카메라 재정렬
+						m_nMkStAuto = MK_ST + (Mk2PtIdx::Align0_1); // TwoPointAlign0(1) 으로 진행. - 카메라 재정렬
 						//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move1Cam0); // TwoPointAlign0(1) 으로 진행. - 카메라 재정렬
-						m_nMkStAuto = MK_ST + (Mk2PtIdx::Move1Cam1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
+						//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move1Cam1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
 						Stop();
 						TowerLamp(RGB_YELLOW, TRUE);
 					}
@@ -16698,9 +16698,9 @@ void CGvisR2R_PunchView::Mk2PtAlignPt1()
 
 					m_bReAlign[0][1] = TRUE;
 					m_bSkipAlign[0][1] = FALSE;
-					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Align0_1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
+					m_nMkStAuto = MK_ST + (Mk2PtIdx::Align0_1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
 					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move1Cam0); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
-					m_nMkStAuto = MK_ST + (Mk2PtIdx::Move1Cam1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
+					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move1Cam1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
 					Stop();
 					TowerLamp(RGB_YELLOW, TRUE);
 				}
@@ -16735,8 +16735,8 @@ void CGvisR2R_PunchView::Mk2PtAlignPt1()
 					{
 						m_bReAlign[1][1] = TRUE;
 						m_bSkipAlign[1][1] = FALSE;
-						//m_nMkStAuto = MK_ST + (Mk2PtIdx::Align1_1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
-						m_nMkStAuto = MK_ST + (Mk2PtIdx::Move1Cam1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
+						m_nMkStAuto = MK_ST + (Mk2PtIdx::Align1_1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
+						//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move1Cam1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
 						Stop();
 						TowerLamp(RGB_YELLOW, TRUE);
 					}
@@ -16747,8 +16747,8 @@ void CGvisR2R_PunchView::Mk2PtAlignPt1()
 
 					m_bReAlign[1][1] = TRUE;
 					m_bSkipAlign[1][1] = FALSE;
-					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Align1_1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
-					m_nMkStAuto = MK_ST + (Mk2PtIdx::Move1Cam1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
+					m_nMkStAuto = MK_ST + (Mk2PtIdx::Align1_1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
+					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move1Cam1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
 					Stop();
 					TowerLamp(RGB_YELLOW, TRUE);
 				}
@@ -16759,7 +16759,7 @@ void CGvisR2R_PunchView::Mk2PtAlignPt1()
 				if (!m_bReAlign[0][1] && !m_bReAlign[1][1])
 				{
 					if (m_bDoMk[0] || m_bDoMk[1])
-						m_nMkStAuto++;//m_nMkStAuto = MK_ST + 29;  // MoveInitPos0()
+						m_nMkStAuto++; //m_nMkStAuto = MK_ST + 29;  // MoveInitPos0()
 					else
 					{
 						if (!IsInitPos0())
@@ -16771,8 +16771,8 @@ void CGvisR2R_PunchView::Mk2PtAlignPt1()
 					}
 				}
 				else
-					m_nMkStAuto = MK_ST + (Mk2PtIdx::Move1Cam1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
-					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Align1_1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
+					m_nMkStAuto = MK_ST + (Mk2PtIdx::Align1_1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
+					//m_nMkStAuto = MK_ST + (Mk2PtIdx::Move1Cam1); // TwoPointAlign1(1) 으로 진행. - 카메라 재정렬
 			}
 			else
 				m_nMkStAuto++;
