@@ -367,8 +367,8 @@ void CDlgInfo::InitStcTitle()
 	myStcTitle[48].SubclassDlgItem(IDC_STC_65, this);
 	myStcTitle[49].SubclassDlgItem(IDC_STC_1145, this); //하면AOI 클린롤러
 	myStcTitle[50].SubclassDlgItem(IDC_STC_1146, this); //상면AOI 클린롤러
-	myStcTitle[51].SubclassDlgItem(IDC_STC_1145, this); //AOI초음파세정기
-	myStcTitle[52].SubclassDlgItem(IDC_STC_1146, this); //각인부초음파세정기
+	myStcTitle[51].SubclassDlgItem(IDC_STC_1147, this); //AOI초음파세정기
+	myStcTitle[52].SubclassDlgItem(IDC_STC_1148, this); //각인부초음파세정기
 
 	for(int i=0; i<MAX_INFO_STC; i++)
 	{
@@ -610,6 +610,16 @@ void CDlgInfo::Disp()
 		myBtn[20].SetCheck(TRUE);
 	else
 		myBtn[20].SetCheck(FALSE);
+
+	if (pDoc->WorkingInfo.LastJob.bUseAoiDnCleanner) //AOI초음파세정기
+		myBtn[21].SetCheck(TRUE);
+	else
+		myBtn[21].SetCheck(FALSE);
+
+	if (pDoc->WorkingInfo.LastJob.bUseEngraveCleanner) //각인부초음파세정기
+		myBtn[22].SetCheck(TRUE);
+	else
+		myBtn[22].SetCheck(FALSE);
 }
 
 void CDlgInfo::OnStc0008() 
@@ -1347,12 +1357,12 @@ void CDlgInfo::OnBnClickedChk1187()
 	if (myBtn[21].GetCheck()) //AOI초음파세정기
 	{
 		pDoc->WorkingInfo.LastJob.bUseAoiDnCleanner = TRUE;
-		pView->m_pMpe->Write(_T("MB000000"), 1);
+		pView->m_pMpe->Write(_T("MB44016F"), 1);
 	}
 	else
 	{
 		pDoc->WorkingInfo.LastJob.bUseAoiDnCleanner = FALSE;
-		pView->m_pMpe->Write(_T("MB000000"), 0);
+		pView->m_pMpe->Write(_T("MB44016F"), 0);
 	}
 
 	CString sData = pDoc->WorkingInfo.LastJob.bUseAoiDnCleanner ? _T("1") : _T("0");
@@ -1366,12 +1376,12 @@ void CDlgInfo::OnBnClickedChk1188()
 	if (myBtn[22].GetCheck()) //각인부초음파세정기
 	{
 		pDoc->WorkingInfo.LastJob.bUseEngraveCleanner = TRUE;
-		pView->m_pMpe->Write(_T("MB000000"), 1);
+		pView->m_pMpe->Write(_T("MB44016E"), 1);
 	}
 	else
 	{
 		pDoc->WorkingInfo.LastJob.bUseEngraveCleanner = FALSE;
-		pView->m_pMpe->Write(_T("MB000000"), 0);
+		pView->m_pMpe->Write(_T("MB44016E"), 0);
 	}
 
 	CString sData = pDoc->WorkingInfo.LastJob.bUseEngraveCleanner ? _T("1") : _T("0");

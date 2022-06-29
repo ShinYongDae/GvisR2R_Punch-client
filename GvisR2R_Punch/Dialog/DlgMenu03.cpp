@@ -837,7 +837,7 @@ void CDlgMenu03::InitBtn()
 	myBtn[85].SetBtnType(BTN_TYPE_DEFAULT);
 
 	myBtn[86].SubclassDlgItem(IDC_CHK_88, this);
-	myBtn[86].SetHwnd(this->GetSafeHwnd(), IDC_CHK_87);
+	myBtn[86].SetHwnd(this->GetSafeHwnd(), IDC_CHK_88);
 	myBtn[86].SetBoarder(FALSE);
 	myBtn[86].SetBtnType(BTN_TYPE_DEFAULT);
 
@@ -1357,32 +1357,58 @@ void CDlgMenu03::Disp()
 
 	// 각인부 세정기 ON (PC가 ON/OFF시킴)
 
+	if(pDoc->WorkingInfo.LastJob.bUseEngraveCleanner)
+	{
+		pView->m_pMpe->Write(_T("MB44016E"), 1);
+		myBtn[85].ShowWindow(SW_SHOW);
+	}
+	else
+	{
+		pView->m_pMpe->Write(_T("MB44016E"), 0);
+		myBtn[85].ShowWindow(SW_HIDE);
+	}
+
 	bOn = pDoc->WorkingInfo.LastJob.bEngraveCleanner;
 	if (myBtn[85].GetImageBk() != bOn)
 		myBtn[85].SetCheck(bOn);
 
-	bOn = (pDoc->m_pMpeSignal[5] & (0x01 << 14)) > 0 ? TRUE : FALSE;
+	//bOn = (pDoc->m_pMpeSignal[5] & (0x01 << 14)) > 0 ? TRUE : FALSE;
+	bOn = ( pView->m_pMpe->Read(_T("MB44014E")) ? TRUE : FALSE );
 	if (bOn != pDoc->WorkingInfo.LastJob.bEngraveCleanner)
 	{
 		if (pDoc->WorkingInfo.LastJob.bEngraveCleanner)
-			pView->m_pMpe->Write(_T("MB44016E"), 1);
+			pView->m_pMpe->Write(_T("MB44014E"), 1);
 		else
-			pView->m_pMpe->Write(_T("MB44016E"), 0);
+			pView->m_pMpe->Write(_T("MB44014E"), 0);
 	}
 
+
+
 	// AOI(하) 세정기 ON (PC가 ON/OFF시킴)
+
+	if (pDoc->WorkingInfo.LastJob.bUseAoiDnCleanner)
+	{
+		pView->m_pMpe->Write(_T("MB44016F"), 1);
+		myBtn[86].ShowWindow(SW_SHOW);
+	}
+	else
+	{
+		pView->m_pMpe->Write(_T("MB44016F"), 0);
+		myBtn[86].ShowWindow(SW_HIDE);
+	}
 
 	bOn = pDoc->WorkingInfo.LastJob.bAoiDnCleanner;
 	if (myBtn[86].GetImageBk() != bOn)
 		myBtn[86].SetCheck(bOn);
 
-	bOn = (pDoc->m_pMpeSignal[5] & (0x01 << 15)) > 0 ? TRUE : FALSE;
+	//bOn = (pDoc->m_pMpeSignal[5] & (0x01 << 15)) > 0 ? TRUE : FALSE;
+	bOn = (pView->m_pMpe->Read(_T("MB44014F")) ? TRUE : FALSE);
 	if (bOn != pDoc->WorkingInfo.LastJob.bAoiDnCleanner)
 	{
 		if (pDoc->WorkingInfo.LastJob.bAoiDnCleanner)
-			pView->m_pMpe->Write(_T("MB44016F"), 1);
+			pView->m_pMpe->Write(_T("MB44014F"), 1);
 		else
-			pView->m_pMpe->Write(_T("MB44016F"), 0);
+			pView->m_pMpe->Write(_T("MB44014F"), 0);
 	}
 
 	
@@ -1896,31 +1922,53 @@ LRESULT CDlgMenu03::OnMyBtnDown(WPARAM wPara, LPARAM lPara)
 
 		// [각인부 세정기]
 		case IDC_CHK_87:	// 각인부 세정기 ON (PC가 ON/OFF시킴)
-			if (!(pDoc->m_pMpeSignal[5] & (0x01 << 14)))
+			if (!(pDoc->WorkingInfo.LastJob.bEngraveCleanner))
 			{
 				pDoc->WorkingInfo.LastJob.bEngraveCleanner = TRUE;
-				pView->m_pMpe->Write(_T("MB44016E"), 1);
+				pView->m_pMpe->Write(_T("MB44014E"), 1);
 			}
 			else
 			{
 				pDoc->WorkingInfo.LastJob.bEngraveCleanner = FALSE;
-				pView->m_pMpe->Write(_T("MB44016E"), 0);
+				pView->m_pMpe->Write(_T("MB44014E"), 0);
 			}
 			break;
+			//if (!(pDoc->m_pMpeSignal[5] & (0x01 << 14)))
+			//{
+			//	pDoc->WorkingInfo.LastJob.bEngraveCleanner = TRUE;
+			//	pView->m_pMpe->Write(_T("MB44014E"), 1);
+			//}
+			//else
+			//{
+			//	pDoc->WorkingInfo.LastJob.bEngraveCleanner = FALSE;
+			//	pView->m_pMpe->Write(_T("MB44014E"), 0);
+			//}
+			//break;
 
 			// [AOI(하) 세정기]
 		case IDC_CHK_88:	// AOI(하) 세정기 ON (PC가 ON/OFF시킴)
-			if (!(pDoc->m_pMpeSignal[5] & (0x01 << 15)))
+			if (!(pDoc->WorkingInfo.LastJob.bAoiDnCleanner))
 			{
 				pDoc->WorkingInfo.LastJob.bAoiDnCleanner = TRUE;
-				pView->m_pMpe->Write(_T("MB44016F"), 1);
+				pView->m_pMpe->Write(_T("MB44014F"), 1);
 			}
 			else
 			{
 				pDoc->WorkingInfo.LastJob.bAoiDnCleanner = FALSE;
-				pView->m_pMpe->Write(_T("MB44016F"), 0);
+				pView->m_pMpe->Write(_T("MB44014F"), 0);
 			}
 			break;
+			//if (!(pDoc->m_pMpeSignal[5] & (0x01 << 15)))
+			//{
+			//	pDoc->WorkingInfo.LastJob.bAoiDnCleanner = TRUE;
+			//	pView->m_pMpe->Write(_T("MB44014F"), 1);
+			//}
+			//else
+			//{
+			//	pDoc->WorkingInfo.LastJob.bAoiDnCleanner = FALSE;
+			//	pView->m_pMpe->Write(_T("MB44014F"), 0);
+			//}
+			//break;
 
 
 		// [One Metal]
@@ -2549,7 +2597,7 @@ void CDlgMenu03::SetMkOnePnl(BOOL bOn)
 
 void CDlgMenu03::SetEngraveCleanner(BOOL bOn)
 {
-	pView->m_pMpe->Write(_T("MB44016E"), bOn ? 1 : 0); // [각인부 세정기]
+	pView->m_pMpe->Write(_T("MB44014E"), bOn ? 1 : 0); // [각인부 세정기]
 
 	CString sData, sPath = PATH_WORKING_INFO;
 	pDoc->WorkingInfo.LastJob.bEngraveCleanner = bOn;
@@ -2559,7 +2607,7 @@ void CDlgMenu03::SetEngraveCleanner(BOOL bOn)
 
 void CDlgMenu03::SetAoiDnCleanner(BOOL bOn)
 {
-	pView->m_pMpe->Write(_T("MB44016F"), bOn ? 1 : 0); // [AOI(하) 세정기]
+	pView->m_pMpe->Write(_T("MB44014F"), bOn ? 1 : 0); // [AOI(하) 세정기]
 
 	CString sData, sPath = PATH_WORKING_INFO;
 	pDoc->WorkingInfo.LastJob.bAoiDnCleanner = bOn;

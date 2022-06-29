@@ -7471,7 +7471,7 @@ BOOL CGvisR2R_PunchView::IsAuto()
 
 void CGvisR2R_PunchView::Shift2Buf()
 {
-	//int nLastListBuf;
+	int nLastListBuf;
 	if (m_nShareUpS > 0)
 	{
 		// 		nLastListBuf = pDoc->m_ListBuf[0].GetLast();
@@ -7481,6 +7481,17 @@ void CGvisR2R_PunchView::Shift2Buf()
 		// 				pDoc->m_ListBuf[0].Clear();
 		// 		}
 		// 
+
+		nLastListBuf = pDoc->m_ListBuf[0].GetLast();
+		if (nLastListBuf > 0 && m_nShareUpS > 1)
+		{
+			if (nLastListBuf != m_nShareUpS - 1)
+			{
+				Stop();
+				DispMsg(_T("시리얼 연속성 오류"), _T("경고"), RGB_RED, DELAY_TIME_MSG);
+			}
+		}
+
 		m_bLoadShare[0] = TRUE;
 		pDoc->m_ListBuf[0].Push(m_nShareUpS);
 
@@ -7497,6 +7508,16 @@ void CGvisR2R_PunchView::Shift2Buf()
 			// 				if(nLastListBuf > m_nShareDnS)
 			// 					pDoc->m_ListBuf[1].Clear();
 			// 			}
+			nLastListBuf = pDoc->m_ListBuf[1].GetLast();
+			if (nLastListBuf > 0 && m_nShareDnS > 1)
+			{
+				if(nLastListBuf != m_nShareDnS-1)
+				{
+					Stop();
+					DispMsg(_T("시리얼 연속성 오류"), _T("경고"), RGB_RED, DELAY_TIME_MSG);
+				}
+			}
+
 
 			m_bLoadShare[1] = TRUE;
 			pDoc->m_ListBuf[1].Push(m_nShareDnS);
@@ -12632,7 +12653,7 @@ void CGvisR2R_PunchView::DoReject0()
 			Mk0();
 		}
 		else
-			SetDelay0(300, 1);		// [mSec]
+			SetDelay0(pDoc->m_nDelayShow, 1);		// [mSec]
 		m_nStepMk[2]++;
 		break;
 	case 8:
@@ -12896,7 +12917,7 @@ void CGvisR2R_PunchView::DoReject1()
 			Mk1();
 		}
 		else
-			SetDelay1(300, 1);		// [mSec]
+			SetDelay1(pDoc->m_nDelayShow, 1);		// [mSec]
 		m_nStepMk[3]++;
 		break;
 	case 8:
@@ -13117,7 +13138,7 @@ void CGvisR2R_PunchView::DoMark0All()
 		if (!IsNoMk0())
 			Mk0();
 		else
-			SetDelay0(300, 1);		// [mSec]
+			SetDelay0(pDoc->m_nDelayShow, 1);		// [mSec]
 		m_nStepMk[2]++;
 		break;
 	case 6:
@@ -13272,7 +13293,7 @@ void CGvisR2R_PunchView::DoMark1All()
 		if (!IsNoMk1())
 			Mk1();
 		else
-			SetDelay1(300, 1);		// [mSec]
+			SetDelay1(pDoc->m_nDelayShow, 1);		// [mSec]
 		m_nStepMk[3]++;
 		break;
 	case 6:
@@ -13641,7 +13662,7 @@ void CGvisR2R_PunchView::DoMark0()
 		else
 		{
 			// Verify - Mk0
-			SetDelay0(300, 1);		// [mSec]
+			SetDelay0(pDoc->m_nDelayShow, 1);		// [mSec]
 			SaveMk0Img(m_nMkPcs[0]);
 		}
 		m_nStepMk[0]++;
@@ -14325,7 +14346,7 @@ void CGvisR2R_PunchView::DoMark1()
 		else
 		{
 			// Verify - Mk1
-			SetDelay1(300, 6);		// [mSec]
+			SetDelay1(pDoc->m_nDelayShow, 6);		// [mSec]
 			SaveMk1Img(m_nMkPcs[1]);
 		}
 		m_nStepMk[1]++;
@@ -20320,6 +20341,7 @@ void CGvisR2R_PunchView::PlcAlm(BOOL bMon, BOOL bClr)
 		m_nMonAlmF = 1;
 		//		ResetMonAlm();
 		FindAlarm();
+		Sleep(300);
 		m_pMpe->Write(_T("MB600008"), 1);
 	}
 	else if (!bMon && m_nMonAlmF)
@@ -20333,6 +20355,7 @@ void CGvisR2R_PunchView::PlcAlm(BOOL bMon, BOOL bClr)
 	{
 		m_nClrAlmF = 1;
 		ClrAlarm();
+		Sleep(300);
 		m_pMpe->Write(_T("MB600009"), 1);
 		//		ResetClear();
 	}
@@ -20372,7 +20395,8 @@ void CGvisR2R_PunchView::FindAlarm()
 			if (0 < ::GetPrivateProfileString(str1, str3, NULL, szData, sizeof(szData), PATH_ALARM))
 				strH = CString(szData);
 			else
-				strH = _T("");
+				strH.Format(_T("%s = %d"), strM, lAlm);
+				//strH = _T("");
 
 			if (str.IsEmpty())
 				str = strH;

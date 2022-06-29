@@ -1125,6 +1125,11 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 	else
 		WorkingInfo.System.sPort[ID_PUNCH] = CString(_T("8800"));
 
+	if (0 < ::GetPrivateProfileString(_T("System"), _T("Delay Show Time"), NULL, szData, sizeof(szData), sPath))
+		m_nDelayShow = _ttoi(szData);
+	else
+		m_nDelayShow = 500;
+
 	// [Last Job]
 	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Process Code"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.LastJob.sProcessNum = CString(szData);

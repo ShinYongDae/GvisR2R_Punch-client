@@ -2719,30 +2719,31 @@ void CDlgMenu01::UpdateInfo()
 // 	sVal.Format(_T("%d"), (int)(dFdTotLen / dLotLen * 100.0));
 	myStcData[6].SetText(sVal);			// 로트진행율
 
-	if(pDoc->m_pReelMap && pDoc->m_pReelMap->m_bUseLotSep)
-	{
-		sVal.Format(_T("%d"), (int)(dFdTotLen / dLotLen * 100.0));
-		myStcData[6].SetText(sVal);		// 로트진행율
+	//if(pDoc->m_pReelMap && pDoc->m_pReelMap->m_bUseLotSep)
+	//{
+	//	sVal.Format(_T("%d"), (int)(dFdTotLen / dLotLen * 100.0));
+	//	myStcData[6].SetText(sVal);		// 로트진행율
 
-		myStcData[10].SetText(_T("On"));	// 로트 분리
-		myStcData[10].SetBkColor(RGB_RED);
+	//	myStcData[10].SetText(_T("On"));	// 로트 분리
+	//	myStcData[10].SetBkColor(RGB_RED);
 
-		sVal.Format(_T("%.1f"), dLotLen / 1000.0);
-		myStcData[11].SetText(sVal);	// 로트분리길이
+	//	sVal.Format(_T("%.1f"), dLotLen / 1000.0);
+	//	myStcData[11].SetText(sVal);	// 로트분리길이
 
-		int nLotSerial = pDoc->GetLotSerial();
-		sVal.Format(_T("%d"), nLotSerial);
-		myStcData[14].SetText(sVal);	// 진행Lot시리얼
-	}
-	else 
+	//	int nLotSerial = pDoc->GetLotSerial();
+	//	sVal.Format(_T("%d"), nLotSerial);
+	//	myStcData[14].SetText(sVal);	// 진행Lot시리얼
+	//}
+	//else 
 	{
 		myStcData[6].SetText(_T(""));		// 로트진행율
 
-		myStcData[10].SetText(_T("Off"));	// 로트 분리
+		//myStcData[10].SetText(_T("Off"));	// 로트 분리
+		myStcData[10].SetText(pDoc->WorkingInfo.LastJob.sStripOutRatio);	// 스트립 양폐율[%]
 		myStcData[10].SetBkColor(RGB_WHITE);
 
-		sVal.Format(_T("%.1f"), dLotLen / 1000.0);
-		myStcData[11].SetText(sVal);	// 로트분리길이
+		//sVal.Format(_T("%.1f"), dLotLen / 1000.0);
+		//myStcData[11].SetText(sVal);	// 로트분리길이
 
 		if(!pDoc->m_bDoneChgLot)
 			myStcData[14].SetText(_T(""));	// 진행Lot시리얼

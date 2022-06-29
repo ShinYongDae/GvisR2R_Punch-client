@@ -1675,7 +1675,7 @@ CString CDlgMenu05::LoadFile(CString sPath)
 			nRSize++;
 		}
 
-		sData.Format(_T("%s"), FileData);
+		sData.Format(_T("%s"), CharToString(FileData));
 
 		fclose(fp);
 		free( FileData );
