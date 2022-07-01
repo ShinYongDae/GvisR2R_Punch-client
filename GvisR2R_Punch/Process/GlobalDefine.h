@@ -599,6 +599,8 @@ enum MAIN_BTN { MN_RST=0, MN_RDY=1, MN_STOP=2, MN_RUN=3 };
 enum IMG_KIND { CAD_IMG=0, DEF_IMG=1 };
 enum ALIGN_METHODE { ONE_POINT = 1, TWO_POINT, THREE_POINT, FOUR_POINT };
 
+enum TEST_MODE { MODE_NONE = 0, MODE_INNER = 1, MODE_OUTER = 2 };
+
 
 
 struct stSystem
@@ -689,7 +691,7 @@ struct stLastJob
 	CString sAoiLastShot[2]; // [Up/Dn]
 	CString sPartialSpd;
 	BOOL bOneMetal, bTwoMetal;
-	BOOL bDualTest, bSampleTest;
+	BOOL bDualTest, bSampleTest, nTestMode;
 	BOOL bCore150Recoiler, bCore150Uncoiler;
 	CString sSampleTestShotNum;
 	BOOL bUse2Layer;
@@ -730,7 +732,7 @@ struct stLastJob
 		sPartialSpd = _T("10");
 
 		bOneMetal = FALSE; bTwoMetal = FALSE;
-		bDualTest = TRUE; bSampleTest = FALSE;
+		bDualTest = TRUE; bSampleTest = FALSE; nTestMode = 0;
 		bCore150Recoiler = FALSE; bCore150Uncoiler = FALSE;
 		sSampleTestShotNum = _T("");
 		bUseEngraveCleanner = FALSE; bUseAoiDnCleanner = FALSE;

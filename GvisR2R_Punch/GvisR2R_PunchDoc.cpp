@@ -1161,6 +1161,11 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.LastJob.sLayerUp = CString(_T(""));
 	}
 
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Test Mode"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.nTestMode = _ttoi(szData);
+	else
+		WorkingInfo.LastJob.nTestMode = 0;
+
 	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Use Dual AOI"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.LastJob.bDualTest = _ttoi(szData) ? TRUE : FALSE;
 	else
@@ -5131,11 +5136,16 @@ int CGvisR2R_PunchDoc::LoadPCRDn(int nSerial, BOOL bFromShare)	// return : 2(Fai
 			strPieceID = strFileData.Left(nTemp);
 			strFileData.Delete(0, nTemp + 1);
 			nFileSize = nFileSize - nTemp - 1;
-			//m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-			m_pPcr[1][nIdx]->m_pDefPcs[i] = Mirroring(_tstoi(strPieceID));
+
+			// LoadStripPieceRegion_Binary()에 의해 PCS Index가 결정됨.
+			if (pDoc->WorkingInfo.System.bStripPcsRgnBin)
+				m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);				// DTS용
+			else
+				m_pPcr[1][nIdx]->m_pDefPcs[i] = Mirroring(_tstoi(strPieceID));	// 초기 양면검사기용
+
 			m_pPcr[1][nIdx]->m_pLayer[i] = 1; // Dn
 
-											  // BadPointPosX
+			// BadPointPosX
 			nTemp = strFileData.Find(',', 0);
 			strBadPointPosX = strFileData.Left(nTemp);
 			strFileData.Delete(0, nTemp + 1);
@@ -5187,7 +5197,7 @@ int CGvisR2R_PunchDoc::LoadPCRDn(int nSerial, BOOL bFromShare)	// return : 2(Fai
 	}
 
 	return (1); // 1(정상)
-				// 	return(m_pPcr[1][nIdx]->m_nErrPnl);
+	//return(m_pPcr[1][nIdx]->m_nErrPnl);
 }
 
 BOOL CGvisR2R_PunchDoc::CopyDefImg(int nSerial)

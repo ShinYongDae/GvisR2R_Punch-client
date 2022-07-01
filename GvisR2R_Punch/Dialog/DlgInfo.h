@@ -12,7 +12,7 @@
 
 #define MAX_INFO_STC				53
 #define MAX_INFO_STC_DATA			13
-#define MAX_INFO_BTN				23
+#define MAX_INFO_BTN				25
 
 /////////////////////////////////////////////////////////////////////////////
 // CDlgInfo dialog
@@ -37,6 +37,7 @@ class CDlgInfo : public CDialog
 	void Disp();
 	void SetDualTest(BOOL bOn=TRUE);
 	void SetTwoMetal(BOOL bOn=TRUE);
+	void SetTestMode(int nMode);
 
 // Construction
 public:
@@ -97,6 +98,8 @@ protected:
 	afx_msg void OnChkSampleTest();
 	afx_msg void OnChkOneMetal();
 	afx_msg void OnChkTwoMetal();
+	afx_msg void OnChkUseAoiInner();
+	afx_msg void OnChkUseAoiOuter();
 	afx_msg void OnStc181();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

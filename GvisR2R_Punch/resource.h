@@ -1236,7 +1236,10 @@
 #define IDC_STC_DEF_10                  1427
 #define IDC_CHK_4_POINT_ALIGN           1427
 #define IDC_STC_DEF_11                  1428
+#define IDC_CHK_USE_AOI_INNER           1428
 #define IDC_STC_DEF_12                  1429
+#define IDC_CHK_USE_AOI_SINGLE2         1429
+#define IDC_CHK_USE_AOI_OUTER           1429
 #define IDC_STC_DEF_13                  1430
 #define IDC_STC_DEF_14                  1431
 #define IDC_STC_DEF_15                  1432

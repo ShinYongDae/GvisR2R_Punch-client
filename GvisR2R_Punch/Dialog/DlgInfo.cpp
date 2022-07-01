@@ -81,6 +81,8 @@ BEGIN_MESSAGE_MAP(CDlgInfo, CDialog)
 	ON_BN_CLICKED(IDC_CHK_SAMPLE_TEST, OnChkSampleTest)
 	ON_BN_CLICKED(IDC_CHK_ONE_METAL, OnChkOneMetal)
 	ON_BN_CLICKED(IDC_CHK_TWO_METAL, OnChkTwoMetal)
+	ON_BN_CLICKED(IDC_CHK_USE_AOI_INNER, OnChkUseAoiInner)
+	ON_BN_CLICKED(IDC_CHK_USE_AOI_OUTER, OnChkUseAoiOuter)
 	ON_BN_CLICKED(IDC_STC_181, OnStc181)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDC_CHK_4_POINT_ALIGN, &CDlgInfo::OnBnClickedChk4PointAlign)
@@ -275,6 +277,14 @@ void CDlgInfo::InitBtn()
 	myBtn[22].SubclassDlgItem(IDC_CHK_1188, this); //각인부초음파세정기
 	myBtn[22].SetHwnd(this->GetSafeHwnd(), IDC_CHK_1188);
 	myBtn[22].SetBtnType(BTN_TYPE_CHECK);
+
+	myBtn[23].SubclassDlgItem(IDC_CHK_USE_AOI_INNER, this); //AOI초음파세정기
+	myBtn[23].SetHwnd(this->GetSafeHwnd(), IDC_CHK_USE_AOI_INNER);
+	myBtn[23].SetBtnType(BTN_TYPE_CHECK);
+
+	myBtn[24].SubclassDlgItem(IDC_CHK_USE_AOI_OUTER, this); //각인부초음파세정기
+	myBtn[24].SetHwnd(this->GetSafeHwnd(), IDC_CHK_USE_AOI_OUTER);
+	myBtn[24].SetBtnType(BTN_TYPE_CHECK);
 
 
 	int i;
@@ -1140,6 +1150,31 @@ void CDlgInfo::OnStc61()
 	
 }
 
+
+void CDlgInfo::SetTestMode(int nMode)
+{
+	pDoc->WorkingInfo.LastJob.nTestMode = nMode; // MODE_NONE = 0, MODE_INNER = 1, MODE_OUTER = 2
+
+	CString sData;
+	sData.Format(_T("%d"), nMode);
+	::WritePrivateProfileString(_T("Last Job"), _T("Test Mode"), sData, PATH_WORKING_INFO);
+
+	switch (nMode)
+	{
+	case MODE_NONE:
+		break;
+	case MODE_INNER:
+		break;
+	case MODE_OUTER:
+		break;
+	default:
+		break;
+	}
+
+	myBtn[23].RedrawWindow();
+	myBtn[24].RedrawWindow();
+}
+
 void CDlgInfo::SetDualTest(BOOL bOn)
 {
 	pDoc->WorkingInfo.LastJob.bDualTest = bOn;
@@ -1216,6 +1251,45 @@ void CDlgInfo::SetTwoMetal(BOOL bOn)
 
 }
 
+void CDlgInfo::OnChkUseAoiInner() 
+{
+	// TODO: Add your control notification handler code here
+	BOOL bOn[2];
+	bOn[0] = myBtn[23].GetCheck();
+	bOn[1] = myBtn[24].GetCheck();
+
+	if (bOn[0] && bOn[1])
+	{
+		myBtn[24].SetCheck(FALSE);
+		SetTestMode(MODE_INNER);
+	}
+	else if (bOn[0] && !bOn[1])
+		SetTestMode(MODE_INNER);
+	else if (!bOn[0] && bOn[1])
+		SetTestMode(MODE_OUTER);
+	else
+		SetTestMode(MODE_NONE);
+}
+
+void CDlgInfo::OnChkUseAoiOuter() 
+{
+	// TODO: Add your control notification handler code here
+	BOOL bOn[2];
+	bOn[0] = myBtn[23].GetCheck();
+	bOn[1] = myBtn[24].GetCheck();
+
+	if (bOn[0] && bOn[1])
+	{
+		myBtn[23].SetCheck(FALSE);
+		SetTestMode(MODE_OUTER);
+	}
+	else if (bOn[0] && !bOn[1])
+		SetTestMode(MODE_INNER);
+	else if (!bOn[0] && bOn[1])
+		SetTestMode(MODE_OUTER);
+	else
+		SetTestMode(MODE_NONE);
+}
 void CDlgInfo::OnChkUseAoiDual() 
 {
 	// TODO: Add your control notification handler code here
