@@ -1153,7 +1153,7 @@ void CDlgInfo::OnStc61()
 
 void CDlgInfo::SetTestMode(int nMode)
 {
-	pDoc->WorkingInfo.LastJob.nTestMode = nMode; // MODE_NONE = 0, MODE_INNER = 1, MODE_OUTER = 2
+	pDoc->WorkingInfo.LastJob.nTestMode = nMode; // MODE_NONE = 0, MODE_INNER = 1, MODE_OUTER = 2 .
 
 	CString sData;
 	sData.Format(_T("%d"), nMode);
@@ -1290,6 +1290,7 @@ void CDlgInfo::OnChkUseAoiOuter()
 	else
 		SetTestMode(MODE_NONE);
 }
+
 void CDlgInfo::OnChkUseAoiDual() 
 {
 	// TODO: Add your control notification handler code here
