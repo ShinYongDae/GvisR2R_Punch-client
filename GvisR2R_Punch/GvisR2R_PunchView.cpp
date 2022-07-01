@@ -11758,10 +11758,6 @@ int CGvisR2R_PunchView::GetLotEndSerial()
 
 BOOL CGvisR2R_PunchView::StartLive()
 {
-//#ifdef TEST_MODE
-//	return TRUE;
-//#endif
-
 	if (StartLive0() && StartLive1())
 		return TRUE;
 
@@ -11770,10 +11766,6 @@ BOOL CGvisR2R_PunchView::StartLive()
 
 BOOL CGvisR2R_PunchView::StartLive0()
 {
-//#ifdef TEST_MODE
-//	return TRUE;
-//#endif
-
 	BOOL bRtn0 = FALSE;
 
 #ifdef USE_VISION
@@ -11788,10 +11780,6 @@ BOOL CGvisR2R_PunchView::StartLive0()
 
 BOOL CGvisR2R_PunchView::StartLive1()
 {
-//#ifdef TEST_MODE
-//	return TRUE;
-//#endif
-
 	BOOL bRtn1 = FALSE;
 
 #ifdef USE_VISION

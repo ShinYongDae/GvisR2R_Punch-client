@@ -10,7 +10,7 @@
 #endif // _MSC_VER > 1000
 
 
-//#define TEST_MODE		1
+#define TEST_MODE		1
 
 
 #ifdef TEST_MODE
@@ -37,14 +37,14 @@
 	#define PATH_ALIGN1_IMG			_T("C:\\R2RSet\\Test\\Align1.TIF")
 	#define PATH_PCS_IMG			_T("C:\\R2RSet\\Test\\Piece.tif")
 
+	#define	USE_MIL
+	#define	USE_VISION
+	#define	USE_TCPIP
 	//#define USE_CAM_MASTER
 	//#define	USE_NMC
 	//#define	USE_MPE
-	#define	USE_MIL
-	#define	USE_VISION
 	//#define	USE_IRAYPLE
 	//#define	USE_SR1000W
-	//#define	USE_TCPIP
 	//#define	USE_LIGHT
 	//#define	USE_SMAC
 

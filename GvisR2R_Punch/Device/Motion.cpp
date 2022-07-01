@@ -1183,18 +1183,20 @@ BOOL CMotion::InitNmcBoard()
 
 BOOL CMotion::CreateObject()
 {
+#ifdef USE_NMC
 	for (int nAxis = 0; nAxis < m_nTotAxis; nAxis++)
 	{
 		if (m_pMotionCard)
 			m_pMotionCard->CreateAxis(nAxis);
 	}
-
+#endif
 	return TRUE;
 }
 
 BOOL CMotion::ReadBit(BYTE cBit, BOOL bInput)
 {
 	//return (m_pMotionCard->ReadBit(cBit, bInput));
+#ifdef USE_NMC
 	if (bInput)
 	{
 		return m_pMotionCard->ReadIn((long)cBit);
@@ -1205,6 +1207,9 @@ BOOL CMotion::ReadBit(BYTE cBit, BOOL bInput)
 	}
 
 	return FALSE;
+#else
+	return TRUE;
+#endif
 }
 
 unsigned long CMotion::ReadAllBit(BOOL bInput)
@@ -1212,6 +1217,8 @@ unsigned long CMotion::ReadAllBit(BOOL bInput)
 	//return (m_pMotionCard->ReadAllBit(bInput));
 
 	long nData;
+
+#ifdef USE_NMC
 
 	if (bInput)
 	{
@@ -1223,30 +1230,41 @@ unsigned long CMotion::ReadAllBit(BOOL bInput)
 		nData = m_pMotionCard->ReadOut();
 		return ((unsigned long)nData);
 	}
+
+#endif
+	return 0L;
 }
 void CMotion::WriteData(long lData)
 {
+#ifdef USE_NMC
 	m_pMotionCard->Out32(lData);
+#endif
 }
 
 void CMotion::WriteBit(BYTE cBit, BOOL bOn)
 {
+#ifdef USE_NMC
 	m_pMotionCard->OutBit((long)cBit, bOn);
+#endif
 }
 
 void CMotion::SetConfigure()
 {
+#ifdef USE_NMC
 	if (!m_pMotionCard)
 		return;
 
 	m_pMotionCard->SetConfigure(m_nBoardId, m_nDevIdIoIn, m_nDevIdIoOut, m_nOffsetAxisID);
 	SetMotionParam();
+#endif
 }
 
 void CMotion::SetMotionParam()
 {
+#ifdef USE_NMC
 	if (m_pMotionCard)
 		m_pMotionCard->SetParam();
+#endif
 }
 
 
