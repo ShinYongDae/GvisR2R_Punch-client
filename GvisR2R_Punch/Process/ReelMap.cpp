@@ -561,7 +561,7 @@ BOOL CReelMap::OpenUser(CString sPath)
 		fprintf(fp, "상면레이어 = %s\r\n", pRtn = StrToChar(pDoc->WorkingInfo.LastJob.sLayerUp)); if (pRtn) delete pRtn; pRtn = NULL;
 		if (bDualTest)
 		{
-			fprintf(fp, "하면레이어 = %s\r\n", pRtn = StrToChar(pDoc->WorkingInfo.LastJob.sLayerDn)); delete pRtn;
+			fprintf(fp, "하면레이어 = %s\r\n", pRtn = StrToChar(pDoc->WorkingInfo.LastJob.sLayerDn)); if (pRtn) delete pRtn; pRtn = NULL;
 		}
 		fprintf(fp, "\r\n");
 		fprintf(fp, "Process Code = \r\n");

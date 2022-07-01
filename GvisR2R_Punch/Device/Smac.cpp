@@ -100,12 +100,14 @@ BOOL CSmac::Send(CString str)
 {
 	int nLen = str.GetLength();
 	
-	char* pRtn;
+	char* pRtn = NULL;
 	char* cSend = new char[nLen+1];
 	strcpy(cSend, pRtn=StringToChar(str));
 	BOOL bRtn = m_Rs232.WriteRs232Block(cSend, nLen);
 	delete cSend;
-	delete pRtn;
+
+	if(pRtn)
+		delete pRtn;
 
 	return TRUE;
 }
@@ -742,13 +744,15 @@ void CSmac::SendStringToFirstCamVoiceCoil(CString strSend)
 
 	LPWSTR pchData = new WCHAR[strSendLength];
 	VARIANT vrOutp;
-	char* pRtn;
+	char* pRtn = NULL;
 	MultiByteToWideChar(CP_ACP, 0, pRtn=StringToChar(strSend), strSendLength, pchData, strSendLength);
 	vrOutp.vt = VT_BSTR;
 	vrOutp.bstrVal = ::SysAllocStringLen(pchData, strSendLength);
 
 	delete pchData;
-	delete pRtn;
+
+	if(pRtn)
+		delete pRtn;
 	
 	Send(strSend);
 	::SysFreeString(vrOutp.bstrVal);
@@ -764,13 +768,14 @@ void CSmac::SendStringToSecondCamVoiceCoil(CString strSend)
 
 	LPWSTR pchData = new WCHAR[strSendLength];
 	VARIANT vrOutp;
-	char* pRtn;
+	char* pRtn = NULL;
 	MultiByteToWideChar(CP_ACP, 0, pRtn=StringToChar(strSend), strSendLength, pchData, strSendLength);
 	vrOutp.vt = VT_BSTR;
 	vrOutp.bstrVal = ::SysAllocStringLen(pchData, strSendLength);
 
 	delete pchData;
-	delete pRtn;
+	if(pRtn)
+		delete pRtn;
 	
 	Send(strTemp);
 	::SysFreeString(vrOutp.bstrVal);
