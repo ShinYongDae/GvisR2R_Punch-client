@@ -538,6 +538,7 @@ typedef struct
 } REGIONS_PIECE;
 
 typedef struct {
+	int nId;
 	int iStartX, iStartY;
 	int iEndX, iEndY;
 	int FMirror;	//0 : 원본 1 : 상하미러  2 : 좌퓖E肩?

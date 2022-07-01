@@ -576,6 +576,7 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 					pDoc->WorkingInfo.LastJob.sModelUp,
 					pDoc->WorkingInfo.LastJob.sLayerUp);
 				pDoc->m_Master[0].LoadMstInfo();
+				pDoc->m_Master[0].WriteStripPieceRegion_Text(pDoc->WorkingInfo.System.sPathOldFile, pDoc->WorkingInfo.LastJob.sLotUp);
 			}
 
 			if (IsLastJob(1)) // Dn
@@ -585,6 +586,7 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 					pDoc->WorkingInfo.LastJob.sLayerDn,
 					pDoc->WorkingInfo.LastJob.sLayerUp);
 				pDoc->m_Master[1].LoadMstInfo();
+				pDoc->m_Master[1].WriteStripPieceRegion_Text(pDoc->WorkingInfo.System.sPathOldFile, pDoc->WorkingInfo.LastJob.sLotDn);
 			}
 
 			SetAlignPos();
@@ -9726,6 +9728,7 @@ void CGvisR2R_PunchView::ResetMkInfo(int nAoi) // 0 : AOI-Up , 1 : AOI-Dn , 2 : 
 				pDoc->WorkingInfo.LastJob.sLayerUp);
 			pView->m_nDebugStep = 504; pView->DispThreadTick();
 			pDoc->m_Master[0].LoadMstInfo();
+			pDoc->m_Master[0].WriteStripPieceRegion_Text(pDoc->WorkingInfo.System.sPathOldFile, pDoc->WorkingInfo.LastJob.sLotUp);
 		}
 		else
 		{
@@ -9785,6 +9788,7 @@ void CGvisR2R_PunchView::ResetMkInfo(int nAoi) // 0 : AOI-Up , 1 : AOI-Dn , 2 : 
 					pDoc->WorkingInfo.LastJob.sLayerUp);
 				pView->m_nDebugStep = 516; pView->DispThreadTick();
 				pDoc->m_Master[1].LoadMstInfo();
+				pDoc->m_Master[1].WriteStripPieceRegion_Text(pDoc->WorkingInfo.System.sPathOldFile, pDoc->WorkingInfo.LastJob.sLotDn);
 			}
 			else
 			{
@@ -15732,6 +15736,7 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 						pDoc->WorkingInfo.LastJob.sModelUp,
 						pDoc->WorkingInfo.LastJob.sLayerUp);
 					pDoc->m_Master[0].LoadMstInfo();
+					pDoc->m_Master[0].WriteStripPieceRegion_Text(pDoc->WorkingInfo.System.sPathOldFile, pDoc->WorkingInfo.LastJob.sLotUp);
 				}
 
 				if (IsLastJob(1)) // Dn
@@ -15741,6 +15746,7 @@ void CGvisR2R_PunchView::DoAutoChkShareFolder()	// 20170727-잔량처리 시 계속적으
 						pDoc->WorkingInfo.LastJob.sLayerDn,
 						pDoc->WorkingInfo.LastJob.sLayerUp);
 					pDoc->m_Master[1].LoadMstInfo();
+					pDoc->m_Master[1].WriteStripPieceRegion_Text(pDoc->WorkingInfo.System.sPathOldFile, pDoc->WorkingInfo.LastJob.sLotDn);
 				}
 
 				SetAlignPos();

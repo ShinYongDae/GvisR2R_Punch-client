@@ -5131,8 +5131,13 @@ int CGvisR2R_PunchDoc::LoadPCRDn(int nSerial, BOOL bFromShare)	// return : 2(Fai
 			strPieceID = strFileData.Left(nTemp);
 			strFileData.Delete(0, nTemp + 1);
 			nFileSize = nFileSize - nTemp - 1;
-			//m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);
-			m_pPcr[1][nIdx]->m_pDefPcs[i] = Mirroring(_tstoi(strPieceID));
+
+			// LoadStripPieceRegion_Binary()에 의해 PCS Index가 결정됨.
+			if (pDoc->WorkingInfo.System.bStripPcsRgnBin)
+				m_pPcr[1][nIdx]->m_pDefPcs[i] = _tstoi(strPieceID);				// DTS용
+			else
+				m_pPcr[1][nIdx]->m_pDefPcs[i] = Mirroring(_tstoi(strPieceID));	// 초기 양면검사기용
+
 			m_pPcr[1][nIdx]->m_pLayer[i] = 1; // Dn
 
 											  // BadPointPosX
