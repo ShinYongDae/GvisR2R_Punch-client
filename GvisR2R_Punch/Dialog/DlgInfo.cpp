@@ -278,11 +278,11 @@ void CDlgInfo::InitBtn()
 	myBtn[22].SetHwnd(this->GetSafeHwnd(), IDC_CHK_1188);
 	myBtn[22].SetBtnType(BTN_TYPE_CHECK);
 
-	myBtn[23].SubclassDlgItem(IDC_CHK_USE_AOI_INNER, this); //AOI초음파세정기
+	myBtn[23].SubclassDlgItem(IDC_CHK_USE_AOI_INNER, this); //WORK_MODE : MODE_INNER
 	myBtn[23].SetHwnd(this->GetSafeHwnd(), IDC_CHK_USE_AOI_INNER);
 	myBtn[23].SetBtnType(BTN_TYPE_CHECK);
 
-	myBtn[24].SubclassDlgItem(IDC_CHK_USE_AOI_OUTER, this); //각인부초음파세정기
+	myBtn[24].SubclassDlgItem(IDC_CHK_USE_AOI_OUTER, this); //WORK_MODE : MODE_OUTER
 	myBtn[24].SetHwnd(this->GetSafeHwnd(), IDC_CHK_USE_AOI_OUTER);
 	myBtn[24].SetBtnType(BTN_TYPE_CHECK);
 
@@ -290,20 +290,20 @@ void CDlgInfo::InitBtn()
 	int i;
 	for(i=0; i<MAX_INFO_BTN; i++)
 	{
-		if(0 == i || 12 == i || 13 == i || 14 == i )
+		if(0 == i || 12 == i || 13 == i || 14 == i || 23 == i || 24 == i )
 		{
 			myBtn[i].SetFont(_T("굴림체"),16,TRUE);
 			myBtn[i].SetTextColor(RGB_BLACK);
 			//myBtn[i].SetBtnType(BTN_TYPE_CHECK);
 		}
 
-		if(15 == i || 16 == i)
+		if (15 == i || 16 == i)
 		{
 			myBtn[i].SetFont(_T("돋움체"),22,TRUE);
 			//myBtn[i].SetBtnType(BTN_TYPE_CHECK);
 		}
 
-		if(0 != i && 12 != i && 13 != i && 14 != i && 15 != i && 16 != i)
+		if (0 != i && 12 != i && 13 != i && 14 != i && 15 != i && 16 != i && 23 != i && 24 != i)
 		{
 			myBtn[i].SetFont(_T("굴림체"),16,TRUE);
 			myBtn[i].SetTextColor(RGB_BLACK);
