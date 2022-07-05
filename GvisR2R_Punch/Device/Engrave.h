@@ -60,7 +60,7 @@ public:
 	void Close();
 
 	// General Function
-	BOOL SendCommand(SOCKET_DATA SocketData);
+	BOOL SendCommand(SOCKET_DATA SocketData, BOOL bWait=FALSE);
 	BOOL IsConnected();
 
 	// Communcation

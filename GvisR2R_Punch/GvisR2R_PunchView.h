@@ -178,6 +178,7 @@ class CGvisR2R_PunchView : public CFormView
 	int m_nPrevTotMk[2], m_nPrevCurMk[2]; // [0]: аб MK, [1]: ©Л MK
 
 	double m_dElecChkVal;
+	BOOL m_bContEngraveF;
 
 
 	void InitMyMsg();

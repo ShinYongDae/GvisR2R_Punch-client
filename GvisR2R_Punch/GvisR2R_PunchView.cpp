@@ -378,6 +378,7 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 	m_pEngrave = NULL;
 
 	m_bDestroyedView = FALSE;
+	m_bContEngraveF = FALSE;
 }
 
 CGvisR2R_PunchView::~CGvisR2R_PunchView()
@@ -400,7 +401,7 @@ void CGvisR2R_PunchView::DestroyView()
 		Buzzer(FALSE, 0);
 		Buzzer(FALSE, 1);
 
-
+#ifdef USE_VISION
 		if (m_pVision[1])
 		{
 			delete m_pVision[1];
@@ -412,7 +413,7 @@ void CGvisR2R_PunchView::DestroyView()
 			delete m_pVision[0];
 			m_pVision[0] = NULL;
 		}
-
+#endif
 
 		m_bTIM_MPE_IO = FALSE;
 		m_bTIM_DISP_STATUS = FALSE;
@@ -1384,7 +1385,7 @@ BOOL CGvisR2R_PunchView::HwInit()
 	if (!m_pEngrave)
 	{
 		m_pEngrave = new CEngrave(pDoc->WorkingInfo.System.sIpClient[ID_PUNCH], pDoc->WorkingInfo.System.sIpServer[ID_ENGRAVE], pDoc->WorkingInfo.System.sPort[ID_ENGRAVE], this);
-		//m_pEngrave->SetHwnd(this->GetSafeHwnd());
+		m_pEngrave->SetHwnd(this->GetSafeHwnd());
 	}
 #endif
 
@@ -14041,8 +14042,10 @@ BOOL CGvisR2R_PunchView::SaveMk0Img(int nMkPcsIdx)
 		pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
 	sPath.Format(_T("%s\\%c-%d_%d.tif"), sDest, nStrip + 'A', nCol + 1, nRow + 1);
 
+#ifdef USE_VISION
 	if (m_pVision[0])
 		return m_pVision[0]->SaveMkImg(sPath);
+#endif
 
 	return FALSE;
 }
@@ -14698,8 +14701,10 @@ BOOL CGvisR2R_PunchView::SaveMk1Img(int nMkPcsIdx)
 		pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
 	sPath.Format(_T("%s\\%c-%d_%d.tif"), sDest, nStrip + 'A', nCol + 1, nRow + 1);
 
+#ifdef USE_VISION
 	if (m_pVision[1])
 		return m_pVision[1]->SaveMkImg(sPath);
+#endif
 
 	return FALSE;
 }
@@ -21633,11 +21638,38 @@ void CGvisR2R_PunchView::SetEngraveFdPitch(double dPitch)
 
 BOOL CGvisR2R_PunchView::IsConnected()
 {
+#ifdef USE_ENGRAVE
 	if (m_pEngrave)
 	{
-		return m_pEngrave->IsConnected();
-	}
+		if(m_pEngrave->IsConnected())
+		{
+			if(!m_bContEngraveF)
+			{
+				m_bContEngraveF = TRUE;
+				DWORD dwStartTick = GetTickCount();
 
+				while(!m_pEngrave->SetSysInfo())
+				{
+					Sleep(100);
+					if (GetTickCount() >= (dwStartTick + DELAY_RESPONSE))
+					{
+						AfxMessageBox(_T(" WaitResponse() Time Out. \r\n m_pEngrave->IsConnected() !!!"));
+						break;
+					}
+				}
+			}
+			return TRUE;
+		}
+		else
+		{
+			if (m_bContEngraveF)
+			{
+				m_bContEngraveF = FALSE;
+			}
+			return FALSE;
+		}
+	}
+#endif
 	return FALSE;
 }
 

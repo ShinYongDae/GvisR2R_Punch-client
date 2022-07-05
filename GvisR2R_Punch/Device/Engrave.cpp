@@ -320,13 +320,20 @@ void CEngrave::Close()
 
 // General Function
 
-BOOL CEngrave::SendCommand(SOCKET_DATA SocketData)
+BOOL CEngrave::SendCommand(SOCKET_DATA SocketData, BOOL bWait)
 {
+	BOOL bRtn = TRUE;
 	SocketData.nTxPC = _Punch;	// Client
 	SocketData.nRxPC = _Engrave; // Server
-	m_bWaitForResponse = TRUE;
 	m_pClient->WriteCommData(SocketData, INFINITE);
-	return WaitResponse();
+
+	if (bWait)
+	{
+		m_bWaitForResponse = TRUE;
+		bRtn = WaitResponse();
+	}
+
+	return bRtn;
 }
 
 BOOL CEngrave::WaitResponse()
@@ -420,9 +427,11 @@ BOOL CEngrave::SetSysInfo()
 		SetMkInfo();
 		SetMkInfoLf();
 		SetMkInfoRt();
+
+		return TRUE;
 	}
 
-	return TRUE;
+	return FALSE;
 }
 
 void CEngrave::SetInfo()
@@ -430,40 +439,49 @@ void CEngrave::SetInfo()
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
 	CString sVal;
+	char cData[BUFFER_DATA_SIZE];
 
 	SocketData.nMsgID = _OpName;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sSelUserName);
+	StringToChar(pDoc->WorkingInfo.LastJob.sSelUserName, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _ModelUpName;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sModelUp);
+	StringToChar(pDoc->WorkingInfo.LastJob.sModelUp, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _ModelDnName;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sModelDn);
+	StringToChar(pDoc->WorkingInfo.LastJob.sModelDn, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _LotUpName;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sLotUp);
+	StringToChar(pDoc->WorkingInfo.LastJob.sLotUp, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _LotDnName;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sLotDn);
+	StringToChar(pDoc->WorkingInfo.LastJob.sLotDn, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _LayerUpName;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sLayerUp);
+	StringToChar(pDoc->WorkingInfo.LastJob.sLayerUp, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _LayerDnName;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sLayerDn);
+	StringToChar(pDoc->WorkingInfo.LastJob.sLayerDn, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	// _OrderNum
 	//_ShotNum
 
 	SocketData.nMsgID = _TotReelLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sReelTotLen);
+	StringToChar(pDoc->WorkingInfo.LastJob.sReelTotLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	// _TotOpRto
@@ -471,15 +489,18 @@ void CEngrave::SetInfo()
 	// _TotVel
 
 	SocketData.nMsgID = _PartVel;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sPartialSpd);
+	StringToChar(pDoc->WorkingInfo.LastJob.sPartialSpd, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _TempStopLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sTempPauseLen);
+	StringToChar(pDoc->WorkingInfo.LastJob.sTempPauseLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _LotCutLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sLotCutPosLen);
+	StringToChar(pDoc->WorkingInfo.LastJob.sLotCutPosLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	// _MkDoneLen
@@ -487,11 +508,13 @@ void CEngrave::SetInfo()
 	// _AoiUpDoneLen
 
 	SocketData.nMsgID = _LotSerial;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sLotSerial);
+	StringToChar(pDoc->WorkingInfo.LastJob.sLotSerial, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _MkVerfyLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.LastJob.sVerifyLen);
+	StringToChar(pDoc->WorkingInfo.LastJob.sVerifyLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 }
 
@@ -630,8 +653,10 @@ void CEngrave::SetStTime()
 	else
 		str.Format(_T("%04d-%02d-%02d, %02d:%02d:%02d"), nYear, nMonth, nDay, nHour, nMin, nSec);
 
+	char cData[BUFFER_DATA_SIZE];
 	SocketData.nMsgID = _LotStTime;
-	sprintf(SocketData.strData, "%s", str);
+	StringToChar(str, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 }
 
@@ -707,8 +732,10 @@ void CEngrave::SetRunTime()
 		}
 	}
 
-	SocketData.nMsgID = _LotRunTime;
-	sprintf(SocketData.strData, "%s", str);
+	char cData[BUFFER_DATA_SIZE];
+	SocketData.nMsgID = _LotRunTime; 
+	StringToChar(str, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 }
 
@@ -731,8 +758,10 @@ void CEngrave::SetEdTime()
 	else
 		str.Format(_T("%04d-%02d-%02d, %02d:%02d:%02d"), nYear, nMonth, nDay, nHour, nMin, nSec);
 
-	SocketData.nMsgID = _LotEdTime;
-	sprintf(SocketData.strData, "%s", str);
+	char cData[BUFFER_DATA_SIZE];
+	SocketData.nMsgID = _LotEdTime; 
+	StringToChar(str, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 }
 
@@ -1108,6 +1137,7 @@ void CEngrave::SetDef()
 
 void CEngrave::Set2DReader()
 {
+	char cData[BUFFER_DATA_SIZE];
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
 	//CString str;
@@ -1117,85 +1147,99 @@ void CEngrave::Set2DReader()
 	//BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 
-	SocketData.nMsgID = _2DEngLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.s2DEngLen);
+	SocketData.nMsgID = _2DEngLen; 
+	StringToChar(pDoc->WorkingInfo.Motion.s2DEngLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _2DAoiLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.s2DAoiLen);
+	SocketData.nMsgID = _2DAoiLen; StringToChar(pDoc->WorkingInfo.Motion.s2DAoiLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _2DMkLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.s2DMkLen);
+	SocketData.nMsgID = _2DMkLen; StringToChar(pDoc->WorkingInfo.Motion.s2DMkLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _2DMoveVel;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.s2DMoveVel);
+	SocketData.nMsgID = _2DMoveVel; StringToChar(pDoc->WorkingInfo.Motion.s2DMoveVel, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _2DMoveAcc;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.s2DMoveAcc);
+	SocketData.nMsgID = _2DMoveAcc; StringToChar(pDoc->WorkingInfo.Motion.s2DMoveAcc, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _2DOneShotLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.s2DOneShotRemainLen);
+	SocketData.nMsgID = _2DOneShotLen; StringToChar(pDoc->WorkingInfo.Motion.s2DOneShotRemainLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 }
 
 void CEngrave::SetEngInfo()
 {
+	char cData[BUFFER_DATA_SIZE];
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
 
-	SocketData.nMsgID = _EngLeadPitch;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sEngraveFdLead);
+	SocketData.nMsgID = _EngLeadPitch; 
+	StringToChar(pDoc->WorkingInfo.Motion.sEngraveFdLead, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _EngPushOffLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sEngraveFdVacOff);
+	SocketData.nMsgID = _EngPushOffLen; 
+	StringToChar(pDoc->WorkingInfo.Motion.sEngraveFdVacOff, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _EngTqVal;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sEngraveTq);
+	SocketData.nMsgID = _EngTqVal; 
+	StringToChar(pDoc->WorkingInfo.Motion.sEngraveTq, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _EngAoiLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sEngAoiLen);
+	SocketData.nMsgID = _EngAoiLen; 
+	StringToChar(pDoc->WorkingInfo.Motion.sEngAoiLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _EngFdDiffMax;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sEngFdDiffMax);
+	SocketData.nMsgID = _EngFdDiffMax; 
+	StringToChar(pDoc->WorkingInfo.Motion.sEngFdDiffMax, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _EngFdDiffRng;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sEngFdDiffRng);
+	SocketData.nMsgID = _EngFdDiffRng; 
+	StringToChar(pDoc->WorkingInfo.Motion.sEngFdDiffRng, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _EngFdDiffNum;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sEngFdDiffNum);
+	SocketData.nMsgID = _EngFdDiffNum; 
+	StringToChar(pDoc->WorkingInfo.Motion.sEngFdDiffNum, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _EngBuffInitPos;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sEngBuffInitPos);
+	SocketData.nMsgID = _EngBuffInitPos; 
+	StringToChar(pDoc->WorkingInfo.Motion.sEngBuffInitPos, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _EngBuffCurrPos;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sEngBuffCurrPos);
+	SocketData.nMsgID = _EngBuffCurrPos; 
+	StringToChar(pDoc->WorkingInfo.Motion.sEngBuffCurrPos, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 }
 
 void CEngrave::SetFdInfo()
 {
+	char cData[BUFFER_DATA_SIZE];
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
 
 
-	SocketData.nMsgID = _FdVel;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sMkFdVel);
+	SocketData.nMsgID = _FdVel; 
+	StringToChar(pDoc->WorkingInfo.Motion.sMkFdVel, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _FdAcc;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sMkFdAcc);
+	SocketData.nMsgID = _FdAcc; 
+	StringToChar(pDoc->WorkingInfo.Motion.sMkFdAcc, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _OnePnlLen;
@@ -1225,51 +1269,57 @@ void CEngrave::SetFdInfo()
 
 void CEngrave::SetAoiInfo()
 {
+	char cData[BUFFER_DATA_SIZE];
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
 
-	SocketData.nMsgID = _AoiLeadPitch;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sAoiFdLead);
+	SocketData.nMsgID = _AoiLeadPitch; StringToChar(pDoc->WorkingInfo.Motion.sAoiFdLead, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _AoiPushOffLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sAoiFdVacOff);
+	SocketData.nMsgID = _AoiPushOffLen; StringToChar(pDoc->WorkingInfo.Motion.sAoiFdVacOff, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _AoiTqVal;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sAoiTq);
+	SocketData.nMsgID = _AoiTqVal; StringToChar(pDoc->WorkingInfo.Motion.sAoiTq, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _AoiBuffShotNum;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sFdAoiAoiDistShot);
+	SocketData.nMsgID = _AoiBuffShotNum; StringToChar(pDoc->WorkingInfo.Motion.sFdAoiAoiDistShot, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _AoiMkLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sFdMkAoiInitDist);
+	SocketData.nMsgID = _AoiMkLen; StringToChar(pDoc->WorkingInfo.Motion.sFdMkAoiInitDist, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 }
 
 void CEngrave::SetMkInfo()
 {
+	char cData[BUFFER_DATA_SIZE];
 	CString str;
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
 
 
-	SocketData.nMsgID = _MkLeadPitch;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sMkFdLead);
+	SocketData.nMsgID = _MkLeadPitch; 
+	StringToChar(pDoc->WorkingInfo.Motion.sMkFdLead, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkPushOffLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sMkFdVacOff);
+	SocketData.nMsgID = _MkPushOffLen; 
+	StringToChar(pDoc->WorkingInfo.Motion.sMkFdVacOff, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkPushOffLen;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sMkTq);
+	SocketData.nMsgID = _MkPushOffLen; 
+	StringToChar(pDoc->WorkingInfo.Motion.sMkTq, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkBuffInitPos;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Motion.sStBufPos);
+	SocketData.nMsgID = _MkBuffInitPos; 
+	StringToChar(pDoc->WorkingInfo.Motion.sStBufPos, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _MkBuffCurrPos;
@@ -1296,35 +1346,43 @@ void CEngrave::SetMkInfo()
 
 void CEngrave::SetMkInfoLf()
 {
+	char cData[BUFFER_DATA_SIZE];
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
 
-	SocketData.nMsgID = _MkInitPosLf;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[0].sWaitPos);
+	SocketData.nMsgID = _MkInitPosLf; 
+	StringToChar(pDoc->WorkingInfo.Marking[0].sWaitPos, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkInitVelLf;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[0].sWaitVel);
+	SocketData.nMsgID = _MkInitVelLf; 
+	StringToChar(pDoc->WorkingInfo.Marking[0].sWaitVel, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkInitAccLf;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[0].sWaitAcc);
+	SocketData.nMsgID = _MkInitAccLf; 
+	StringToChar(pDoc->WorkingInfo.Marking[0].sWaitAcc, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkFnlPosLf;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[0].sMarkingPos);
+	SocketData.nMsgID = _MkFnlPosLf; 
+	StringToChar(pDoc->WorkingInfo.Marking[0].sMarkingPos, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkFnlVelLf;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[0].sMarkingVel);
+	SocketData.nMsgID = _MkFnlVelLf; 
+	StringToChar(pDoc->WorkingInfo.Marking[0].sMarkingVel, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkFnlAccLf;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[0].sMarkingAcc);
+	SocketData.nMsgID = _MkFnlAccLf; 
+	StringToChar(pDoc->WorkingInfo.Marking[0].sMarkingAcc, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkFnlTqLf;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[0].sMarkingToq);
+	SocketData.nMsgID = _MkFnlTqLf; 
+	StringToChar(pDoc->WorkingInfo.Marking[0].sMarkingToq, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _MkHgtPosX1Lf;
@@ -1362,35 +1420,43 @@ void CEngrave::SetMkInfoLf()
 
 void CEngrave::SetMkInfoRt()
 {
+	char cData[BUFFER_DATA_SIZE];
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
 
-	SocketData.nMsgID = _MkInitPosRt;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[1].sWaitPos);
+	SocketData.nMsgID = _MkInitPosRt; 
+	StringToChar(pDoc->WorkingInfo.Marking[1].sWaitPos, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkInitVelRt;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[1].sWaitVel);
+	SocketData.nMsgID = _MkInitVelRt; 
+	StringToChar(pDoc->WorkingInfo.Marking[1].sWaitVel, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkInitAccRt;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[1].sWaitAcc);
+	SocketData.nMsgID = _MkInitAccRt; 
+	StringToChar(pDoc->WorkingInfo.Marking[1].sWaitAcc, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkFnlPosRt;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[1].sMarkingPos);
+	SocketData.nMsgID = _MkFnlPosRt; 
+	StringToChar(pDoc->WorkingInfo.Marking[1].sMarkingPos, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkFnlVelRt;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[1].sMarkingVel);
+	SocketData.nMsgID = _MkFnlVelRt; 
+	StringToChar(pDoc->WorkingInfo.Marking[1].sMarkingVel, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkFnlAccRt;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[1].sMarkingAcc);
+	SocketData.nMsgID = _MkFnlAccRt; 
+	StringToChar(pDoc->WorkingInfo.Marking[1].sMarkingAcc, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _MkFnlTqRt;
-	sprintf(SocketData.strData, "%s", pDoc->WorkingInfo.Marking[1].sMarkingToq);
+	SocketData.nMsgID = _MkFnlTqRt; 
+	StringToChar(pDoc->WorkingInfo.Marking[1].sMarkingToq, cData);
+	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _MkHgtPosX1Rt;

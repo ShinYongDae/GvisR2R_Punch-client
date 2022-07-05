@@ -2520,9 +2520,9 @@ void CDlgMenu02::OnBtnStartSave2()
 void CDlgMenu02::OnChkResPosSt() 
 {
 	// TODO: Add your control notification handler code here
+#ifdef USE_VISION
 	if(!pView->m_pVision[0])
 		return;
-
 	myBtn[17].SetCheck(TRUE);	//	IDC_CHK_RES_POS_ST
 	myBtn[17].EnableWindow(FALSE);
 
@@ -2533,11 +2533,15 @@ void CDlgMenu02::OnChkResPosSt()
 
 	myStcData[3].SetText(pDoc->WorkingInfo.Vision[0].sResX);
 	myStcData[4].SetText(pDoc->WorkingInfo.Vision[0].sResY);
+#else
+	return;
+#endif
 }
 
 void CDlgMenu02::OnChkResPosSt2() 
 {
 	// TODO: Add your control notification handler code here
+#ifdef USE_VISION
 	if(!pView->m_pVision[1])
 		return;
 
@@ -2551,6 +2555,9 @@ void CDlgMenu02::OnChkResPosSt2()
 
 	myStcData2[3].SetText(pDoc->WorkingInfo.Vision[1].sResX);
 	myStcData2[4].SetText(pDoc->WorkingInfo.Vision[1].sResY);	
+#else
+	return;
+#endif
 }
 
 void CDlgMenu02::OnChkMkOffsetSt() 
@@ -2574,11 +2581,13 @@ void CDlgMenu02::OnChkMkOffsetSt()
 		SwMarking();
 
 		CString str = _T("Find mark with jog button.");
+#ifdef USE_VISION
 		if(pView->m_pVision[0])
 		{
 			pView->m_pVision[0]->DrawText(str, 200, 160, RGB_RED);
 			pView->m_pVision[0]->DrawCenterMark();
 		}
+#endif
 		myBtn[20].EnableWindow(TRUE);	// IDC_CHK_MK_OFFSET_ST
 		myBtn[21].EnableWindow(TRUE);	// IDC_CHK_MK_OFFSET_ED
 	}
@@ -2607,11 +2616,13 @@ void CDlgMenu02::OnChkMkOffsetSt2()
 		SwMarking2();
 
 		CString str = _T("Find mark with jog button.");
+#ifdef USE_VISION
 		if(pView->m_pVision[1])
 		{
 			pView->m_pVision[1]->DrawText(str, 200, 160, RGB_RED);
 			pView->m_pVision[1]->DrawCenterMark();
 		}
+#endif
 		myBtn2[19].EnableWindow(TRUE);	// IDC_CHK_MK_OFFSET_ST
 		myBtn2[20].EnableWindow(TRUE);	// IDC_CHK_MK_OFFSET_ED
 	}
@@ -2722,11 +2733,13 @@ void CDlgMenu02::OnChkMkOffsetEd2()
 		::WritePrivateProfileString(_T("Vision1"), _T("MARKING_OFFSET_Y"), sData, sPath);
 		myStcData2[6].SetText(sData);	// IDC_STC_CAM_MK_OFFSET_Y
 
+#ifdef USE_VISION
 		if(pView->m_pVision[1])
 		{
 			pView->m_pVision[1]->ClearOverlay();
 			pView->m_pVision[1]->DrawCenterMark();
 		}
+#endif
 		myBtn2[20].SetCheck(FALSE);
 	}	
 }
@@ -3509,6 +3522,7 @@ void CDlgMenu02::ChgModelDn()
 BOOL CDlgMenu02::PreTranslateMessage(MSG* pMsg) 
 {
 	// TODO: Add your specialized code here and/or call the base class
+#ifdef USE_VISION
 	if(pView->m_pVision[0] && pView->m_pVision[1] && pView->m_pMotion)
 	{
 		CString sMsg;
@@ -3565,7 +3579,7 @@ BOOL CDlgMenu02::PreTranslateMessage(MSG* pMsg)
 			}
 		}
 	}
-
+#endif
 	if (pMsg->message != WM_KEYDOWN)
 		return CDialog::PreTranslateMessage(pMsg);
 
@@ -4010,6 +4024,7 @@ void CDlgMenu02::Grab2PntAlign2()
 		return;
 	}
 
+#ifdef USE_VISION
 	if (pView->m_pVision[1]->Grab(nPos))
 	{
 		GetPmRst1(dX, dY, dAgl, dScr);
@@ -4036,6 +4051,7 @@ void CDlgMenu02::Grab2PntAlign2()
 		myStcData2[9].SetText(_T(""));
 		myStcData2[10].SetText(_T(""));
 	}
+#endif
 }
 
 void CDlgMenu02::Grab4PntAlign2()
@@ -4074,6 +4090,7 @@ void CDlgMenu02::Grab4PntAlign2()
 		return;
 	}
 
+#ifdef USE_VISION
 	if (pView->m_pVision[1]->Grab(nPos))
 	{
 		GetPmRst1(dX, dY, dAgl, dScr);
@@ -4100,6 +4117,7 @@ void CDlgMenu02::Grab4PntAlign2()
 		myStcData2[9].SetText(_T(""));
 		myStcData2[10].SetText(_T(""));
 	}
+#endif
 }
 
 void CDlgMenu02::OnStcAlignStdScr2() 
@@ -4258,6 +4276,7 @@ BOOL CDlgMenu02::OnEraseBkgnd(CDC* pDC)
 // OnePointAlign==================================================================
 BOOL CDlgMenu02::OnePointAlign(CfPoint &ptPnt)
 {
+#ifdef USE_VISION
 	double dRefPinX, dRefPinY; // Cam Pos.
 	double dTgtPinX, dTgtPinY; // Grab Pos.
 	double dResX, dResY, dResCam;
@@ -4317,12 +4336,13 @@ BOOL CDlgMenu02::OnePointAlign(CfPoint &ptPnt)
 
 	pView->m_Align[0].SetAlignData(dRefPinX, dRefPinY, dTgtPinX, dTgtPinY);
 	//	pDoc->m_pPcsRgn->SetMkPnt();
-
+#endif
 	return TRUE;
 }
 
 BOOL CDlgMenu02::OnePointAlign2(CfPoint &ptPnt)
 {
+#ifdef USE_VISION
 	double dRefPinX, dRefPinY; // Cam Pos.
 	double dTgtPinX, dTgtPinY; // Grab Pos.
 	double dResX, dResY, dResCam;
@@ -4382,7 +4402,7 @@ BOOL CDlgMenu02::OnePointAlign2(CfPoint &ptPnt)
 
 	pView->m_Align[1].SetAlignData(dRefPinX, dRefPinY, dTgtPinX, dTgtPinY);
 	//	pDoc->m_pPcsRgn->SetMkPnt();
-
+#endif
 	return TRUE;
 }
 
@@ -4401,9 +4421,10 @@ BOOL CDlgMenu02::TwoPointAlign(int nPos)
 
 BOOL CDlgMenu02::TwoPointAlign0(int nPos)
 {
+#ifdef USE_VISION
 	if (!pView->m_pMotion || !pView->m_pVision[0])
 		return FALSE;
-
+#endif
 	if (pDoc->WorkingInfo.Vision[0].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[0].sResY.IsEmpty())
 		return FALSE;
 
@@ -4414,6 +4435,7 @@ BOOL CDlgMenu02::TwoPointAlign0(int nPos)
 
 BOOL CDlgMenu02::Do2PtAlign0(int nPos, BOOL bDraw)
 {
+#ifdef USE_VISION
 	double dRefPinX, dRefPinY; // Cam Pos.
 	double dTgtPinX, dTgtPinY; // Grab Pos.
 	double dResX, dResY, dResCam;
@@ -4540,13 +4562,14 @@ BOOL CDlgMenu02::Do2PtAlign0(int nPos, BOOL bDraw)
 		}
 
 	}
-
+#endif
 	return TRUE;
 }
 
 
 BOOL CDlgMenu02::TwoPointAlign1(int nPos)
 {
+#ifdef USE_VISION
 	if (!pView->m_pMotion || !pView->m_pVision[1])
 		return FALSE;
 
@@ -4556,10 +4579,14 @@ BOOL CDlgMenu02::TwoPointAlign1(int nPos)
 	MoveAlign1(nPos);
 
 	return (Do2PtAlign1(nPos, TRUE));
+#else
+	return TRUE;
+#endif
 }
 
 BOOL CDlgMenu02::Do2PtAlign1(int nPos, BOOL bDraw)
 {
+#ifdef USE_VISION
 	double dRefPinX, dRefPinY; // Cam Pos.
 	double dTgtPinX, dTgtPinY; // Grab Pos.
 	double dResX, dResY, dResCam;
@@ -4693,7 +4720,7 @@ BOOL CDlgMenu02::Do2PtAlign1(int nPos, BOOL bDraw)
 		pDoc->WorkingInfo.Fluck.dMeasPosY[1] = ptTgt.y;
 #endif
 	}
-
+#endif
 	return TRUE;
 }
 
@@ -4711,9 +4738,10 @@ BOOL CDlgMenu02::FourPointAlign(int nPos)
 
 BOOL CDlgMenu02::FourPointAlign0(int nPos)
 {
+#ifdef USE_VISION
 	if (!pView->m_pMotion || !pView->m_pVision[0])
 		return FALSE;
-
+#endif
 	if (pDoc->WorkingInfo.Vision[0].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[0].sResY.IsEmpty())
 		return FALSE;
 
@@ -4724,6 +4752,7 @@ BOOL CDlgMenu02::FourPointAlign0(int nPos)
 
 BOOL CDlgMenu02::Do4PtAlign0(int nPos, BOOL bDraw)
 {
+#ifdef USE_VISION
 	double dRefPinX, dRefPinY; // Cam Pos.
 	double dTgtPinX, dTgtPinY; // Grab Pos.
 	double dResX, dResY, dResCam;
@@ -4870,16 +4899,19 @@ BOOL CDlgMenu02::Do4PtAlign0(int nPos, BOOL bDraw)
 		}
 
 	}
-
+#endif
 	return TRUE;
 }
 
 
 BOOL CDlgMenu02::FourPointAlign1(int nPos)
 {
+#ifdef USE_VISION
 	if (!pView->m_pMotion || !pView->m_pVision[1])
 		return FALSE;
-
+#else
+	return TRUE;
+#endif
 	if (pDoc->WorkingInfo.Vision[1].sResX.IsEmpty() || pDoc->WorkingInfo.Vision[1].sResY.IsEmpty())
 		return FALSE;
 
@@ -4890,6 +4922,7 @@ BOOL CDlgMenu02::FourPointAlign1(int nPos)
 
 BOOL CDlgMenu02::Do4PtAlign1(int nPos, BOOL bDraw)
 {
+#ifdef USE_VISION
 	double dRefPinX, dRefPinY; // Cam Pos.
 	double dTgtPinX, dTgtPinY; // Grab Pos.
 	double dResX, dResY, dResCam;
@@ -5045,7 +5078,7 @@ BOOL CDlgMenu02::Do4PtAlign1(int nPos, BOOL bDraw)
 		pDoc->WorkingInfo.Fluck.dMeasPosY[1] = ptTgt.y;
 #endif
 	}
-
+#endif
 	return TRUE;
 }
 
