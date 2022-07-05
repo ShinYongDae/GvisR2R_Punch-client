@@ -521,6 +521,7 @@ public:
 	BOOL IsReady();
 	void Shift2Buf();
 	void Shift2Mk();
+	void CompletedMk(int nCam); // 0: Only Cam0, 1: Only Cam1, 2: Cam0 and Cam1, 3: None
 	void SetTestSts(int nStep);
 	void SetMkSts(int nStep);
 	void SetAoiFdSts();

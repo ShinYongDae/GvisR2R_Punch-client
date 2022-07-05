@@ -1204,12 +1204,29 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		AfxMessageBox(_T("SerialUp이 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
 		WorkingInfo.LastJob.sSerialUp = CString(_T(""));
 	}
+
 	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Last SerialDn"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.LastJob.sSerialDn = CString(szData);
 	else
 	{
 		AfxMessageBox(_T("SerialDn이 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
 		WorkingInfo.LastJob.sSerialDn = CString(_T(""));
+	}
+
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Completed SerialUp"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.sCompletedSerialUp = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("SerialUp이 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.LastJob.sCompletedSerialUp = CString(_T(""));
+	}
+
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Completed SerialDn"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.sCompletedSerialDn = CString(szData);
+	else
+	{
+		AfxMessageBox(_T("SerialDn이 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		WorkingInfo.LastJob.sCompletedSerialDn = CString(_T(""));
 	}
 
 	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Operator Name"), NULL, szData, sizeof(szData), sPath))
@@ -3041,6 +3058,9 @@ void CGvisR2R_PunchDoc::SaveWorkingInfo()
 	sData = WorkingInfo.LastJob.sSerialUp;
 	::WritePrivateProfileString(_T("Last Job"), _T("Last SerialUp"), sData, sPath);
 
+	sData = WorkingInfo.LastJob.sCompletedSerialUp;
+	::WritePrivateProfileString(_T("Last Job"), _T("Completed SerialUp"), sData, sPath);
+
 	sData = WorkingInfo.LastJob.sModelDn;
 	::WritePrivateProfileString(_T("Last Job"), _T("ModelDn Name"), sData, sPath);
 
@@ -3052,6 +3072,9 @@ void CGvisR2R_PunchDoc::SaveWorkingInfo()
 
 	sData = WorkingInfo.LastJob.sSerialDn;
 	::WritePrivateProfileString(_T("Last Job"), _T("Last SerialDn"), sData, sPath);
+
+	sData = WorkingInfo.LastJob.sCompletedSerialDn;
+	::WritePrivateProfileString(_T("Last Job"), _T("Completed SerialDn"), sData, sPath);
 
 	sData = WorkingInfo.LastJob.sSelUserName;
 	::WritePrivateProfileString(_T("Last Job"), _T("Operator Name"), sData, sPath);
@@ -6894,6 +6917,7 @@ BOOL CGvisR2R_PunchDoc::Shift2Mk(int nSerial)
 
 	return FALSE;
 }
+
 void CGvisR2R_PunchDoc::SetLastSerial(int nSerial)
 {
 	if (nSerial <= 0)
@@ -6925,6 +6949,41 @@ void CGvisR2R_PunchDoc::SetLastSerial(int nSerial)
 				m_pReelMapAllUp->SetLastSerial(nSerial);
 			if (m_pReelMapAllDn)
 				m_pReelMapAllDn->SetLastSerial(nSerial);
+		}
+	}
+}
+
+void CGvisR2R_PunchDoc::SetCompletedSerial(int nSerial)
+{
+	if (nSerial <= 0)
+	{
+		AfxMessageBox(_T("Serial Error.49"));
+		return;
+	}
+
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	if (nSerial > 0)
+	{
+		CString str, sPath = PATH_WORKING_INFO;
+		str.Format(_T("%d"), nSerial);
+		WorkingInfo.LastJob.sCompletedSerialUp = str;
+		::WritePrivateProfileString(_T("Last Job"), _T("Completed SerialUp"), str, sPath);
+		WorkingInfo.LastJob.sCompletedSerialDn = str;
+		::WritePrivateProfileString(_T("Last Job"), _T("Completed SerialDn"), str, sPath);
+
+		// 		if(m_pReelMap)
+		// 			m_pReelMap->SetCompletedSerial(nSerial);
+		if (m_pReelMapUp)
+			m_pReelMapUp->SetCompletedSerial(nSerial);
+		if (bDualTest)
+		{
+			if (m_pReelMapDn)
+				m_pReelMapDn->SetCompletedSerial(nSerial);
+			if (m_pReelMapAllUp)
+				m_pReelMapAllUp->SetCompletedSerial(nSerial);
+			if (m_pReelMapAllDn)
+				m_pReelMapAllDn->SetCompletedSerial(nSerial);
 		}
 	}
 }

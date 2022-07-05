@@ -41,6 +41,7 @@
 	#define	USE_VISION
 	#define	USE_TCPIP
 	#define USE_ENGRAVE
+
 	//#define USE_CAM_MASTER
 	//#define	USE_NMC
 	//#define	USE_MPE
@@ -52,11 +53,11 @@
 #else
 	#define USE_CAM_MASTER
 	#define	USE_NMC
-	#define	USE_MIL
 	#define	USE_LIGHT
 	#define	USE_MPE
 	#define	USE_SMAC
 
+	#define	USE_MIL
 	#define USE_VISION
 	#define	USE_IRAYPLE
 //	#define	USE_SONY
@@ -669,8 +670,8 @@ struct stSystem
 struct stLastJob
 {
 	CString sProcessNum;
-	CString sModelUp, sLayerUp, sLotUp, sSerialUp;
-	CString sModelDn, sLayerDn, sLotDn, sSerialDn;
+	CString sModelUp, sLayerUp, sLotUp, sSerialUp, sCompletedSerialUp;
+	CString sModelDn, sLayerDn, sLotDn, sSerialDn, sCompletedSerialDn;
 
 	CString sSelUserName, sReelTotLen, sOnePnlLen;
 	BOOL bLotSep;
@@ -707,8 +708,8 @@ struct stLastJob
 	stLastJob()
 	{
 		sProcessNum = _T("");
-		sModelUp = _T(""); sLayerUp = _T(""); sLotUp = _T(""); sSerialUp = _T("");
-		sModelDn = _T(""); sLayerDn = _T(""); sLotDn = _T(""); sSerialDn = _T("");
+		sModelUp = _T(""); sLayerUp = _T(""); sLotUp = _T(""); sSerialUp = _T(""); sCompletedSerialUp = _T("");
+		sModelDn = _T(""); sLayerDn = _T(""); sLotDn = _T(""); sSerialDn = _T(""); sCompletedSerialDn = _T("");
 
 		sSelUserName = _T(""); sReelTotLen = _T(""); sOnePnlLen = _T("");
 		bLotSep = FALSE;

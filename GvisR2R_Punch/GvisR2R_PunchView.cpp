@@ -7548,6 +7548,54 @@ void CGvisR2R_PunchView::Shift2Buf()
 	pDoc->DelSharePcr();
 }
 
+
+void CGvisR2R_PunchView::CompletedMk(int nCam) // 0: Only Cam0, 1: Only Cam1, 2: Cam0 and Cam1, 3: None
+{
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+	int nSerial = -1;
+
+	if (bDualTest)
+	{
+		switch (nCam)
+		{
+		case 0:
+			nSerial = m_nBufDnSerial[0];
+			break;
+		case 1:
+			nSerial = m_nBufDnSerial[1];
+			break;
+		case 2:
+			nSerial = m_nBufDnSerial[1];
+			break;
+		case 3:
+			return;
+		default:
+			return;
+		}
+	}
+	else
+	{
+		switch (nCam)
+		{
+		case 0:
+			nSerial = m_nBufUpSerial[0];
+			break;
+		case 1:
+			nSerial = m_nBufUpSerial[1];
+			break;
+		case 2:
+			nSerial = m_nBufUpSerial[1];
+			break;
+		case 3:
+			return;
+		default:
+			return;
+		}
+	}
+
+	pDoc->SetCompletedSerial(nSerial);
+}
+
 void CGvisR2R_PunchView::Shift2Mk()
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
@@ -16974,6 +17022,18 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 			break;
 
 		case MK_ST + (Mk2PtIdx::DoneMk) :	 // Align변수 초기화
+			if( (!m_bSkipAlign[0][0] && !m_bSkipAlign[0][1]) && (!m_bSkipAlign[1][0] && !m_bSkipAlign[1][1]) )
+				CompletedMk(2); // 0: Only Cam0, 1: Only Cam1, 2: Cam0 and Cam1, 3: None
+			else if( (m_bSkipAlign[0][0] || m_bSkipAlign[0][1]) && (!m_bSkipAlign[1][0] && !m_bSkipAlign[1][1]) )
+				CompletedMk(1); // 0: Only Cam0, 1: Only Cam1, 2: Cam0 and Cam1, 3: None
+			else if( (!m_bSkipAlign[0][0] && !m_bSkipAlign[0][1]) && (m_bSkipAlign[1][0] || m_bSkipAlign[1][1]) )
+				CompletedMk(0); // 0: Only Cam0, 1: Only Cam1, 2: Cam0 and Cam1, 3: None
+			else
+				CompletedMk(3); // 0: Only Cam0, 1: Only Cam1, 2: Cam0 and Cam1, 3: None
+
+			m_nMkStAuto++;
+			break;
+		case MK_ST + (Mk2PtIdx::DoneMk) + 1:  // Mk변수 초기화
 			m_bReAlign[0][0] = FALSE; // [nCam][nPos] 
 			m_bReAlign[0][1] = FALSE; // [nCam][nPos] 
 			m_bReAlign[1][0] = FALSE; // [nCam][nPos] 
@@ -16988,9 +17048,7 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 			m_bFailAlign[0][1] = FALSE; // [nCam][nPos] 
 			m_bFailAlign[1][0] = FALSE; // [nCam][nPos] 
 			m_bFailAlign[1][1] = FALSE; // [nCam][nPos] 
-			m_nMkStAuto++;
-			break;
-		case MK_ST + (Mk2PtIdx::DoneMk) + 1:  // Mk변수 초기화
+
 			m_bDoMk[0] = TRUE;
 			m_bDoMk[1] = TRUE;
 			m_bDoneMk[0] = FALSE;
