@@ -638,131 +638,170 @@ void CEngrave::SetStTime()
 {
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
-	CString str, sPrev;
-	int nYear, nMonth, nDay, nHour, nMin, nSec;
+	//CString str, sPrev;
+	//int nYear, nMonth, nDay, nHour, nMin, nSec;
 
-	nYear = pDoc->WorkingInfo.Lot.StTime.nYear;
-	nMonth = pDoc->WorkingInfo.Lot.StTime.nMonth;
-	nDay = pDoc->WorkingInfo.Lot.StTime.nDay;
-	nHour = pDoc->WorkingInfo.Lot.StTime.nHour;
-	nMin = pDoc->WorkingInfo.Lot.StTime.nMin;
-	nSec = pDoc->WorkingInfo.Lot.StTime.nSec;
+	//nYear = pDoc->WorkingInfo.Lot.StTime.nYear;
+	//nMonth = pDoc->WorkingInfo.Lot.StTime.nMonth;
+	//nDay = pDoc->WorkingInfo.Lot.StTime.nDay;
+	//nHour = pDoc->WorkingInfo.Lot.StTime.nHour;
+	//nMin = pDoc->WorkingInfo.Lot.StTime.nMin;
+	//nSec = pDoc->WorkingInfo.Lot.StTime.nSec;
 
-	if (!nYear && !nMonth && !nDay && !nHour && !nMin && !nSec)
-		str = _T("");
-	else
-		str.Format(_T("%04d-%02d-%02d, %02d:%02d:%02d"), nYear, nMonth, nDay, nHour, nMin, nSec);
-
-	char cData[BUFFER_DATA_SIZE];
-	SocketData.nMsgID = _LotStTime;
-	StringToChar(str, cData);
-	sprintf(SocketData.strData, "%s", cData);
-	SendCommand(SocketData);
+	//if (!nYear && !nMonth && !nDay && !nHour && !nMin && !nSec)
+	//	str = _T("");
+	//else
+	//	str.Format(_T("%04d-%02d-%02d, %02d:%02d:%02d"), nYear, nMonth, nDay, nHour, nMin, nSec);
+	//char cData[BUFFER_DATA_SIZE];
+	//SocketData.nMsgID = _LotStTime;
+	//StringToChar(str, cData);
+	//sprintf(SocketData.strData, "%s", cData);
+	//SendCommand(SocketData);
+	CString str = _T("");
+	if(pView)
+	{
+		if (pView->m_pDlgMenu01)
+		{
+			str = pView->m_pDlgMenu01->GetStTime();
+			char cData[BUFFER_DATA_SIZE];
+			SocketData.nMsgID = _LotStTime;
+			StringToChar(str, cData);
+			sprintf(SocketData.strData, "%s", cData);
+			SendCommand(SocketData);
+		}
+	}
 }
 
 void CEngrave::SetRunTime()
 {
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
-	CString str, sPrev;
-	int nDiff;
-	int nHour, nMin, nSec;
-	int nStYear, nStMonth, nStDay, nStHour, nStMin, nStSec;
-	int nCurYear, nCurMonth, nCurDay, nCurHour, nCurMin, nCurSec;
-	int nEdYear, nEdMonth, nEdDay, nEdHour, nEdMin, nEdSec;
+	//CString str, sPrev;
+	//int nDiff;
+	//int nHour, nMin, nSec;
+	//int nStYear, nStMonth, nStDay, nStHour, nStMin, nStSec;
+	//int nCurYear, nCurMonth, nCurDay, nCurHour, nCurMin, nCurSec;
+	//int nEdYear, nEdMonth, nEdDay, nEdHour, nEdMin, nEdSec;
 
-	nStYear = pDoc->WorkingInfo.Lot.StTime.nYear;
-	nStMonth = pDoc->WorkingInfo.Lot.StTime.nMonth;
-	nStDay = pDoc->WorkingInfo.Lot.StTime.nDay;
-	nStHour = pDoc->WorkingInfo.Lot.StTime.nHour;
-	nStMin = pDoc->WorkingInfo.Lot.StTime.nMin;
-	nStSec = pDoc->WorkingInfo.Lot.StTime.nSec;
+	//nStYear = pDoc->WorkingInfo.Lot.StTime.nYear;
+	//nStMonth = pDoc->WorkingInfo.Lot.StTime.nMonth;
+	//nStDay = pDoc->WorkingInfo.Lot.StTime.nDay;
+	//nStHour = pDoc->WorkingInfo.Lot.StTime.nHour;
+	//nStMin = pDoc->WorkingInfo.Lot.StTime.nMin;
+	//nStSec = pDoc->WorkingInfo.Lot.StTime.nSec;
 
-	nCurYear = pDoc->WorkingInfo.Lot.CurTime.nYear;
-	nCurMonth = pDoc->WorkingInfo.Lot.CurTime.nMonth;
-	nCurDay = pDoc->WorkingInfo.Lot.CurTime.nDay;
-	nCurHour = pDoc->WorkingInfo.Lot.CurTime.nHour;
-	nCurMin = pDoc->WorkingInfo.Lot.CurTime.nMin;
-	nCurSec = pDoc->WorkingInfo.Lot.CurTime.nSec;
+	//nCurYear = pDoc->WorkingInfo.Lot.CurTime.nYear;
+	//nCurMonth = pDoc->WorkingInfo.Lot.CurTime.nMonth;
+	//nCurDay = pDoc->WorkingInfo.Lot.CurTime.nDay;
+	//nCurHour = pDoc->WorkingInfo.Lot.CurTime.nHour;
+	//nCurMin = pDoc->WorkingInfo.Lot.CurTime.nMin;
+	//nCurSec = pDoc->WorkingInfo.Lot.CurTime.nSec;
 
-	nEdYear = pDoc->WorkingInfo.Lot.EdTime.nYear;
-	nEdMonth = pDoc->WorkingInfo.Lot.EdTime.nMonth;
-	nEdDay = pDoc->WorkingInfo.Lot.EdTime.nDay;
-	nEdHour = pDoc->WorkingInfo.Lot.EdTime.nHour;
-	nEdMin = pDoc->WorkingInfo.Lot.EdTime.nMin;
-	nEdSec = pDoc->WorkingInfo.Lot.EdTime.nSec;
+	//nEdYear = pDoc->WorkingInfo.Lot.EdTime.nYear;
+	//nEdMonth = pDoc->WorkingInfo.Lot.EdTime.nMonth;
+	//nEdDay = pDoc->WorkingInfo.Lot.EdTime.nDay;
+	//nEdHour = pDoc->WorkingInfo.Lot.EdTime.nHour;
+	//nEdMin = pDoc->WorkingInfo.Lot.EdTime.nMin;
+	//nEdSec = pDoc->WorkingInfo.Lot.EdTime.nSec;
 
-	if (!nStYear && !nStMonth && !nStDay && !nStHour && !nStMin && !nStSec)
+	//if (!nStYear && !nStMonth && !nStDay && !nStHour && !nStMin && !nStSec)
+	//{
+	//	str = _T("");
+	//}
+	//else if (!nEdYear && !nEdMonth && !nEdDay && !nEdHour && !nEdMin && !nEdSec)
+	//{
+	//	nDiff = (GetTickCount() - pView->m_dwLotSt) / 1000;
+	//	nHour = int(nDiff / 3600);
+	//	nMin = int((nDiff - 3600 * nHour) / 60);
+	//	nSec = nDiff % 60;
+	//	str.Format(_T("%02d:%02d:%02d"), nHour, nMin, nSec);
+	//}
+	//else
+	//{
+	//	if (pView->m_dwLotEd > 0)
+	//	{
+	//		nDiff = (pView->m_dwLotEd - pView->m_dwLotSt) / 1000;
+	//		nHour = int(nDiff / 3600);
+	//		nMin = int((nDiff - 3600 * nHour) / 60);
+	//		nSec = nDiff % 60;
+	//		str.Format(_T("%02d:%02d:%02d"), nHour, nMin, nSec);
+	//	}
+	//	else
+	//	{
+	//		nHour = nEdHour - nStHour;
+	//		if (nHour < 0)
+	//			nHour += 24;
+
+	//		nMin = nEdMin - nStMin;
+	//		if (nMin < 0)
+	//			nMin += 60;
+
+	//		nSec = nEdSec - nStSec;
+	//		if (nSec < 0)
+	//			nSec += 60;
+
+	//		str.Format(_T("%02d:%02d:%02d"), nHour, nMin, nSec);
+	//	}
+	//}
+	//char cData[BUFFER_DATA_SIZE];
+	//SocketData.nMsgID = _LotRunTime; 
+	//StringToChar(str, cData);
+	//sprintf(SocketData.strData, "%s", cData);
+	//SendCommand(SocketData);
+
+	CString str = _T("");
+	if (pView)
 	{
-		str = _T("");
-	}
-	else if (!nEdYear && !nEdMonth && !nEdDay && !nEdHour && !nEdMin && !nEdSec)
-	{
-		nDiff = (GetTickCount() - pView->m_dwLotSt) / 1000;
-		nHour = int(nDiff / 3600);
-		nMin = int((nDiff - 3600 * nHour) / 60);
-		nSec = nDiff % 60;
-		str.Format(_T("%02d:%02d:%02d"), nHour, nMin, nSec);
-	}
-	else
-	{
-		if (pView->m_dwLotEd > 0)
+		if (pView->m_pDlgMenu01)
 		{
-			nDiff = (pView->m_dwLotEd - pView->m_dwLotSt) / 1000;
-			nHour = int(nDiff / 3600);
-			nMin = int((nDiff - 3600 * nHour) / 60);
-			nSec = nDiff % 60;
-			str.Format(_T("%02d:%02d:%02d"), nHour, nMin, nSec);
-		}
-		else
-		{
-			nHour = nEdHour - nStHour;
-			if (nHour < 0)
-				nHour += 24;
-
-			nMin = nEdMin - nStMin;
-			if (nMin < 0)
-				nMin += 60;
-
-			nSec = nEdSec - nStSec;
-			if (nSec < 0)
-				nSec += 60;
-
-			str.Format(_T("%02d:%02d:%02d"), nHour, nMin, nSec);
+			str = pView->m_pDlgMenu01->GetRunTime();
+			char cData[BUFFER_DATA_SIZE];
+			SocketData.nMsgID = _LotRunTime;
+			StringToChar(str, cData);
+			sprintf(SocketData.strData, "%s", cData);
+			SendCommand(SocketData);
 		}
 	}
-
-	char cData[BUFFER_DATA_SIZE];
-	SocketData.nMsgID = _LotRunTime; 
-	StringToChar(str, cData);
-	sprintf(SocketData.strData, "%s", cData);
-	SendCommand(SocketData);
 }
 
 void CEngrave::SetEdTime()
 {
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
-	CString str, sPrev;
-	int nYear, nMonth, nDay, nHour, nMin, nSec;
+	//CString str, sPrev;
+	//int nYear, nMonth, nDay, nHour, nMin, nSec;
 
-	nYear = pDoc->WorkingInfo.Lot.EdTime.nYear;
-	nMonth = pDoc->WorkingInfo.Lot.EdTime.nMonth;
-	nDay = pDoc->WorkingInfo.Lot.EdTime.nDay;
-	nHour = pDoc->WorkingInfo.Lot.EdTime.nHour;
-	nMin = pDoc->WorkingInfo.Lot.EdTime.nMin;
-	nSec = pDoc->WorkingInfo.Lot.EdTime.nSec;
+	//nYear = pDoc->WorkingInfo.Lot.EdTime.nYear;
+	//nMonth = pDoc->WorkingInfo.Lot.EdTime.nMonth;
+	//nDay = pDoc->WorkingInfo.Lot.EdTime.nDay;
+	//nHour = pDoc->WorkingInfo.Lot.EdTime.nHour;
+	//nMin = pDoc->WorkingInfo.Lot.EdTime.nMin;
+	//nSec = pDoc->WorkingInfo.Lot.EdTime.nSec;
 
-	if (!nYear && !nMonth && !nDay && !nHour && !nMin && !nSec)
-		str = _T("");
-	else
-		str.Format(_T("%04d-%02d-%02d, %02d:%02d:%02d"), nYear, nMonth, nDay, nHour, nMin, nSec);
+	//if (!nYear && !nMonth && !nDay && !nHour && !nMin && !nSec)
+	//	str = _T("");
+	//else
+	//	str.Format(_T("%04d-%02d-%02d, %02d:%02d:%02d"), nYear, nMonth, nDay, nHour, nMin, nSec);
 
-	char cData[BUFFER_DATA_SIZE];
-	SocketData.nMsgID = _LotEdTime; 
-	StringToChar(str, cData);
-	sprintf(SocketData.strData, "%s", cData);
-	SendCommand(SocketData);
+	//char cData[BUFFER_DATA_SIZE];
+	//SocketData.nMsgID = _LotEdTime; 
+	//StringToChar(str, cData);
+	//sprintf(SocketData.strData, "%s", cData);
+	//SendCommand(SocketData);
+
+	CString str = _T("");
+	if (pView)
+	{
+		if (pView->m_pDlgMenu01)
+		{
+			str = pView->m_pDlgMenu01->GetEdTime();
+			char cData[BUFFER_DATA_SIZE];
+			SocketData.nMsgID = _LotEdTime;
+			StringToChar(str, cData);
+			sprintf(SocketData.strData, "%s", cData);
+			SendCommand(SocketData);
+		}
+	}
 }
 
 void CEngrave::SetStripRatio()
@@ -1152,23 +1191,28 @@ void CEngrave::Set2DReader()
 	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _2DAoiLen; StringToChar(pDoc->WorkingInfo.Motion.s2DAoiLen, cData);
+	SocketData.nMsgID = _2DAoiLen; 
+	StringToChar(pDoc->WorkingInfo.Motion.s2DAoiLen, cData);
 	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _2DMkLen; StringToChar(pDoc->WorkingInfo.Motion.s2DMkLen, cData);
+	SocketData.nMsgID = _2DMkLen; 
+	StringToChar(pDoc->WorkingInfo.Motion.s2DMkLen, cData);
 	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _2DMoveVel; StringToChar(pDoc->WorkingInfo.Motion.s2DMoveVel, cData);
+	SocketData.nMsgID = _2DMoveVel; 
+	StringToChar(pDoc->WorkingInfo.Motion.s2DMoveVel, cData);
 	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _2DMoveAcc; StringToChar(pDoc->WorkingInfo.Motion.s2DMoveAcc, cData);
+	SocketData.nMsgID = _2DMoveAcc; 
+	StringToChar(pDoc->WorkingInfo.Motion.s2DMoveAcc, cData);
 	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _2DOneShotLen; StringToChar(pDoc->WorkingInfo.Motion.s2DOneShotRemainLen, cData);
+	SocketData.nMsgID = _2DOneShotLen; 
+	StringToChar(pDoc->WorkingInfo.Motion.s2DOneShotRemainLen, cData);
 	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 }
@@ -1246,7 +1290,7 @@ void CEngrave::SetFdInfo()
 	sprintf(SocketData.strData, "%.3f", pDoc->GetOnePnlLen());
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _OnePnlVal;
+	SocketData.nMsgID = _OnePnlVel;
 	sprintf(SocketData.strData, "%.3f", pDoc->GetOnePnlVel());
 	SendCommand(SocketData);
 
@@ -1273,23 +1317,28 @@ void CEngrave::SetAoiInfo()
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
 
-	SocketData.nMsgID = _AoiLeadPitch; StringToChar(pDoc->WorkingInfo.Motion.sAoiFdLead, cData);
+	SocketData.nMsgID = _AoiLeadPitch; 
+	StringToChar(pDoc->WorkingInfo.Motion.sAoiFdLead, cData);
 	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _AoiPushOffLen; StringToChar(pDoc->WorkingInfo.Motion.sAoiFdVacOff, cData);
+	SocketData.nMsgID = _AoiPushOffLen; 
+	StringToChar(pDoc->WorkingInfo.Motion.sAoiFdVacOff, cData);
 	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _AoiTqVal; StringToChar(pDoc->WorkingInfo.Motion.sAoiTq, cData);
+	SocketData.nMsgID = _AoiTqVal; 
+	StringToChar(pDoc->WorkingInfo.Motion.sAoiTq, cData);
 	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _AoiBuffShotNum; StringToChar(pDoc->WorkingInfo.Motion.sFdAoiAoiDistShot, cData);
+	SocketData.nMsgID = _AoiBuffShotNum; 
+	StringToChar(pDoc->WorkingInfo.Motion.sFdAoiAoiDistShot, cData);
 	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 
-	SocketData.nMsgID = _AoiMkLen; StringToChar(pDoc->WorkingInfo.Motion.sFdMkAoiInitDist, cData);
+	SocketData.nMsgID = _AoiMkLen; 
+	StringToChar(pDoc->WorkingInfo.Motion.sFdMkAoiInitDist, cData);
 	sprintf(SocketData.strData, "%s", cData);
 	SendCommand(SocketData);
 }
@@ -1324,23 +1373,28 @@ void CEngrave::SetMkInfo()
 
 	SocketData.nMsgID = _MkBuffCurrPos;
 	double dBufEnc = (double)pDoc->m_pMpeData[0][1] / 1000.0;	// 마킹부 버퍼 엔코더 값(단위 mm * 1000)
-	sprintf(SocketData.strData, "%.1f", dBufEnc);
+	//sprintf(SocketData.strData, "%.1f", dBufEnc);
+	SocketData.fData1 = (float)dBufEnc;
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _MkNumLf;
-	sprintf(SocketData.strData, "%d", pDoc->GetMkCntL());
+	SocketData.nData1 = pDoc->GetMkCntL();
+	//sprintf(SocketData.strData, "%d", pDoc->GetMkCntL());
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _MkNumRt;
-	sprintf(SocketData.strData, "%d", pDoc->GetMkCntR());
+	SocketData.nData1 = pDoc->GetMkCntR();
+	//sprintf(SocketData.strData, "%d", pDoc->GetMkCntR());
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _MkMaxNumLf;
-	sprintf(SocketData.strData, "%d", pDoc->GetMkLimitL());
+	SocketData.nData1 =  pDoc->GetMkLimitL();
+	//sprintf(SocketData.strData, "%d", pDoc->GetMkLimitL());
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _MkMaxNumRt;
-	sprintf(SocketData.strData, "%d", pDoc->GetMkLimitR());
+	SocketData.nData1 = pDoc->GetMkLimitR();
+	//sprintf(SocketData.strData, "%d", pDoc->GetMkLimitR());
 	SendCommand(SocketData);
 }
 

@@ -55,7 +55,7 @@ typedef enum _stItemInx {
 	_2DEngLen, _2DAoiLen, _2DMkLen, _2DMoveVel, _2DMoveAcc, _2DOneShotLen, _EngLeadPitch, _EngPushOffLen, _EngTqVal, _EngAoiLen,
 	_EngFdDiffMax, _EngFdDiffRng, _EngFdDiffNum, _EngBuffInitPos, _EngBuffCurrPos,  
 	// Menu04
-	_FdVel, _FdAcc, _OnePnlLen, _OnePnlVal, _OnePnlAcc, _AoiLeadPitch, _MkLeadPitch, _FdDiffMax, _FdDiffRng, _FdDiffNum, 
+	_FdVel, _FdAcc, _OnePnlLen, _OnePnlVel, _OnePnlAcc, _AoiLeadPitch, _MkLeadPitch, _FdDiffMax, _FdDiffRng, _FdDiffNum, 
 	_AoiPushOffLen, _MkPushOffLen, _AoiTqVal, _MkTqVal, _AoiBuffShotNum, _AoiMkLen, _MkBuffInitPos, _MkBuffCurrPos,
 	_MkNumLf, _MkNumRt, _MkMaxNumLf, _MkMaxNumRt,
 	_MkInitPosLf, _MkInitVelLf, _MkInitAccLf, _MkFnlPosLf, _MkFnlVelLf, _MkFnlAccLf, _MkFnlTqLf,

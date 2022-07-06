@@ -2455,6 +2455,23 @@ void CDlgMenu01::DispStTime()
 	GetDlgItem(IDC_STC_LOT_START)->GetWindowText(sPrev);
 	if(sPrev != str)
 		myStcData[21].SetText(str);
+
+#ifdef USE_ENGRAVE
+	if (pView)
+	{
+		if (pView->m_pEngrave)
+		{
+			pView->m_pEngrave->SetStTime();
+		}
+	}
+#endif
+}
+
+CString CDlgMenu01::GetStTime()
+{
+	CString str;
+	GetDlgItem(IDC_STC_LOT_START)->GetWindowText(str);
+	return str;
 }
 
 void CDlgMenu01::DispRunTime()
@@ -2538,6 +2555,23 @@ void CDlgMenu01::DispRunTime()
 		if(sPrev != str)
 			myStcData[22].SetText(str);
 	}
+
+#ifdef USE_ENGRAVE
+	if (pView)
+	{
+		if (pView->m_pEngrave)
+		{
+			pView->m_pEngrave->SetRunTime();
+		}
+	}
+#endif
+}
+
+CString CDlgMenu01::GetRunTime()
+{
+	CString str;
+	GetDlgItem(IDC_STC_LOT_RUN)->GetWindowText(str);
+	return str;
 }
 
 void CDlgMenu01::DispEdTime()
@@ -2561,6 +2595,23 @@ void CDlgMenu01::DispEdTime()
 	GetDlgItem(IDC_STC_LOT_END)->GetWindowText(sPrev);
 	if(sPrev != str)
 		myStcData[23].SetText(str);
+
+#ifdef USE_ENGRAVE
+	if (pView)
+	{
+		if (pView->m_pEngrave)
+		{
+			pView->m_pEngrave->SetEdTime();
+		}
+	}
+#endif
+}
+
+CString CDlgMenu01::GetEdTime()
+{
+	CString str;
+	GetDlgItem(IDC_STC_LOT_END)->GetWindowText(str);
+	return str;
 }
 
 BOOL CDlgMenu01::SetSerial(int nSerial, BOOL bDumy)
@@ -2855,6 +2906,18 @@ void CDlgMenu01::UpdateRst()
 	DispTotRatio();
 	DispStripRatio();
 	DispDef();
+
+#ifdef USE_ENGRAVE
+	if (pView)
+	{
+		if (pView->m_pEngrave)
+		{
+			pView->m_pEngrave->SetTotRatio();
+			pView->m_pEngrave->SetStripRatio();
+			pView->m_pEngrave->SetDef();
+		}
+	}
+#endif
 }
 
 void CDlgMenu01::DispTotRatio()

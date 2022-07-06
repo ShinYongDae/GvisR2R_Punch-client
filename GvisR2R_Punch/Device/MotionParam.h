@@ -205,6 +205,11 @@ typedef struct stMotionMotion
 				sAlignResultScore[k][i] = _T("");
 			}
 		}
+
+		s2DEngLen = _T(""); s2DAoiLen = _T(""); s2DMkLen = _T(""); s2DMoveVel = _T(""); s2DMoveAcc = _T(""); s2DOneShotRemainLen = _T("");
+		sEngAoiLen = _T(""); sEngFdDiffMax = _T(""); sEngFdDiffRng = _T(""); sEngFdDiffNum = _T("");
+		sEngBuffInitPos = _T(""); sEngBuffCurrPos = _T("");
+
 	}
 
 }MotionMotion;
