@@ -10,8 +10,8 @@
 #include "MyBtn.h"
 #include "MyStatic.h"
 
-#define MAX_INFO_STC				53
-#define MAX_INFO_STC_DATA			13
+#define MAX_INFO_STC				59
+#define MAX_INFO_STC_DATA			15
 #define MAX_INFO_BTN				25
 
 /////////////////////////////////////////////////////////////////////////////
@@ -88,6 +88,7 @@ protected:
 	afx_msg void OnStc0030();
 	afx_msg void OnStc0034();
 	afx_msg void OnStc0037();
+	afx_msg void OnStc32();
 	afx_msg void OnBtnExit();
 	afx_msg void OnStc174();
 	afx_msg void OnStc178();
@@ -101,6 +102,7 @@ protected:
 	afx_msg void OnChkUseAoiInner();
 	afx_msg void OnChkUseAoiOuter();
 	afx_msg void OnStc181();
+	afx_msg void OnStc183();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 public:

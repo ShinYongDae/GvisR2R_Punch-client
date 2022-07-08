@@ -10,7 +10,7 @@
 #endif // _MSC_VER > 1000
 
 
-#define TEST_MODE		1
+//#define TEST_MODE		1
 
 
 #ifdef TEST_MODE
@@ -39,8 +39,8 @@
 
 	#define	USE_MIL
 	#define	USE_VISION
-	#define	USE_TCPIP
-	#define USE_ENGRAVE
+	//#define	USE_TCPIP
+	//#define USE_ENGRAVE
 
 	//#define USE_CAM_MASTER
 	//#define	USE_NMC
@@ -679,9 +679,9 @@ struct stLastJob
 	BOOL bTempPause;	// [0]:AOI-Up , [1]:AOI-Dn
 	int nMergingLayer;
 	CString sTempPauseLen, sLmtTotYld, sLmtPatlYld;
-	CString sStripOutRatio;
+	CString sStripOutRatio, sCustomNeedRatio;
 	BOOL bContFixDef;
-	CString sNumRangeFixDef, sNumContFixDef;
+	CString sNumRangeFixDef, sNumContFixDef, sUltraSonicCleannerStTim;
 	BOOL bRclDrSen, bMkDrSen, bBufDrSen, bAoiUpDrSen, bAoiDnDrSen, bEngvDrSen, bUclDrSen;
 	BOOL bDispMkPcs, bStopFixDef, bMkSftySen, bAoiSftySen;
 	CString sJogSpd, sLotSerial; //sLightVal, 
@@ -718,9 +718,11 @@ struct stLastJob
 		nMergingLayer = 0; 	// [0]:AOI-Up , [1]:AOI-Dn
 		sTempPauseLen = _T(""); sLmtTotYld = _T(""); sLmtPatlYld = _T("");
 		sStripOutRatio = _T("20.0"); // Minimum 20%
+		sCustomNeedRatio = _T("");
 		bContFixDef = FALSE;
 		sNumRangeFixDef = _T("");
 		sNumContFixDef = _T("");
+		sUltraSonicCleannerStTim = _T("5.0"); // AOI_Dn : MW05940, AOI_Up : MW05942
 		bRclDrSen = FALSE; bMkDrSen = FALSE; bBufDrSen = FALSE; bAoiUpDrSen = FALSE; bAoiDnDrSen = FALSE; bEngvDrSen = FALSE; bUclDrSen = FALSE;
 		bDispMkPcs = FALSE; bStopFixDef = FALSE; bMkSftySen = FALSE; bAoiSftySen = FALSE;
 		sJogSpd = _T(""); sLotSerial = _T(""); //sLightVal=""); 

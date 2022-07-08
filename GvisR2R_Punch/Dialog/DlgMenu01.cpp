@@ -2800,6 +2800,9 @@ void CDlgMenu01::UpdateInfo()
 			myStcData[14].SetText(_T(""));	// 진행Lot시리얼
 	}
 
+	myStcData[11].SetText(pDoc->WorkingInfo.LastJob.sCustomNeedRatio);	// 고객출하수율
+	myStcData[11].SetBkColor(RGB_WHITE);
+
 	if(pDoc->WorkingInfo.LastJob.bTempPause)
 	{
 		myBtn[0].SetCheck(TRUE);

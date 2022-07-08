@@ -1217,7 +1217,7 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.LastJob.sCompletedSerialUp = CString(szData);
 	else
 	{
-		AfxMessageBox(_T("SerialUp이 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		//AfxMessageBox(_T("SerialUp이 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
 		WorkingInfo.LastJob.sCompletedSerialUp = CString(_T(""));
 	}
 
@@ -1225,7 +1225,7 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.LastJob.sCompletedSerialDn = CString(szData);
 	else
 	{
-		AfxMessageBox(_T("SerialDn이 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
+		//AfxMessageBox(_T("SerialDn이 설정되어 있지 않습니다."), MB_ICONWARNING | MB_OK);
 		WorkingInfo.LastJob.sCompletedSerialDn = CString(_T(""));
 	}
 
@@ -1332,6 +1332,12 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.LastJob.sNumContFixDef = CString(_T(""));
 	}
 
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Ultra Sonic Cleanner Start Time"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.sUltraSonicCleannerStTim = CString(szData);
+	else
+		WorkingInfo.LastJob.sUltraSonicCleannerStTim = CString(_T("5.0"));
+
+
 	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Use Recoiler Door Sensor"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.LastJob.bRclDrSen = _ttoi(szData) ? TRUE : FALSE;
 	else
@@ -1391,6 +1397,11 @@ BOOL CGvisR2R_PunchDoc::LoadWorkingInfo()
 		WorkingInfo.LastJob.sStripOutRatio = CString(szData);
 	else
 		WorkingInfo.LastJob.sStripOutRatio = _T("20.0"); // Minimum 20%
+
+	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Custom Need Ratio"), NULL, szData, sizeof(szData), sPath))
+		WorkingInfo.LastJob.sCustomNeedRatio = CString(szData);
+	else
+		WorkingInfo.LastJob.sCustomNeedRatio = _T("");
 
 	if (0 < ::GetPrivateProfileString(_T("Last Job"), _T("Partial Speed"), NULL, szData, sizeof(szData), sPath))
 		WorkingInfo.LastJob.sPartialSpd = CString(szData);
@@ -3118,6 +3129,9 @@ void CGvisR2R_PunchDoc::SaveWorkingInfo()
 	sData = WorkingInfo.LastJob.sNumContFixDef;
 	::WritePrivateProfileString(_T("Last Job"), _T("Number of Continuous Fix Defect"), sData, sPath);
 
+	sData = WorkingInfo.LastJob.sUltraSonicCleannerStTim;
+	::WritePrivateProfileString(_T("Last Job"), _T("Ultra Sonic Cleanner Start Time"), sData, sPath);
+
 	sData.Format(_T("%d"), WorkingInfo.LastJob.bRclDrSen ? 1 : 0);
 	::WritePrivateProfileString(_T("Last Job"), _T("Use Recoiler Door Sensor"), sData, sPath);
 
@@ -3204,6 +3218,9 @@ void CGvisR2R_PunchDoc::SaveWorkingInfo()
 
 	sData = WorkingInfo.LastJob.sStripOutRatio;
 	::WritePrivateProfileString(_T("Last Job"), _T("Strip Out Ratio"), sData, sPath);
+
+	sData = WorkingInfo.LastJob.sCustomNeedRatio;
+	::WritePrivateProfileString(_T("Last Job"), _T("Custom Need Ratio"), sData, sPath);
 
 	sData = WorkingInfo.LastJob.sPartialSpd;
 	::WritePrivateProfileString(_T("Last Job"), _T("Partial Speed"), sData, sPath);

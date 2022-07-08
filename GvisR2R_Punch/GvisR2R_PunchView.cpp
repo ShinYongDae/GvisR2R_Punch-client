@@ -226,6 +226,7 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 	m_bNewModel = FALSE;
 	m_dTotVel = 0.0; m_dPartVel = 0.0;
 	m_bTIM_CHK_TEMP_STOP = FALSE;
+	m_bTIM_SAFTY_STOP = FALSE;
 	m_sMyMsg = _T("");
 	m_nTypeMyMsg = IDOK;
 
@@ -973,6 +974,13 @@ void CGvisR2R_PunchView::OnTimer(UINT_PTR nIDEvent)
 
 		if (m_bTIM_CHK_TEMP_STOP)
 			SetTimer(TIM_CHK_TEMP_STOP, 100, NULL);
+	}
+
+	if (nIDEvent == TIM_SAFTY_STOP)
+	{
+		KillTimer(TIM_SAFTY_STOP);
+		MsgBox(_T("일시정지 - 마킹부 안전센서가 감지되었습니다."));
+		m_bTIM_SAFTY_STOP = FALSE;
 	}
 
 
@@ -2985,10 +2993,11 @@ BOOL CGvisR2R_PunchView::ChkSaftySen() // 감지 : TRUE , 비감지 : FALSE
 			m_bSwRunF = FALSE;
 			Stop();
 			pView->DispStsBar(_T("정지-4"), 0);
-			DispMain(_T("정 지"), RGB_RED);
-			MsgBox(_T("일시정지 - 마킹부 안전센서가 감지되었습니다."));
+			DispMain(_T("정 지"), RGB_RED);			
 			TowerLamp(RGB_RED, TRUE);
 			Buzzer(TRUE, 0);
+			m_bTIM_SAFTY_STOP = TRUE;//MsgBox(_T("일시정지 - 마킹부 안전센서가 감지되었습니다."));
+			SetTimer(TIM_SAFTY_STOP, 100, NULL);
 		}
 		else if (!pDoc->Status.bSensSaftyMk && pDoc->Status.bSensSaftyMkF)
 		{
@@ -16389,6 +16398,9 @@ void CGvisR2R_PunchView::Mk2PtInit()
 
 void CGvisR2R_PunchView::Mk2PtAlignPt0()
 {
+	if (!IsRun())
+		return;
+
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 	if (m_bMkSt)
@@ -16623,6 +16635,9 @@ void CGvisR2R_PunchView::Mk2PtAlignPt0()
 
 void CGvisR2R_PunchView::Mk2PtAlignPt1()
 {
+	if (!IsRun())
+		return;
+
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 	if (m_bMkSt)
@@ -17680,6 +17695,9 @@ void CGvisR2R_PunchView::Mk4PtInit()
 
 void CGvisR2R_PunchView::Mk4PtAlignPt0()
 {
+	if (!IsRun())
+		return;
+
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 	if (m_bMkSt)
@@ -17913,6 +17931,9 @@ void CGvisR2R_PunchView::Mk4PtAlignPt0()
 
 void CGvisR2R_PunchView::Mk4PtAlignPt1()
 {
+	if (!IsRun())
+		return;
+
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
 	if (m_bMkSt)
@@ -19915,6 +19936,10 @@ void CGvisR2R_PunchView::InitPLC()
 	m_pMpe->Write(_T("ML45060"), lData);	// 2D 바코드 리더기위치까지 Feeding 속도 (단위 mm/sec * 1000)
 	lData = (long)(_tstof(pDoc->WorkingInfo.Motion.sFdBarcodeOffsetAcc) * 1000.0);
 	m_pMpe->Write(_T("ML45062"), lData);	// 2D 바코드 리더기위치까지 Feeding 가속도 (단위 mm/s^2 * 1000)
+
+	lData = (long)(_tstof(pDoc->WorkingInfo.LastJob.sUltraSonicCleannerStTim) * 100.0);
+	m_pMpe->Write(_T("MW05940"), lData);	// AOI_Dn (단위 [초] * 100) : 1 is 10 mSec.
+	m_pMpe->Write(_T("MW05942"), lData);	// AOI_Up (단위 [초] * 100) : 1 is 10 mSec.
 }
 
 BOOL CGvisR2R_PunchView::SetCollision(double dCollisionMargin)

@@ -408,6 +408,7 @@
 #define IDC_STC_TOTAL_NUM_DN            1148
 #define IDC_BTN_BUFF_HOME               1148
 #define IDC_STC_008                     1148
+#define IDC_STC_31                      1148
 #define IDC_STC_0013                    1149
 #define IDC_STC_WK_DN                   1149
 #define IDC_BTN_BUFF_INIT_MOVE          1149
@@ -420,6 +421,7 @@
 #define IDC_GRP_LT6                     1151
 #define IDC_GRP_1                       1151
 #define IDC_STC_011                     1151
+#define IDC_STC_182                     1151
 #define IDC_STC_GOOD_NUM_ALL            1152
 #define IDC_BTN_BUFF_UP                 1152
 #define IDC_STC_014                     1152
@@ -751,9 +753,11 @@
 #define IDC_STC_12_13                   1235
 #define IDC_STC_66                      1235
 #define IDC_STC_UTIL04_4                1235
+#define IDC_STC_30                      1235
 #define IDC_STC_12_14                   1236
 #define IDC_STC_67                      1236
 #define IDC_STC_UTIL04_5                1236
+#define IDC_STC_32                      1236
 #define IDC_STC_12_15                   1237
 #define IDC_STC_68                      1237
 #define IDC_STC_UTIL04_6                1237
@@ -775,15 +779,18 @@
 #define IDC_STC_12_19                   1241
 #define IDC_STC_72                      1241
 #define IDC_STC_UTIL04_10               1241
+#define IDC_STC_33                      1241
 #define IDC_STC_12_18                   1242
 #define IDC_STC_73                      1242
 #define IDC_STC_UTIL04_11               1242
 #define IDC_STC_12_20                   1243
 #define IDC_STC_74                      1243
 #define IDC_STC_UTIL04_12               1243
+#define IDC_STC_183                     1243
 #define IDC_STC_12_21                   1244
 #define IDC_STC_75                      1244
 #define IDC_STC_UTIL04_13               1244
+#define IDC_STC_184                     1244
 #define IDC_STC_12_22                   1245
 #define IDC_STC_76                      1245
 #define IDC_STC_UTIL04_14               1245

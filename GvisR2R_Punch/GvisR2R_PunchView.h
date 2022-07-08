@@ -70,6 +70,7 @@
 #define TIM_SHOW_MENU01			18
 #define TIM_SHOW_MENU02			19
 #define TIM_CHK_TEMP_STOP		20
+#define TIM_SAFTY_STOP			21
 
 namespace Mk2PtIdx
 {
@@ -164,6 +165,7 @@ class CGvisR2R_PunchView : public CFormView
 	CString m_sDispMsg[10];
 	double m_dTotVel, m_dPartVel;
 	BOOL m_bTIM_CHK_TEMP_STOP;
+	BOOL m_bTIM_SAFTY_STOP;
 	CString m_sMyMsg; int m_nTypeMyMsg;
 	int m_nVsBufLastSerial[2];
 	BOOL m_bOpenShareUp, m_bOpenShareDn;
