@@ -271,6 +271,8 @@ public:
 	void SetEngraveCleanner(BOOL bOn);
 	void SetAoiDnCleanner(BOOL bOn);
 
+	void UpdateInfo();
+
 // Dialog Data
 	//{{AFX_DATA(CDlgMenu03)
 	enum { IDD = IDD_DLG_MENU_03 };

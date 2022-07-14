@@ -2594,7 +2594,6 @@ void CDlgMenu03::SetMkOnePnl(BOOL bOn)
 
 }
 
-
 void CDlgMenu03::SetEngraveCleanner(BOOL bOn)
 {
 	pView->m_pMpe->Write(_T("MB44014E"), bOn ? 1 : 0); // [각인부 세정기]
@@ -4429,7 +4428,12 @@ BOOL CDlgMenu03::IsEngraveFdVac()
 
 	// MpeIO
 	int nInSeg = pDoc->MkIo.MpeIo.nInSeg;
-	int nOutSeg = pDoc->MkIo.MpeIo.nOutSeg;
+	int nOutSeg = pDoc->MkIo.MpeIo.nOutSeg; 
 
 	//return CDialog::OnEraseBkgnd(pDC);
+}
+
+void CDlgMenu03::UpdateInfo()
+{
+	Disp();
 }

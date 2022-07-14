@@ -10,7 +10,7 @@
 #endif // _MSC_VER > 1000
 
 
-//#define TEST_MODE		1
+#define TEST_MODE		1
 
 
 #ifdef TEST_MODE
@@ -39,8 +39,8 @@
 
 	#define	USE_MIL
 	#define	USE_VISION
-	//#define	USE_TCPIP
-	//#define USE_ENGRAVE
+	#define	USE_TCPIP
+	#define USE_ENGRAVE
 
 	//#define USE_CAM_MASTER
 	//#define	USE_NMC

@@ -2242,3 +2242,8 @@ BOOL CDlgMenu04::OnEraseBkgnd(CDC* pDC)
 
 	//return CDialog::OnEraseBkgnd(pDC);
 }
+
+void CDlgMenu04::UpdateInfo()
+{
+	Disp();
+}
