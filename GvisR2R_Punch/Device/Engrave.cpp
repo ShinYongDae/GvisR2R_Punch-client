@@ -434,6 +434,123 @@ BOOL CEngrave::SetSysInfo()
 	return FALSE;
 }
 
+void CEngrave::SetOpInfo()
+{
+	SOCKET_DATA SocketData;
+	SocketData.nCmdCode = _SetData;
+	CString sVal;
+	char cData[BUFFER_DATA_SIZE];
+
+	SocketData.nMsgID = _OpName;
+	StringToChar(pDoc->WorkingInfo.LastJob.sSelUserName, cData);
+	sprintf(SocketData.strData, "%s", cData);
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _DualTest;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bDualTest ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _SampleTest;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bSampleTest ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _SampleShotNum;
+	SocketData.nData1 = _ttoi(pDoc->WorkingInfo.LastJob.sSampleTestShotNum);
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _TestMode;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.nTestMode; // MODE_NONE = 0, MODE_INNER = 1, MODE_OUTER = 2
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _RecoilerCcw;						// OneMetal : TRUE -> SetTwoMetal(FALSE);
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bOneMetal ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _RecoilerCcw;						// TwoMetal : TRUE -> SetTwoMetal(TRUE);
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bTwoMetal ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _AlignMethode;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.nAlignMethode; // TWO_POINT, FOUR_POINT
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _DoorRecoiler;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bRclDrSen ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _DoorAoiUp;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bAoiUpDrSen ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _DoorAoiDn;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bAoiDnDrSen ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _DoorMk;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bMkDrSen ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _DoorEngrave;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bEngvDrSen ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _DoorUncoiler;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bUclDrSen ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _SaftyMk;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bMkSftySen ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _CleannerAoiUp;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bUseAoiUpCleanRoler ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _CleannerAoiDn;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bUseAoiDnCleanRoler ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _UltraSonicAoiDn;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bUseAoiDnCleanner ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _UltraSonicEngrave;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bUseEngraveCleanner ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _TotReelLen;
+	StringToChar(pDoc->WorkingInfo.LastJob.sReelTotLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _OnePnlLen;
+	sprintf(SocketData.strData, "%.3f", pDoc->GetOnePnlLen());
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _TempPause;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bTempPause ? 1 : 0;
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _TempStopLen;
+	StringToChar(pDoc->WorkingInfo.LastJob.sTempPauseLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _LotCut;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bLotSep ? 1 : 0;	// pDoc->m_pReelMap->m_bUseLotSep
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _LotCutLen;
+	StringToChar(pDoc->WorkingInfo.LastJob.sLotCutPosLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _LotCutLen;
+	StringToChar(pDoc->WorkingInfo.LastJob.sLotCutPosLen, cData);
+	sprintf(SocketData.strData, "%s", cData);
+	SendCommand(SocketData);
+}
+
 void CEngrave::SetInfo()
 {
 	SOCKET_DATA SocketData;
@@ -491,6 +608,10 @@ void CEngrave::SetInfo()
 	SocketData.nMsgID = _PartVel;
 	StringToChar(pDoc->WorkingInfo.LastJob.sPartialSpd, cData);
 	sprintf(SocketData.strData, "%s", cData);
+	SendCommand(SocketData);
+
+	SocketData.nMsgID = _TempPause;
+	SocketData.nData1 = pDoc->WorkingInfo.LastJob.bTempPause ? 1 : 0;
 	SendCommand(SocketData);
 
 	SocketData.nMsgID = _TempStopLen;
@@ -638,25 +759,7 @@ void CEngrave::SetStTime()
 {
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
-	//CString str, sPrev;
-	//int nYear, nMonth, nDay, nHour, nMin, nSec;
 
-	//nYear = pDoc->WorkingInfo.Lot.StTime.nYear;
-	//nMonth = pDoc->WorkingInfo.Lot.StTime.nMonth;
-	//nDay = pDoc->WorkingInfo.Lot.StTime.nDay;
-	//nHour = pDoc->WorkingInfo.Lot.StTime.nHour;
-	//nMin = pDoc->WorkingInfo.Lot.StTime.nMin;
-	//nSec = pDoc->WorkingInfo.Lot.StTime.nSec;
-
-	//if (!nYear && !nMonth && !nDay && !nHour && !nMin && !nSec)
-	//	str = _T("");
-	//else
-	//	str.Format(_T("%04d-%02d-%02d, %02d:%02d:%02d"), nYear, nMonth, nDay, nHour, nMin, nSec);
-	//char cData[BUFFER_DATA_SIZE];
-	//SocketData.nMsgID = _LotStTime;
-	//StringToChar(str, cData);
-	//sprintf(SocketData.strData, "%s", cData);
-	//SendCommand(SocketData);
 	CString str = _T("");
 	if(pView)
 	{
@@ -676,78 +779,6 @@ void CEngrave::SetRunTime()
 {
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
-	//CString str, sPrev;
-	//int nDiff;
-	//int nHour, nMin, nSec;
-	//int nStYear, nStMonth, nStDay, nStHour, nStMin, nStSec;
-	//int nCurYear, nCurMonth, nCurDay, nCurHour, nCurMin, nCurSec;
-	//int nEdYear, nEdMonth, nEdDay, nEdHour, nEdMin, nEdSec;
-
-	//nStYear = pDoc->WorkingInfo.Lot.StTime.nYear;
-	//nStMonth = pDoc->WorkingInfo.Lot.StTime.nMonth;
-	//nStDay = pDoc->WorkingInfo.Lot.StTime.nDay;
-	//nStHour = pDoc->WorkingInfo.Lot.StTime.nHour;
-	//nStMin = pDoc->WorkingInfo.Lot.StTime.nMin;
-	//nStSec = pDoc->WorkingInfo.Lot.StTime.nSec;
-
-	//nCurYear = pDoc->WorkingInfo.Lot.CurTime.nYear;
-	//nCurMonth = pDoc->WorkingInfo.Lot.CurTime.nMonth;
-	//nCurDay = pDoc->WorkingInfo.Lot.CurTime.nDay;
-	//nCurHour = pDoc->WorkingInfo.Lot.CurTime.nHour;
-	//nCurMin = pDoc->WorkingInfo.Lot.CurTime.nMin;
-	//nCurSec = pDoc->WorkingInfo.Lot.CurTime.nSec;
-
-	//nEdYear = pDoc->WorkingInfo.Lot.EdTime.nYear;
-	//nEdMonth = pDoc->WorkingInfo.Lot.EdTime.nMonth;
-	//nEdDay = pDoc->WorkingInfo.Lot.EdTime.nDay;
-	//nEdHour = pDoc->WorkingInfo.Lot.EdTime.nHour;
-	//nEdMin = pDoc->WorkingInfo.Lot.EdTime.nMin;
-	//nEdSec = pDoc->WorkingInfo.Lot.EdTime.nSec;
-
-	//if (!nStYear && !nStMonth && !nStDay && !nStHour && !nStMin && !nStSec)
-	//{
-	//	str = _T("");
-	//}
-	//else if (!nEdYear && !nEdMonth && !nEdDay && !nEdHour && !nEdMin && !nEdSec)
-	//{
-	//	nDiff = (GetTickCount() - pView->m_dwLotSt) / 1000;
-	//	nHour = int(nDiff / 3600);
-	//	nMin = int((nDiff - 3600 * nHour) / 60);
-	//	nSec = nDiff % 60;
-	//	str.Format(_T("%02d:%02d:%02d"), nHour, nMin, nSec);
-	//}
-	//else
-	//{
-	//	if (pView->m_dwLotEd > 0)
-	//	{
-	//		nDiff = (pView->m_dwLotEd - pView->m_dwLotSt) / 1000;
-	//		nHour = int(nDiff / 3600);
-	//		nMin = int((nDiff - 3600 * nHour) / 60);
-	//		nSec = nDiff % 60;
-	//		str.Format(_T("%02d:%02d:%02d"), nHour, nMin, nSec);
-	//	}
-	//	else
-	//	{
-	//		nHour = nEdHour - nStHour;
-	//		if (nHour < 0)
-	//			nHour += 24;
-
-	//		nMin = nEdMin - nStMin;
-	//		if (nMin < 0)
-	//			nMin += 60;
-
-	//		nSec = nEdSec - nStSec;
-	//		if (nSec < 0)
-	//			nSec += 60;
-
-	//		str.Format(_T("%02d:%02d:%02d"), nHour, nMin, nSec);
-	//	}
-	//}
-	//char cData[BUFFER_DATA_SIZE];
-	//SocketData.nMsgID = _LotRunTime; 
-	//StringToChar(str, cData);
-	//sprintf(SocketData.strData, "%s", cData);
-	//SendCommand(SocketData);
 
 	CString str = _T("");
 	if (pView)
@@ -768,26 +799,6 @@ void CEngrave::SetEdTime()
 {
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
-	//CString str, sPrev;
-	//int nYear, nMonth, nDay, nHour, nMin, nSec;
-
-	//nYear = pDoc->WorkingInfo.Lot.EdTime.nYear;
-	//nMonth = pDoc->WorkingInfo.Lot.EdTime.nMonth;
-	//nDay = pDoc->WorkingInfo.Lot.EdTime.nDay;
-	//nHour = pDoc->WorkingInfo.Lot.EdTime.nHour;
-	//nMin = pDoc->WorkingInfo.Lot.EdTime.nMin;
-	//nSec = pDoc->WorkingInfo.Lot.EdTime.nSec;
-
-	//if (!nYear && !nMonth && !nDay && !nHour && !nMin && !nSec)
-	//	str = _T("");
-	//else
-	//	str.Format(_T("%04d-%02d-%02d, %02d:%02d:%02d"), nYear, nMonth, nDay, nHour, nMin, nSec);
-
-	//char cData[BUFFER_DATA_SIZE];
-	//SocketData.nMsgID = _LotEdTime; 
-	//StringToChar(str, cData);
-	//sprintf(SocketData.strData, "%s", cData);
-	//SendCommand(SocketData);
 
 	CString str = _T("");
 	if (pView)
@@ -1150,27 +1161,6 @@ void CEngrave::SetDef()
 	SocketData.nMsgID = _DefNumWide;
 	SocketData.nData1 = nNum;
 	SendCommand(SocketData);
-
-
-	//nNum = pReelMap->GetDefNum(DEF_SHORT) + pReelMap->GetDefNum(DEF_USHORT); // IDC_STC_DEF_SHORT_TOT
-	//str.Format(_T("%d"), nNum);
-	//myStcData[76].SetText(str);
-
-	//nNum = pReelMap->GetDefNum(DEF_SPACE) + pReelMap->GetDefNum(DEF_EXTRA) + pReelMap->GetDefNum(DEF_PROTRUSION); // IDC_STC_DEF_SPACE_TOT
-	//str.Format(_T("%d"), nNum);
-	//myStcData[77].SetText(str);
-
-	//nNum = pReelMap->GetDefNum(DEF_PINHOLE) + pReelMap->GetDefNum(DEF_PAD); // IDC_STC_DEF_P_HOLE_TOT
-	//str.Format(_T("%d"), nNum);
-	//myStcData[78].SetText(str);
-
-	//nNum = pReelMap->GetDefNum(DEF_HOLE_MISS) + pReelMap->GetDefNum(DEF_HOLE_POSITION) + pReelMap->GetDefNum(DEF_HOLE_DEFECT); // IDC_STC_DEF_H_MISS_TOT
-	//str.Format(_T("%d"), nNum);
-	//myStcData[79].SetText(str);
-
-	//nNum = pReelMap->GetDefNum(DEF_VH_MISS) + pReelMap->GetDefNum(DEF_VH_POSITION) + pReelMap->GetDefNum(DEF_VH_DEF); // IDC_STC_DEF_VH_MISS_TOT
-	//str.Format(_T("%d"), nNum);
-	//myStcData[80].SetText(str);
 	
 }
 
@@ -1179,12 +1169,6 @@ void CEngrave::Set2DReader()
 	char cData[BUFFER_DATA_SIZE];
 	SOCKET_DATA SocketData;
 	SocketData.nCmdCode = _SetData;
-	//CString str;
-	//int nGood = 0, nBad = 0, nTot = 0, nStTot = 0, nSum = 0, nVal[2][4];
-	//int nMer[4];
-	//double dRatio = 0.0;
-	//BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
-
 
 	SocketData.nMsgID = _2DEngLen; 
 	StringToChar(pDoc->WorkingInfo.Motion.s2DEngLen, cData);
