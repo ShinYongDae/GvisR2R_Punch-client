@@ -20113,8 +20113,8 @@ void CGvisR2R_PunchView::SetPlcParam()
 	pView->m_pMpe->Write(_T("MB44017E"), (pDoc->WorkingInfo.LastJob.bCore150Recoiler) ? 1 : 0);	// Recoiler Core 150mm On
 	pView->m_pMpe->Write(_T("MB44017F"), (pDoc->WorkingInfo.LastJob.bCore150Uncoiler) ? 1 : 0);	// Uncoiler Core 150mm On
 
-	pView->m_pMpe->Write(_T("MB44010E"), (pDoc->WorkingInfo.LastJob.bAoiUpCleanRoler ? 1 : 0));
-	pView->m_pMpe->Write(_T("MB44010F"), (pDoc->WorkingInfo.LastJob.bAoiDnCleanRoler ? 1 : 0));
+	pView->m_pMpe->Write(_T("MB44010E"), (pDoc->WorkingInfo.LastJob.bUseAoiUpCleanRoler ? 1 : 0));
+	pView->m_pMpe->Write(_T("MB44010F"), (pDoc->WorkingInfo.LastJob.bUseAoiDnCleanRoler ? 1 : 0));
 }
 
 void CGvisR2R_PunchView::InitIoWrite()

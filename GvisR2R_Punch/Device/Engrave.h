@@ -65,6 +65,7 @@ public:
 
 	// Communcation
 	BOOL SetSysInfo();
+	void SetOpInfo();
 	void SetInfo();
 	void SetTotRatio();
 	void SetStTime();

@@ -701,7 +701,7 @@ struct stLastJob
 	CString sEngraveOrderNum, sEngraveLastShot;
 	CString sEngraveOrgX, sEngraveOrgY, sEngravePosOffsetX, sEngravePosOffsetY, sEngravePosTheta;
 	int nAlignMethode;
-	BOOL bAoiUpCleanRoler, bAoiDnCleanRoler;
+	BOOL bUseAoiUpCleanRoler, bUseAoiDnCleanRoler;
 	BOOL bUseEngraveCleanner, bUseAoiDnCleanner;
 	BOOL bEngraveCleanner, bAoiDnCleanner;
 
@@ -749,7 +749,7 @@ struct stLastJob
 		sEngraveOrgX = _T(""); sEngraveOrgY = _T(""); sEngravePosOffsetX = _T(""); sEngravePosOffsetY = _T(""); sEngravePosTheta = _T("");
 		nAlignMethode = TWO_POINT;
 
-		bAoiUpCleanRoler = FALSE; bAoiDnCleanRoler = FALSE;
+		bUseAoiUpCleanRoler = FALSE; bUseAoiDnCleanRoler = FALSE;
 	}
 };
 
