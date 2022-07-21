@@ -4060,29 +4060,50 @@ BOOL CVision::ClearPinCenterMarkArea(int nCenterX, int nCenterY, int nLineLength
 BOOL CVision::SaveMkImg(CString sPath)
 {
 #ifdef USE_IRAYPLE
+	m_cs.Lock();
 	CLibMilBuf *MilGrabImg = NULL;
 	if (m_pMil)
 		MilGrabImg = m_pMil->AllocBuf((long)m_pIRayple->GetImgWidth(), (long)m_pIRayple->GetImgHeight(), 8L + M_UNSIGNED, M_IMAGE + M_DISP + M_PROC);
 
-	if (m_pIRayple->OneshotGrab() == FALSE || m_pMil->OneshotGrab(MilGrabImg->m_MilImage, GRAB_COLOR_COLOR) == FALSE)
+	if (m_pIRayple->OneshotGrab() == FALSE)
 	{
+		//pView->MsgBox(_T("Image Grab Fail !!"));
+		AfxMessageBox(_T("m_pIRayple->OneshotGrab() Fail !!"));
 		if (MilGrabImg)
 			delete MilGrabImg;
-		pView->MsgBox(_T("Image Grab Fail !!"));
+		m_cs.Unlock();
+		return FALSE;
+	}
+	else if(m_pMil->OneshotGrab(MilGrabImg->m_MilImage, GRAB_COLOR_COLOR) == FALSE)
+	{
+		//pView->MsgBox(_T("Image Grab Fail !!"));
+		AfxMessageBox(_T("m_pMil->OneshotGrab Fail !!"));
+		if (MilGrabImg)
+			delete MilGrabImg;
+		m_cs.Unlock();
 		return FALSE;
 	}
 
-	MilGrabImg->ChildBuffer2d(m_pIRayple->GetImgWidth() / 2 - 100, m_pIRayple->GetImgHeight() / 2 - 100, 200, 200);
 	//if (m_pMil)
 	//	MilOriginDisp = m_pMil->AllocBuf(PIN_IMG_DISP_SIZEX, PIN_IMG_DISP_SIZEY, 1L + M_UNSIGNED, M_IMAGE + M_DISP + M_PROC);
 	//MimResize(MilPinImgBuf, MilOriginDisp->m_MilImage, (double)PIN_IMG_DISP_SIZEX / 1024.0, (double)PIN_IMG_DISP_SIZEY / 1024.0, M_DEFAULT);
 
-
-	//MbufSave(sPath, MilGrabImg->m_MilImage);
-	MbufSave(sPath, MilGrabImg->m_MilImageChild);
+	if(MilGrabImg && MilGrabImg->m_MilImage)
+		MbufSave(sPath, MilGrabImg->m_MilImage);
+	else
+	{
+		AfxMessageBox(_T("MbufSave() Fail !!"));
+		if (MilGrabImg)
+			delete MilGrabImg;
+		m_cs.Unlock();
+		return FALSE;
+	}
+	//MilGrabImg->ChildBuffer2d(m_pIRayple->GetImgWidth() / 2 - 100, m_pIRayple->GetImgHeight() / 2 - 100, 200, 200);
+	//MbufSave(sPath, MilGrabImg->m_MilImageChild);
 
 	if (MilGrabImg)
 		delete MilGrabImg;
+	m_cs.Unlock();
 #endif
 	return TRUE;
 }

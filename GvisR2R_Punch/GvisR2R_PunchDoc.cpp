@@ -7563,6 +7563,14 @@ BOOL CGvisR2R_PunchDoc::MakeMkDir(stModelInfo stInfo)
 	if (!pDoc->DirectoryExists(sPath))
 		CreateDirectory(sPath, NULL);
 
+	sPath.Format(_T("%s%s\\%s\\%s\\Punching"), pDoc->WorkingInfo.System.sPathOldFile,
+		stInfo.sModel,
+		stInfo.sLot,
+		stInfo.sLayer);
+	//if (!finder.FindFile(sPath))
+	if (!pDoc->DirectoryExists(sPath))
+		CreateDirectory(sPath, NULL);
+
 	return TRUE;
 }
 

@@ -322,6 +322,7 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 	m_nClrAlmF = 0;
 
 	m_bMkSt = FALSE;
+	m_bMkStSw = FALSE;
 	m_nMkStAuto = 0;
 
 	m_bLotEnd = FALSE;
@@ -380,6 +381,9 @@ CGvisR2R_PunchView::CGvisR2R_PunchView()
 
 	m_bDestroyedView = FALSE;
 	m_bContEngraveF = FALSE;
+
+	m_nSaveMk0Img = 0;
+	m_nSaveMk1Img = 0;
 }
 
 CGvisR2R_PunchView::~CGvisR2R_PunchView()
@@ -9453,6 +9457,7 @@ void CGvisR2R_PunchView::InitAuto(BOOL bInit)
 
 
 	m_bMkSt = FALSE;
+	m_bMkStSw = FALSE;
 	m_nMkStAuto = 0;
 
 	m_bLotEnd = FALSE;
@@ -13713,7 +13718,9 @@ void CGvisR2R_PunchView::DoMark0()
 		{
 			// Verify - Mk0
 			SetDelay0(pDoc->m_nDelayShow, 1);		// [mSec]
-			SaveMk0Img(m_nMkPcs[0]);
+			if(!SaveMk0Img(m_nMkPcs[0]))
+				AfxMessageBox(_T("Error-SaveMk0Img()"));
+			//m_nDebugStep = m_nMkPcs[0]; DispThreadTick();
 		}
 		m_nStepMk[0]++;
 		break;
@@ -14086,18 +14093,19 @@ BOOL CGvisR2R_PunchView::SaveMk0Img(int nMkPcsIdx)
 		return FALSE;
 	}
 
-	sDest.Format(_T("%s%s\\%s\\%s\\%04d"), pDoc->WorkingInfo.System.sPathOldFile, stInfo.sModel,
+	sDest.Format(_T("%s%s\\%s\\%s\\Punching\\%04d"), pDoc->WorkingInfo.System.sPathOldFile, stInfo.sModel,
 		stInfo.sLot, stInfo.sLayer, nSerial);
 
 	if (!pDoc->DirectoryExists(sDest))
 		CreateDirectory(sDest, NULL);
 
-	int nStrip, nCol, nRow;
-	int nPcrIdx = pDoc->GetPcrIdx0(nSerial);
-	int nPcsIdx = pDoc->m_pPcr[0][nPcrIdx]->m_pDefPcs[nMkPcsIdx];
-	if (pDoc->m_Master[0].m_pPcsRgn)
-		pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
-	sPath.Format(_T("%s\\%c-%d_%d.tif"), sDest, nStrip + 'A', nCol + 1, nRow + 1);
+	//int nStrip, nCol, nRow;
+	//int nPcrIdx = pDoc->GetPcrIdx0(nSerial);
+	//int nPcsIdx = pDoc->m_pPcr[0][nPcrIdx]->m_pDefPcs[nMkPcsIdx];
+	//if (pDoc->m_Master[0].m_pPcsRgn)
+	//	pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
+	//sPath.Format(_T("%s\\%c-%d_%d.tif"), sDest, nStrip + 'A', nCol + 1, nRow + 1);
+	sPath.Format(_T("%s\\%d.tif"), sDest, ++m_nSaveMk0Img);
 
 #ifdef USE_VISION
 	if (m_pVision[0])
@@ -14399,7 +14407,9 @@ void CGvisR2R_PunchView::DoMark1()
 		{
 			// Verify - Mk1
 			SetDelay1(pDoc->m_nDelayShow, 6);		// [mSec]
-			SaveMk1Img(m_nMkPcs[1]);
+			if(!SaveMk1Img(m_nMkPcs[1]))
+				AfxMessageBox(_T("Error-SaveMk1Img()"));
+			//m_nDebugStep = m_nMkPcs[1]; DispThreadTick();
 		}
 		m_nStepMk[1]++;
 		break;
@@ -14745,18 +14755,19 @@ BOOL CGvisR2R_PunchView::SaveMk1Img(int nMkPcsIdx)
 		return FALSE;
 	}
 
-	sDest.Format(_T("%s%s\\%s\\%s\\%04d"), pDoc->WorkingInfo.System.sPathOldFile, stInfo.sModel,
+	sDest.Format(_T("%s%s\\%s\\%s\\Punching\\%04d"), pDoc->WorkingInfo.System.sPathOldFile, stInfo.sModel,
 		stInfo.sLot, stInfo.sLayer, nSerial);
 
 	if (!pDoc->DirectoryExists(sDest))
 		CreateDirectory(sDest, NULL);
 
-	int nStrip, nCol, nRow;
-	int nPcrIdx = pDoc->GetPcrIdx1(nSerial);
-	int nPcsIdx = pDoc->m_pPcr[1][nPcrIdx]->m_pDefPcs[nMkPcsIdx];
-	if (pDoc->m_Master[0].m_pPcsRgn)
-		pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
-	sPath.Format(_T("%s\\%c-%d_%d.tif"), sDest, nStrip + 'A', nCol + 1, nRow + 1);
+	//int nStrip, nCol, nRow;
+	//int nPcrIdx = pDoc->GetPcrIdx1(nSerial);
+	//int nPcsIdx = pDoc->m_pPcr[1][nPcrIdx]->m_pDefPcs[nMkPcsIdx];
+	//if (pDoc->m_Master[0].m_pPcsRgn)
+	//	pDoc->m_Master[0].m_pPcsRgn->GetMkMatrix(nPcsIdx, nStrip, nCol, nRow);
+	//sPath.Format(_T("%s\\%c-%d_%d.tif"), sDest, nStrip + 'A', nCol + 1, nRow + 1);
+	sPath.Format(_T("%s\\%d.tif"), sDest, ++m_nSaveMk1Img);
 
 #ifdef USE_VISION
 	if (m_pVision[1])
@@ -15115,8 +15126,10 @@ void CGvisR2R_PunchView::DoAtuoGetMkStSignal()
 	{
 		if (!m_bMkSt)
 		{
-			if (pDoc->m_pMpeSignal[1] & (0x01 << 0)) // AlignTest		// 마킹시작(PC가 확인하고 Reset시킴.)-20141029
+			if (pDoc->m_pMpeSignal[1] & (0x01 << 0) || m_bMkStSw) // AlignTest		// 마킹시작(PC가 확인하고 Reset시킴.)-20141029
 			{
+				m_bMkStSw = FALSE;
+
 				if (IsRun())
 				{
 					m_pMpe->Write(_T("MB440110"), 0);			// 마킹시작(PC가 확인하고 Reset시킴.)-20141029
@@ -17081,6 +17094,9 @@ void CGvisR2R_PunchView::Mk2PtDoMarking()
 					m_bRejectDone[a][b] = FALSE;
 				}
 			}
+
+			m_nSaveMk0Img = 0;
+			m_nSaveMk1Img = 0;
 
 			m_nMkStAuto++;
 			break;

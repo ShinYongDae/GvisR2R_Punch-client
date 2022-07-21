@@ -130,6 +130,7 @@ class CVision : public CWnd
 // Construction
 public:
 	CVision(int nIdx, MIL_ID MilSysId, HWND *hCtrl, CWnd* pParent=NULL); // hCtrl : Max(4)
+	CCriticalSection m_cs;
 
 // Attributes
 public:

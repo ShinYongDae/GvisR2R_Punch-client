@@ -406,6 +406,7 @@ public:
 
 	int m_nMonAlmF, m_nClrAlmF;
 	BOOL m_bMkSt, m_bLotEnd, m_bLastProc, m_bLastProcFromUp;
+	BOOL m_bMkStSw;
 	int m_nMkStAuto, m_nLotEndAuto, m_nLastProcAuto;
 	BOOL m_bLoadShare[2]; // [Up/Dn]
 	CString m_sNewLotUp, m_sNewLotDn;
@@ -434,6 +435,7 @@ public:
 	CSr1000w* m_pSr1000w;
 
 	int m_nNewLot;
+	int m_nSaveMk0Img, m_nSaveMk1Img;
 
 // 작업입니다.
 public:

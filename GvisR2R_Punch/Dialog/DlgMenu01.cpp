@@ -3963,7 +3963,24 @@ void CDlgMenu01::WinkMkR(BOOL bOn)
 void CDlgMenu01::OnChkRemarking() 
 {
 	// TODO: Add your control notification handler code here
+
 	BOOL bOn = myBtn[4].GetCheck();
+	if(bOn)
+	{
+		if(IDNO == pView->MsgBox(_T("마킹 작업을 하시겠습니까?"), 0, MB_YESNO))
+			myBtn[4].SetCheck(FALSE);
+		else
+		{
+			myBtn[4].SetCheck(FALSE);
+			pView->m_bMkStSw = TRUE;
+		}
+	}
+	else
+	{
+		;
+	}
+
+/*	BOOL bOn = myBtn[4].GetCheck();
 	if(bOn && !m_bLotEnd)
 	{
 //		if(IDNO == pView->DoMyMsgBox(_T("재마킹 작업을 하시겠습니까?"), MB_YESNO))
@@ -3983,7 +4000,7 @@ void CDlgMenu01::OnChkRemarking()
 			pView->MsgBox(_T("현재 재마킹 작업을 하고 있는 중입니다."));
 			myBtn[4].SetCheck(TRUE);
 		}
-	}
+	}*/
 	this->MoveWindow(m_pRect, TRUE);
 }
 
