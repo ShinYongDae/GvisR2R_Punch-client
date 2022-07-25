@@ -35,6 +35,7 @@ CDlgMenu01::CDlgMenu01(CWnd* pParent /*=NULL*/)
 	m_bLoadImg = FALSE;
 	m_pMyGL = NULL;
 	m_nSerial = 0;
+	m_nSerialDispMkInfo = 0;
 
 	m_nIdxMkInfo[0] = 0;
 	m_nIdxMkInfo[1] = 0;
@@ -511,7 +512,7 @@ void CDlgMenu01::SetPnlDefNum()
 		m_pMyGL->SetPnlDefNum();
 }
 
-void CDlgMenu01::DispMkInfo()
+void CDlgMenu01::DispMkInfo()	// m_bTIM_DISP_DEF_IMG == FALSE 일때까지 계속 호출함.
 {
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
 
@@ -524,6 +525,7 @@ void CDlgMenu01::DispMkInfo()
 		{
 			if(!m_bTIM_DISP_DEF_IMG)
 			{
+				m_nSerialDispMkInfo = m_nSerial;
 				m_bTIM_DISP_DEF_IMG = TRUE;
 				SetTimer(TIM_DISP_DEF_IMG, 10, NULL);
 			}
@@ -539,6 +541,7 @@ void CDlgMenu01::DispMkInfo()
 		{
 			if(!m_bTIM_DISP_DEF_IMG)
 			{
+				m_nSerialDispMkInfo = m_nSerial;
 				m_bTIM_DISP_DEF_IMG = TRUE;
 				SetTimer(TIM_DISP_DEF_IMG, 10, NULL);
 			}
@@ -2291,12 +2294,13 @@ BOOL CDlgMenu01::IsDoneDispMkInfo()
 void CDlgMenu01::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 {
 	// TODO: Add your message handler code here and/or call default
-	if(nIDEvent == TIM_DISP_DEF_IMG)
+	if(nIDEvent == TIM_DISP_DEF_IMG) // SetSerial() ---> DispMkInfo() ---> DispMkInfo(m_nSerial);
 	{
 		KillTimer(TIM_DISP_DEF_IMG);
-		if(m_nSerial > 0)
-		{
-			DispMkInfo(m_nSerial);
+		if (m_nSerialDispMkInfo > 0) // if (m_nSerial > 0)
+		{			
+			DispMkInfo(m_nSerialDispMkInfo);	// DispMkInfo(m_nSerial);
+
 //	 		if(m_nIdxMkInfo < m_nDef)
 			if(m_nIdxDef[0] < m_nDef[0] || m_nIdxDef[1] < m_nDef[1])
 			{
@@ -2309,7 +2313,7 @@ void CDlgMenu01::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 		else
 			m_bTIM_DISP_DEF_IMG = FALSE;
 	}
-	if(nIDEvent == TIM_DISP_MK_INFO)
+	if(nIDEvent == TIM_DISP_MK_INFO) // SetSerial() ---> if m_bTIM_DISP_DEF_IMG == FALSE then Wait to call SetTimer(TIM_DISP_MK_INFO)
 	{
 		KillTimer(TIM_DISP_MK_INFO);
 		if(m_bTIM_DISP_DEF_IMG)
