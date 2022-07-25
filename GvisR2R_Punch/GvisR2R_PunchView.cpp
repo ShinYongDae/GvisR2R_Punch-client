@@ -19519,7 +19519,7 @@ BOOL CGvisR2R_PunchView::OpenReelmapFromBuf(int nSerial)
 		AfxMessageBox(_T("Error-GetPcrInfo(6)"));
 		return FALSE;
 	}
-	if (bDualTest)
+	if (bDualTest) 
 	{
 		sSrc.Format(_T("%s%04d.pcr"), pDoc->WorkingInfo.System.sPathVrsBufDn, nSerial);
 		if (!pDoc->GetPcrInfo(sSrc, stInfoDn))

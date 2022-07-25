@@ -3610,7 +3610,7 @@ BOOL CGvisR2R_PunchDoc::InitReelmap()
 		delete m_pReelMap;
 		m_pReelMap = NULL;
 	}
-	m_pReelMap = new CReelMap(MAX_DISP_PNL, nTotPcs);
+	m_pReelMap = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);
 
 	if (m_pReelMapUp)
 	{
@@ -3618,8 +3618,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmap()
 		delete m_pReelMapUp;
 		m_pReelMapUp = NULL;
 	}
-	m_pReelMapUp = new CReelMap(MAX_DISP_PNL, nTotPcs);
-	m_pReelMapUp->m_nLayer = RMAP_UP;
+	m_pReelMapUp = new CReelMap(RMAP_UP, MAX_DISP_PNL, nTotPcs);
+	//m_pReelMapUp->m_nLayer = RMAP_UP;
 
 	if (bDualTest)
 	{
@@ -3629,8 +3629,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmap()
 			delete m_pReelMapDn;
 			m_pReelMapDn = NULL;
 		}
-		m_pReelMapDn = new CReelMap(MAX_DISP_PNL, nTotPcs);
-		m_pReelMapDn->m_nLayer = RMAP_DN;
+		m_pReelMapDn = new CReelMap(RMAP_DN, MAX_DISP_PNL, nTotPcs);
+		//m_pReelMapDn->m_nLayer = RMAP_DN;
 
 		if (m_pReelMapAllUp)
 		{
@@ -3638,8 +3638,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmap()
 			delete m_pReelMapAllUp;
 			m_pReelMapAllUp = NULL;
 		}
-		m_pReelMapAllUp = new CReelMap(MAX_DISP_PNL, nTotPcs);
-		m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
+		m_pReelMapAllUp = new CReelMap(RMAP_ALLUP, MAX_DISP_PNL, nTotPcs);
+		//m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
 
 		if (m_pReelMapAllDn)
 		{
@@ -3647,8 +3647,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmap()
 			delete m_pReelMapAllDn;
 			m_pReelMapAllDn = NULL;
 		}
-		m_pReelMapAllDn = new CReelMap(MAX_DISP_PNL, nTotPcs);
-		m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
+		m_pReelMapAllDn = new CReelMap(RMAP_ALLDN, MAX_DISP_PNL, nTotPcs);
+		//m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
 	}
 
 	if (pMkInfo)
@@ -3682,7 +3682,7 @@ BOOL CGvisR2R_PunchDoc::InitReelmapUp()
 		delete m_pReelMap;
 		m_pReelMap = NULL;
 	}
-	m_pReelMap = new CReelMap(MAX_DISP_PNL, nTotPcs);
+	m_pReelMap = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);
 
 
 	if (m_pReelMap->m_nLayer < 0)
@@ -3713,8 +3713,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmapUp()
 		delete m_pReelMapUp;
 		m_pReelMapUp = NULL;
 	}
-	m_pReelMapUp = new CReelMap(MAX_DISP_PNL, nTotPcs);
-	m_pReelMapUp->m_nLayer = RMAP_UP;
+	m_pReelMapUp = new CReelMap(RMAP_UP, MAX_DISP_PNL, nTotPcs);
+	//m_pReelMapUp->m_nLayer = RMAP_UP;
 
 	if (bDualTest)
 	{
@@ -3724,8 +3724,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmapUp()
 			delete m_pReelMapAllUp;
 			m_pReelMapAllUp = NULL;
 		}
-		m_pReelMapAllUp = new CReelMap(MAX_DISP_PNL, nTotPcs);
-		m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
+		m_pReelMapAllUp = new CReelMap(RMAP_ALLUP, MAX_DISP_PNL, nTotPcs);
+		//m_pReelMapAllUp->m_nLayer = RMAP_ALLUP;
 	}
 
 	return TRUE;
@@ -3754,7 +3754,7 @@ BOOL CGvisR2R_PunchDoc::InitReelmapDn()
 		delete m_pReelMap;
 		m_pReelMap = NULL;
 	}
-	m_pReelMap = new CReelMap(MAX_DISP_PNL, nTotPcs);
+	m_pReelMap = new CReelMap(RMAP_NONE, MAX_DISP_PNL, nTotPcs);
 
 
 	if (m_pReelMap->m_nLayer < 0)
@@ -3785,8 +3785,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmapDn()
 		delete m_pReelMapDn;
 		m_pReelMapDn = NULL;
 	}
-	m_pReelMapDn = new CReelMap(MAX_DISP_PNL, nTotPcs);
-	m_pReelMapDn->m_nLayer = RMAP_DN;
+	m_pReelMapDn = new CReelMap(RMAP_DN, MAX_DISP_PNL, nTotPcs);
+	//m_pReelMapDn->m_nLayer = RMAP_DN;
 
 	if (m_pReelMapAllDn)
 	{
@@ -3794,8 +3794,8 @@ BOOL CGvisR2R_PunchDoc::InitReelmapDn()
 		delete m_pReelMapAllDn;
 		m_pReelMapAllDn = NULL;
 	}
-	m_pReelMapAllDn = new CReelMap(MAX_DISP_PNL, nTotPcs);
-	m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
+	m_pReelMapAllDn = new CReelMap(RMAP_ALLDN, MAX_DISP_PNL, nTotPcs);
+	//m_pReelMapAllDn->m_nLayer = RMAP_ALLDN;
 
 	return TRUE;
 }
@@ -4137,7 +4137,7 @@ BOOL CGvisR2R_PunchDoc::GetAoiInfoUp(int nSerial, int *pNewLot, BOOL bFromBuf) /
 	}
 	else
 	{
-		strFileData.Format(_T("PCR 파일이 존재하지 않습니다.\r\n%s"), FileD);
+		strFileData.Format(_T("PCR 파일이 존재하지 않습니다.\r\n%s"), sPath);
 		pView->MsgBox(strFileData);
 		return(FALSE);
 	}
@@ -4284,7 +4284,7 @@ BOOL CGvisR2R_PunchDoc::GetAoiInfoDn(int nSerial, int *pNewLot, BOOL bFromBuf) /
 	}
 	else
 	{
-		strFileData.Format(_T("PCR 파일이 존재하지 않습니다.\r\n%s"), FileD);
+		strFileData.Format(_T("PCR 파일이 존재하지 않습니다.\r\n%s"), sPath);
 		pView->MsgBox(strFileData);
 		return(FALSE);
 	}
@@ -4881,7 +4881,7 @@ int CGvisR2R_PunchDoc::LoadPCRUp(int nSerial, BOOL bFromShare)	// return : 2(Fai
 	}
 	else
 	{
-		strFileData.Format(_T("PCR[Up] 파일이 존재하지 않습니다.\r\n%s"), FileD);
+		strFileData.Format(_T("PCR[Up] 파일이 존재하지 않습니다.\r\n%s"), sPath);
 		pView->MsgBox(strFileData);
 		// 		AfxMessageBox(strFileData);
 		return(2);
@@ -5092,7 +5092,7 @@ int CGvisR2R_PunchDoc::LoadPCRDn(int nSerial, BOOL bFromShare)	// return : 2(Fai
 	}
 	else
 	{
-		strFileData.Format(_T("PCR[Dn] 파일이 존재하지 않습니다.\r\n%s"), FileD);
+		strFileData.Format(_T("PCR[Dn] 파일이 존재하지 않습니다.\r\n%s"), sPath);
 		pView->MsgBox(strFileData);
 		//		AfxMessageBox(strFileData);
 		return(2);
@@ -7606,7 +7606,7 @@ BOOL CGvisR2R_PunchDoc::GetPcrInfo(CString sPath, stModelInfo &stInfo)
 	}
 	else
 	{
-		strFileData.Format(_T("PCR 파일이 존재하지 않습니다.\r\n%s"), FileD);
+		strFileData.Format(_T("PCR 파일이 존재하지 않습니다.\r\n%s"), sPath);
 		pView->MsgBox(strFileData);
 		return(FALSE);
 	}

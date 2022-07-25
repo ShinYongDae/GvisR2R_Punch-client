@@ -595,7 +595,7 @@ typedef struct {
 #define PNLBUF_Y					50
 #define PNLBUF_X					50
 
-enum SEL_RMAP { RMAP_UP=0, RMAP_DN=1, RMAP_ALLUP=2, RMAP_ALLDN=3 };
+enum SEL_RMAP { RMAP_NONE=-1, RMAP_UP=0, RMAP_DN=1, RMAP_ALLUP=2, RMAP_ALLDN=3 };
 enum SEL_CAM { CAM_LF=0, CAM_RT=1, CAM_BOTH=2 };
 enum MAIN_BTN { MN_RST=0, MN_RDY=1, MN_STOP=2, MN_RUN=3 };
 
@@ -1022,6 +1022,36 @@ struct stWorkingInfo
 	stElecChk Probing[2];
 };
 
+struct stYield
+{
+	int nTot, nGood, nDef;
+	int nTotSriptOut;
+	int nDefStrip[4], nDefA[MAX_DEF], nDefPerStrip[4][MAX_DEF], nStripOut[4];
+
+	stYield()
+	{
+		nTot = 0; nGood = 0; nDef = 0;
+		nTotSriptOut = 0;
+		nDefStrip[0] = 0; nDefStrip[1] = 0; nDefStrip[2] = 0; nDefStrip[3] = 0;
+		nStripOut[0] = 0; nStripOut[1] = 0; nStripOut[2] = 0; nStripOut[3] = 0;
+
+		for (int k = 0; k < MAX_DEF; k++)
+		{
+			nDefA[k] = 0;
+
+			for (int i = 0; i < 4; i++)
+			{
+				nDefPerStrip[i][k] = 0;
+			}
+		}
+	}
+
+	~stYield()
+	{
+		;
+	}
+};
+
 
 // struct stMasterInfo
 // {
@@ -1038,7 +1068,6 @@ struct stWorkingInfo
 // 		bTwoMetalInspection=FALSE;
 // 	}
 // };
-
 
 struct stSliceIo
 {

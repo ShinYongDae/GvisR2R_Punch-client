@@ -872,6 +872,9 @@ BOOL CCamMaster::LoadStripPieceRegion_Binary()	//20121120-ndy for PairPanel
 
 BOOL CCamMaster::WriteStripPieceRegion_Text(CString sBasePath, CString sLot)
 {
+	if (!pDoc->WorkingInfo.System.bStripPcsRgnBin)
+		return FALSE;
+
 	CString sModel = m_sModel;
 	CString sLayer = m_sLayer;
 	CString sMsg = _T("");
