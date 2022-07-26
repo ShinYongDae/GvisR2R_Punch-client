@@ -21694,20 +21694,50 @@ LRESULT CGvisR2R_PunchView::wmClientReceived(WPARAM wParam, LPARAM lParam)
 	if (!m_pEngrave)
 		return (LRESULT)0;
 
-	int nCmd = (int)wParam;
-	SOCKET_DATA stSockData = m_pEngrave->GetSocketData();
+	//int nCmd = (int)wParam;
+	//SOCKET_DATA stSockData = m_pEngrave->GetSocketData();
 
-	switch (nCmd)
+	int nAcceptId = (int)wParam;
+	SOCKET_DATA sSockData;
+	SOCKET_DATA *pSocketData = (SOCKET_DATA*)lParam;
+	SOCKET_DATA rSockData = *pSocketData;
+	int nCmdCode = rSockData.nCmdCode;
+	int nMsgId = rSockData.nMsgID;
+
+	switch (nCmdCode)
 	{
-	case SrTriggerInputOn:
-		//if (m_pDlgMenu02)
+	case _GetSig:
+		//if (nMsgId == _Connect)
 		//{
-		//	m_pDlgMenu02->Disp2dCode();
+		//	sSockData.nCmdCode = _Rtn;
+		//	sSockData.nMsgID = _Connect;
+		//	m_pEngrave->SendCommand(nAcceptId, sSockData);
 		//}
 		break;
+	case _SetData:
+		if (m_pEngrave)
+		{
+			m_pEngrave->GetSysInfo(rSockData);
+		}
+		break;
+	//case SrTriggerInputOn:
+	//	//if (m_pDlgMenu02)
+	//	//{
+	//	//	m_pDlgMenu02->Disp2dCode();
+	//	//}
+	//	break;
 	default:
 		break;
 	}
+
+	if (m_pDlgMenu01)
+		m_pDlgMenu01->UpdateInfo();
+
+	if (m_pDlgMenu03)
+		m_pDlgMenu03->UpdateInfo();
+
+	if (m_pDlgMenu04)
+		m_pDlgMenu04->UpdateInfo();
 
 	return (LRESULT)1;
 }
