@@ -6992,6 +6992,29 @@ void CGvisR2R_PunchDoc::SetLastSerial(int nSerial)
 	}
 }
 
+void CGvisR2R_PunchDoc::UpdateYield(int nSerial)
+{
+	if (nSerial <= 0)
+	{
+		AfxMessageBox(_T("Serial Error.66"));
+		return;
+	}
+
+	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
+
+	if (m_pReelMapUp)
+		m_pReelMapUp->UpdateYield(nSerial);
+	if (bDualTest)
+	{
+		if (m_pReelMapDn)
+			m_pReelMapDn->UpdateYield(nSerial);
+		if (m_pReelMapAllUp)
+			m_pReelMapAllUp->UpdateYield(nSerial);
+		if (m_pReelMapAllDn)
+			m_pReelMapAllDn->UpdateYield(nSerial);
+	}
+}
+
 void CGvisR2R_PunchDoc::SetCompletedSerial(int nSerial)
 {
 	if (nSerial <= 0)

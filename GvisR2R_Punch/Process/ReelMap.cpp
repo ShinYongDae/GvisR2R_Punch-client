@@ -1636,7 +1636,7 @@ void CReelMap::SetCompletedSerial(int nSerial)
 		sData.Format(_T("%04d-%02d-%02d, %02d:%02d:%02d"), nYear, nMonth, nDay, nHour, nMin, nSec);
 	::WritePrivateProfileString(_T("Info"), _T("Completed Date"), sData, m_sPathBuf);
 
-	UpdateRst(nSerial);
+	//UpdateRst(nSerial);
 }
 
 BOOL CReelMap::GetRst(int nFrom, int nTo)
@@ -1921,38 +1921,46 @@ BOOL CReelMap::ReadYield(int nSerial, CString sPath)
 	{
 		sCode.Format(_T("%d"), i);
 		if (0 < ::GetPrivateProfileString(strMenu, sCode, NULL, szData, sizeof(szData), sPath))
+		{
 			m_stYield.nDefA[i] = _ttoi(szData);
+		}
 		else
 		{
-			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-불량(%d)"), nSerial, i);
+			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-불량(%d)\r\n%s"), nSerial, i, sPath);
 			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
 			return FALSE;
 		}
 	}
 
 	if (0 < ::GetPrivateProfileString(strMenu, _T("Total Pcs"), NULL, szData, sizeof(szData), sPath))
+	{
 		m_stYield.nTot = _ttoi(szData);
+	}
 	else
 	{
-		sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Total Pcs"), nSerial);
+		sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Total Pcs\r\n%s"), nSerial, sPath);
 		AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
 		return FALSE;
 	}
 
 	if (0 < ::GetPrivateProfileString(strMenu, _T("Good Pcs"), NULL, szData, sizeof(szData), sPath))
+	{
 		m_stYield.nGood = _ttoi(szData);
+	}
 	else
 	{
-		sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Good Pcs"), nSerial);
+		sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Good Pcs\r\n%s"), nSerial, sPath);
 		AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
 		return FALSE;
 	}
 
 	if (0 < ::GetPrivateProfileString(strMenu, _T("Bad Pcs"), NULL, szData, sizeof(szData), sPath))
+	{
 		m_stYield.nDef = _ttoi(szData);
+	}
 	else
 	{
-		sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Bad Pcs"), nSerial);
+		sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Bad Pcs\r\n%s"), nSerial, sPath);
 		AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
 		return FALSE;
 	}
@@ -1961,20 +1969,24 @@ BOOL CReelMap::ReadYield(int nSerial, CString sPath)
 	{
 		strItem.Format(_T("Strip%d"), k);
 		if (0 < ::GetPrivateProfileString(strMenu, strItem, NULL, szData, sizeof(szData), sPath))
+		{
 			m_stYield.nDefStrip[k] = _ttoi(szData);
+		}
 		else
 		{
-			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Strip%d"), nSerial, k);
+			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Strip%d\r\n%s"), nSerial, k, sPath);
 			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
 			return FALSE;
 		}
 
 		strItem.Format(_T("StripOut_%d"), k);
 		if (0 < ::GetPrivateProfileString(strMenu, strItem, NULL, szData, sizeof(szData), sPath))
+		{
 			m_stYield.nStripOut[k] = _ttoi(szData);
+		}
 		else
 		{
-			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-StripOut_%d"), nSerial, k);
+			sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-StripOut_%d\r\n%s"), nSerial, k, sPath);
 			AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
 			return FALSE;
 		}
@@ -1983,10 +1995,12 @@ BOOL CReelMap::ReadYield(int nSerial, CString sPath)
 		{
 			strItem.Format(_T("Strip%d_%d"), k, i);
 			if (0 < ::GetPrivateProfileString(strMenu, strItem, NULL, szData, sizeof(szData), sPath))
+			{
 				m_stYield.nDefPerStrip[k][i] = _ttoi(szData);
+			}
 			else
 			{
-				sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Strip%d_%d"), nSerial, k, i);
+				sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-Strip%d_%d\r\n%s"), nSerial, k, i, sPath);
 				AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
 				return FALSE;
 			}
@@ -1994,10 +2008,12 @@ BOOL CReelMap::ReadYield(int nSerial, CString sPath)
 	}
 
 	if (0 < ::GetPrivateProfileString(strMenu, _T("StripOut_Total"), NULL, szData, sizeof(szData), sPath))
+	{
 		m_stYield.nTotSriptOut = _ttoi(szData);
+	}
 	else
 	{
-		sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-StripOut_Total"), nSerial, k, i);
+		sMsg.Format(_T("이전 수율 읽기 오류 : Shot(%d)-StripOut_Total\r\n%s"), nSerial, sPath);
 		AfxMessageBox(sMsg, MB_ICONWARNING | MB_OK);
 		return FALSE;
 	}
@@ -2179,17 +2195,21 @@ BOOL CReelMap::UpdateYield(int nSerial)
 	if (!bExist)
 	{
 		fprintf(fp, "[Info]\n");
+		fprintf(fp, "Total Shot=\n");
+		fprintf(fp, "\n");
 		fprintf(fp, "Total Pcs=\n");
 		fprintf(fp, "Good Pcs=\n");
 		fprintf(fp, "Bad Pcs=\n");
+		fprintf(fp, "\n");
+
+		for (i = 1; i < MAX_DEF; i++)
+			fprintf(fp, "%d=\n", i); // m_cBigDef[i]
 		fprintf(fp, "\n");
 
 		fprintf(fp, "Strip0=\n");
 		fprintf(fp, "Strip1=\n");
 		fprintf(fp, "Strip2=\n");
 		fprintf(fp, "Strip3=\n");
-		for (i = 1; i < MAX_DEF; i++)
-			fprintf(fp, "%d=\n", i); // m_cBigDef[i]
 		fprintf(fp, "\n");
 
 		for (k = 0; k < 4; k++)
@@ -2199,10 +2219,12 @@ BOOL CReelMap::UpdateYield(int nSerial)
 			fprintf(fp, "\n");
 		}
 
-		fprintf(fp, "[]\n");
 		fprintf(fp, "StripOut_Total=\n");
 		for (k = 0; k < 4; k++)
 			fprintf(fp, "StripOut_%d=\n", k);
+		fprintf(fp, "\n");
+
+		fprintf(fp, "Start Shot=%d\n", nSerial);
 		fprintf(fp, "\n");
 	}
 
@@ -2224,6 +2246,7 @@ BOOL CReelMap::UpdateYield(int nSerial)
 		ResetYield();
 		WriteYield(nSerial, sPath);
 	}
+	Sleep(10);
 
 	return TRUE;
 }
@@ -2238,11 +2261,11 @@ BOOL CReelMap::UpdateRst(int nSerial)
 		return FALSE;
 	}
 
-	if (!UpdateYield(nSerial))
-	{
-		AfxMessageBox(_T("Serial Error.66"));
-		return FALSE;
-	}
+	//if (!UpdateYield(nSerial))
+	//{
+	//	AfxMessageBox(_T("Serial Error.66"));
+	//	return FALSE;
+	//}
 
 	int k, i;
 	CString strMenu, strItem, sCode, sDefNum, strData;

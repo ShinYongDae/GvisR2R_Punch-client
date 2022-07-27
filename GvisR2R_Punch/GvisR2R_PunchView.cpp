@@ -7621,6 +7621,7 @@ void CGvisR2R_PunchView::Shift2Mk()
 			nSerial = m_nBufDnSerial[0];
 			if (nSerial > 0 && (nSerial % 2))
 			{
+				pDoc->UpdateYield(nSerial);
 				pDoc->Shift2Mk(nSerial);	// Cam0
 				if (m_pDlgFrameHigh)
 					m_pDlgFrameHigh->SetMkLastShot(nSerial);
@@ -7633,7 +7634,9 @@ void CGvisR2R_PunchView::Shift2Mk()
 			{
 				if (nSerial > 0 && (nSerial % 2)) // First Shot number must be odd.
 				{
+					pDoc->UpdateYield(nSerial);
 					pDoc->Shift2Mk(nSerial);	// Cam0
+					pDoc->UpdateYield(nSerial + 1);
 					pDoc->Shift2Mk(nSerial + 1);	// Cam1
 					if (m_pDlgFrameHigh)
 						m_pDlgFrameHigh->SetMkLastShot(nSerial + 1);
@@ -7647,7 +7650,9 @@ void CGvisR2R_PunchView::Shift2Mk()
 			{
 				if (nSerial > 0)
 				{
+					pDoc->UpdateYield(nSerial);
 					pDoc->Shift2Mk(nSerial);	// Cam0
+					pDoc->UpdateYield(nSerial + 1);
 					pDoc->Shift2Mk(nSerial + 1);	// Cam1
 					if (m_pDlgFrameHigh)
 						m_pDlgFrameHigh->SetMkLastShot(nSerial + 1);
@@ -7668,6 +7673,7 @@ void CGvisR2R_PunchView::Shift2Mk()
 			{
 				if (nSerial > 0 && (nSerial % 2)) // First Shot number must be odd.
 				{
+					pDoc->UpdateYield(nSerial);
 					pDoc->Shift2Mk(nSerial);	// Cam0
 					if (m_pDlgFrameHigh)
 						m_pDlgFrameHigh->SetMkLastShot(nSerial);
@@ -7681,6 +7687,7 @@ void CGvisR2R_PunchView::Shift2Mk()
 			{
 				if (nSerial > 0)
 				{
+					pDoc->UpdateYield(nSerial);
 					pDoc->Shift2Mk(nSerial);	// Cam0
 					if (m_pDlgFrameHigh)
 						m_pDlgFrameHigh->SetMkLastShot(nSerial);
@@ -7698,7 +7705,9 @@ void CGvisR2R_PunchView::Shift2Mk()
 			{
 				if (nSerial > 0 && (nSerial % 2)) // First Shot number must be odd.
 				{
+					pDoc->UpdateYield(nSerial);
 					pDoc->Shift2Mk(nSerial);	// Cam0
+					pDoc->UpdateYield(nSerial + 1);
 					pDoc->Shift2Mk(nSerial + 1);	// Cam1
 					if (m_pDlgFrameHigh)
 						m_pDlgFrameHigh->SetMkLastShot(nSerial + 1);
@@ -7712,7 +7721,9 @@ void CGvisR2R_PunchView::Shift2Mk()
 			{
 				if (nSerial > 0)
 				{
+					pDoc->UpdateYield(nSerial);
 					pDoc->Shift2Mk(nSerial);	// Cam0
+					pDoc->UpdateYield(nSerial + 1);
 					pDoc->Shift2Mk(nSerial + 1);	// Cam1
 					if (m_pDlgFrameHigh)
 						m_pDlgFrameHigh->SetMkLastShot(nSerial + 1);

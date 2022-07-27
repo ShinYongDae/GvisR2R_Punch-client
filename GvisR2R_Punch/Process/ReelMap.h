@@ -56,7 +56,6 @@ class CReelMap : public CWnd
 	char* StrToChar(CString str);
 	void StrToChar(CString str, char* pCh);
 	
-	BOOL UpdateYield(int nSerial);
 	BOOL ReadYield(int nSerial, CString sPath);
 	BOOL WriteYield(int nSerial, CString sPath);
 	void ResetYield();
@@ -180,6 +179,8 @@ public:
 	void StartThreadReloadRst();
 	static BOOL ThreadProcReloadRst(LPVOID lpContext);
 	void StopThreadReloadRst();
+
+	BOOL UpdateYield(int nSerial);
 
 // Overrides
 	// ClassWizard generated virtual function overrides
