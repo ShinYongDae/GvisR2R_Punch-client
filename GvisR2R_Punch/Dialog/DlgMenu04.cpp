@@ -1195,14 +1195,18 @@ void CDlgMenu04::SwMyBtnDown(int nCtrlID)
 	switch(nCtrlID)
 	{
 	case IDC_BTN_BUFF_UP2:
+#ifdef USE_MPE
 		if(pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB005513"), 1);		// 마킹부 피딩 정회전 스위치
+#endif
 // 		if(pView->m_pMotion)
 // 			pView->m_pMotion->VMove(MS_MKFD, M_CW);
 		break;
 	case IDC_BTN_BUFF_DN2:
+#ifdef USE_MPE
 		if(pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB005514"), 1);		// 마킹부 피딩 역회전 스위치
+#endif
 // 		if(pView->m_pMotion)
 // 			pView->m_pMotion->VMove(MS_MKFD, M_CCW);
 		break;
@@ -1222,12 +1226,16 @@ void CDlgMenu04::SwMyBtnUp(int nCtrlID)
 	switch(nCtrlID)
 	{
 	case IDC_BTN_BUFF_UP2:
+#ifdef USE_MPE
 		if(pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB005513"), 0);		// 마킹부 피딩 정회전 스위치
+#endif
 		break;
 	case IDC_BTN_BUFF_DN2:
+#ifdef USE_MPE
 		if(pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB005514"), 0);		// 마킹부 피딩 역회전 스위치
+#endif
 		break;
 	}
 }
@@ -1285,8 +1293,10 @@ void CDlgMenu04::OnBtnBuffHome2()
 	if(pDoc->WorkingInfo.Motion.bBufHomming)
 	{
 		pView->DispMsg(_T("Homming"),_T("Searching Buffer Home Position..."),RGB_GREEN,2000,TRUE);
+#ifdef USE_MPE
 		if(pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB440152"), 1);	// 마킹부 버퍼롤러 홈동작 ON (PLC가 홈동작 완료 후 OFF)
+#endif
 		if(pView->m_pDlgMenu03)
 			pView->m_pDlgMenu03->ChkBufHomeDone();
 	}	
@@ -1296,9 +1306,10 @@ void CDlgMenu04::OnBtnBuffInitMove2()
 {
 	// TODO: Add your control notification handler code here
 	pView->DispMsg(_T("Moving"),_T("Searching Buffer Initial Position..."),RGB_GREEN,2000,TRUE);
+#ifdef USE_MPE
 	if(pView->m_pMpe)
 		pView->m_pMpe->Write(_T("MB44015A"), 1);	// 마킹부 버퍼 초기위치 이동(PC가 ON, PLC가 OFF)
-
+#endif
 	if(pView->m_pDlgMenu03)
 		pView->m_pDlgMenu03->ChkBufInitDone();
 
@@ -1350,8 +1361,10 @@ void CDlgMenu04::OnBtnBuffInitSave2()
 	if(IDNO == pView->MsgBox(_T("Do you want to save Buffer Position?"), 0, MB_YESNO))
 		return;
 
+#ifdef USE_MPE
 	double dBufEnc = (double)pDoc->m_pMpeData[0][1]	/ 1000.0;	// 마킹부 버퍼 엔코더 값(단위 mm * 1000)
 	pView->SetBufInitPos(dBufEnc);		// ML45016	,	버퍼 관련 설정 롤러 초기위치(단위 mm * 1000)
+#endif
 }
 
 void CDlgMenu04::OnStc48() 

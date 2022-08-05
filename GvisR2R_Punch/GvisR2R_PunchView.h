@@ -194,6 +194,7 @@ class CGvisR2R_PunchView : public CFormView
 	void HideAllDlg();
 	void DelAllDlg();
 	BOOL HwInit();
+	BOOL TcpIpInit();
 	void InitPLC();
 	void HwKill();
 	void ThreadInit();

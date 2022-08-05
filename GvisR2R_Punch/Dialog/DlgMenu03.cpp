@@ -990,6 +990,7 @@ void CDlgMenu03::Disp()
 	int nOutSeg = pDoc->MkIo.MpeIo.nOutSeg;
 
 	
+#ifdef USE_MPE
 	// [Main]
 	bOn = pDoc->m_pMpeIo[nInSeg+4] & (0x01<<1) ? TRUE : FALSE;	//[28] 마킹부 운전 스위치 램프
 	if(myBtn[0].GetCheck() != bOn)
@@ -1309,7 +1310,7 @@ void CDlgMenu03::Disp()
 	bOn = pDoc->m_pMpeIo[nInSeg + 16] & (0x01<<15) ? TRUE : FALSE;	// 리코일러 제품 이음매 진공 스위치 램프
 	if(myBtn[8].GetImageBk() != bOn)
 		myBtn[8].SetCheck(bOn);
-
+#endif
 
 	// [Torque Motor]
 	bOn = pDoc->WorkingInfo.Motion.bMkTq;
@@ -1325,6 +1326,7 @@ void CDlgMenu03::Disp()
 		myBtn[83].SetCheck(bOn);
 	
 	// 마킹부 텐션 ON (PC가 ON/OFF시킴)
+#ifdef USE_MPE
 	bOn = (pDoc->m_pMpeSignal[4] & (0x01<<5)) > 0 ? TRUE : FALSE;
 	if(bOn != pDoc->WorkingInfo.Motion.bMkTq)
 	{
@@ -1333,8 +1335,10 @@ void CDlgMenu03::Disp()
 		else
 			pView->m_pMpe->Write(_T("MB440155"), 0);
 	}
+#endif
 
 	// 검사부 텐션 ON (PC가 ON/OFF시킴)
+#ifdef USE_MPE
 	bOn = (pDoc->m_pMpeSignal[4] & (0x01<<6)) > 0 ? TRUE : FALSE;
 	if(bOn != pDoc->WorkingInfo.Motion.bAoiTq)
 	{
@@ -1343,8 +1347,10 @@ void CDlgMenu03::Disp()
 		else
 			pView->m_pMpe->Write(_T("MB440156"), 0);
 	}
+#endif
 
 	// 각인부 텐션 ON (PC가 ON/OFF시킴)
+#ifdef USE_MPE
 	bOn = (pDoc->m_pMpeSignal[4] & (0x01<<4)) > 0 ? TRUE : FALSE;
 	if(bOn != pDoc->WorkingInfo.Motion.bEngraveTq)
 	{
@@ -1353,25 +1359,30 @@ void CDlgMenu03::Disp()
 		else
 			pView->m_pMpe->Write(_T("MB440154"), 0);
 	}
+#endif
 
 
 	// 각인부 세정기 ON (PC가 ON/OFF시킴)
 
 	if(pDoc->WorkingInfo.LastJob.bUseEngraveCleanner)
 	{
+#ifdef USE_MPE
 		pView->m_pMpe->Write(_T("MB44016E"), 1);
+#endif
 		myBtn[85].ShowWindow(SW_SHOW);
 	}
 	else
 	{
+#ifdef USE_MPE
 		pView->m_pMpe->Write(_T("MB44016E"), 0);
+#endif
 		myBtn[85].ShowWindow(SW_HIDE);
 	}
 
 	bOn = pDoc->WorkingInfo.LastJob.bEngraveCleanner;
 	if (myBtn[85].GetImageBk() != bOn)
 		myBtn[85].SetCheck(bOn);
-
+#ifdef USE_MPE
 	//bOn = (pDoc->m_pMpeSignal[5] & (0x01 << 14)) > 0 ? TRUE : FALSE;
 	bOn = ( pView->m_pMpe->Read(_T("MB44014E")) ? TRUE : FALSE );
 	if (bOn != pDoc->WorkingInfo.LastJob.bEngraveCleanner)
@@ -1381,26 +1392,30 @@ void CDlgMenu03::Disp()
 		else
 			pView->m_pMpe->Write(_T("MB44014E"), 0);
 	}
-
+#endif
 
 
 	// AOI(하) 세정기 ON (PC가 ON/OFF시킴)
 
 	if (pDoc->WorkingInfo.LastJob.bUseAoiDnCleanner)
 	{
+#ifdef USE_MPE
 		pView->m_pMpe->Write(_T("MB44016F"), 1);
+#endif
 		myBtn[86].ShowWindow(SW_SHOW);
 	}
 	else
 	{
+#ifdef USE_MPE
 		pView->m_pMpe->Write(_T("MB44016F"), 0);
+#endif
 		myBtn[86].ShowWindow(SW_HIDE);
 	}
 
 	bOn = pDoc->WorkingInfo.LastJob.bAoiDnCleanner;
 	if (myBtn[86].GetImageBk() != bOn)
 		myBtn[86].SetCheck(bOn);
-
+#ifdef USE_MPE
 	//bOn = (pDoc->m_pMpeSignal[5] & (0x01 << 15)) > 0 ? TRUE : FALSE;
 	bOn = (pView->m_pMpe->Read(_T("MB44014F")) ? TRUE : FALSE);
 	if (bOn != pDoc->WorkingInfo.LastJob.bAoiDnCleanner)
@@ -1410,7 +1425,7 @@ void CDlgMenu03::Disp()
 		else
 			pView->m_pMpe->Write(_T("MB44014F"), 0);
 	}
-
+#endif
 	
 	// [Core 150mm]
 	bOn = pDoc->WorkingInfo.LastJob.bCore150Recoiler;
@@ -1501,11 +1516,12 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 	{
 		KillTimer(TIM_CHK_DONE_MKAOI);
 
+#ifdef USE_MPE
 		if(!(pDoc->m_pMpeSignal[5] & (0x01<<1)) && !(pDoc->m_pMpeSignal[5] & (0x01<<0)))	// 마킹부 피딩 ON (PLC가 피딩완료 후 OFF) && 검사부 피딩 ON (PLC가 피딩완료 후 OFF)
 		{
 			m_bTIM_CHK_DONE_MKAOI = FALSE;
 		}
-
+#endif
 		if(m_bTIM_CHK_DONE_MKAOI)
 			SetTimer(TIM_CHK_DONE_MKAOI, 100, NULL);
 	}
@@ -1513,9 +1529,10 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 	{
 		KillTimer(TIM_CHK_DONE_MK);
 
+#ifdef USE_MPE
 		if(!(pDoc->m_pMpeSignal[5] & (0x01<<1)))	// 마킹부 피딩 ON (PLC가 피딩완료 후 OFF)
 			m_bTIM_CHK_DONE_MK = FALSE;
-
+#endif
 		if(m_bTIM_CHK_DONE_MK)
 			SetTimer(TIM_CHK_DONE_MK, 100, NULL);
 	}
@@ -1523,9 +1540,10 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 	{
 		KillTimer(TIM_CHK_DONE_AOI);
 
+#ifdef USE_MPE
 		if(!(pDoc->m_pMpeSignal[5] & (0x01<<0)))	// 검사부 피딩 ON (PLC가 피딩완료 후 OFF)
 			m_bTIM_CHK_DONE_AOI = FALSE;
-
+#endif
 		if(m_bTIM_CHK_DONE_AOI)
 			SetTimer(TIM_CHK_DONE_AOI, 100, NULL);
 	}
@@ -1540,6 +1558,7 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 	{
 		KillTimer(TIM_CHK_DONE_BUF_HOME);
 
+#ifdef USE_MPE
 		if(pDoc->m_pMpeSignal[4] & (0x01<<2))	// 마킹부 버퍼롤러 홈동작 ON (PLC가 홈동작 완료 후 OFF)
 		{
 			pView->GetDispMsg(strMsg, strTitle);
@@ -1552,6 +1571,7 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 			pView->m_bBufHomeDone = TRUE;
 			pView->ClrDispMsg();
 		}
+#endif
 		if(m_bTIM_CHK_DONE_BUF_HOME)
 			SetTimer(TIM_CHK_DONE_BUF_HOME, 100, NULL);
 	}
@@ -1560,6 +1580,7 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 	{
 		KillTimer(TIM_CHK_DONE_BUF_INIT);
 
+#ifdef USE_MPE
 		if(pDoc->m_pMpeSignal[4] & (0x01<<10))	// 마킹부 버퍼 초기위치 이동(PC가 ON, PLC가 OFF)
 		{
 			pView->GetDispMsg(strMsg, strTitle);
@@ -1571,6 +1592,7 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 			m_bTIM_CHK_DONE_BUF_INIT = FALSE;
 			pView->ClrDispMsg();
 		}
+#endif
 		if(m_bTIM_CHK_DONE_BUF_INIT)
 			SetTimer(TIM_CHK_DONE_BUF_INIT, 100, NULL);
 	}
@@ -1579,6 +1601,7 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 	{
 		KillTimer(TIM_CHK_DONE_READY);
 
+#ifdef USE_MPE
 		if(pDoc->m_pMpeSignal[0] & (0x01<<0))	// PLC 운전준비 완료(PC가 확인하고 Reset시킴.)
 		{
 			m_bTIM_CHK_DONE_READY = FALSE;
@@ -1597,6 +1620,7 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 				//pView->DispMsg(_T("Searching Buffer Home Position..."), _T("Homming"), RGB_GREEN, DELAY_TIME_MSG);
 			}
 		}
+#endif
 		if(m_bTIM_CHK_DONE_READY)
 			SetTimer(TIM_CHK_DONE_READY, 100, NULL);
 	}
@@ -1646,9 +1670,10 @@ void CDlgMenu03::OnTimer(UINT_PTR nIDEvent)//(UINT nIDEvent)
 	{
 		KillTimer(TIM_CHK_DONE_ENGRAVE);
 
+#ifdef USE_MPE
 		if (!(pDoc->m_pMpeSignal[6] & (0x01 << 12)))	// 각인부 피딩 CW ON (PLC가 피딩완료 후 OFF) - MB44017C
 			m_bTIM_CHK_DONE_ENGRAVE = FALSE;
-
+#endif
 		if (m_bTIM_CHK_DONE_ENGRAVE)
 			SetTimer(TIM_CHK_DONE_ENGRAVE, 100, NULL);
 	}
@@ -1700,6 +1725,7 @@ LRESULT CDlgMenu03::OnMyBtnDown(WPARAM wPara, LPARAM lPara)
 		switch(nCtrlID)
 		{
 		// Main
+#ifdef USE_MPE
 		case IDC_CHK_34:		// 마킹부 운전준비 스위치
 			pView->m_pMpe->Write(_T("MB005503"), lData);
 			break;
@@ -1881,42 +1907,54 @@ LRESULT CDlgMenu03::OnMyBtnDown(WPARAM wPara, LPARAM lPara)
 		case IDC_CHK_36:		// 언코일러 클린롤러누름 상승/하강 스위치
 			pView->m_pMpe->Write(_T("MB005404"), lData);
 			break;
-	
+#endif
 		// Torque Motor
 		case IDC_CHK_2:		// 마킹부 텐션 ON (PC가 ON/OFF시킴)
 			if(!(pDoc->m_pMpeSignal[4] & (0x01<<5)))
 			{
 				pDoc->WorkingInfo.Motion.bMkTq = TRUE;
+#ifdef USE_MPE
 				pView->m_pMpe->Write(_T("MB440155"), 1);
+#endif
 			}
 			else
 			{
 				pDoc->WorkingInfo.Motion.bMkTq = FALSE;
+#ifdef USE_MPE
 				pView->m_pMpe->Write(_T("MB440155"), 0);
+#endif
 			}
 			break;
 		case IDC_CHK_3:		// 검사부 텐션 ON (PC가 ON/OFF시킴)
 			if(!(pDoc->m_pMpeSignal[4] & (0x01<<6)))
 			{
 				pDoc->WorkingInfo.Motion.bAoiTq = TRUE;
+#ifdef USE_MPE
 				pView->m_pMpe->Write(_T("MB440156"), 1);
+#endif
 			}
 			else
 			{
 				pDoc->WorkingInfo.Motion.bAoiTq = FALSE;
+#ifdef USE_MPE
 				pView->m_pMpe->Write(_T("MB440156"), 0);
+#endif
 			}
 			break;
 		case IDC_CHK_84:	// 각인부 텐션 ON (PC가 ON/OFF시킴)
 			if(!(pDoc->m_pMpeSignal[4] & (0x01<<4)))
 			{
 				pDoc->WorkingInfo.Motion.bEngraveTq = TRUE;
+#ifdef USE_MPE
 				pView->m_pMpe->Write(_T("MB440154"), 1);
+#endif
 			}
 			else
 			{
 				pDoc->WorkingInfo.Motion.bEngraveTq = FALSE;
+#ifdef USE_MPE
 				pView->m_pMpe->Write(_T("MB440154"), 0);
+#endif
 			}
 			break;
 
@@ -1925,12 +1963,16 @@ LRESULT CDlgMenu03::OnMyBtnDown(WPARAM wPara, LPARAM lPara)
 			if (!(pDoc->WorkingInfo.LastJob.bEngraveCleanner))
 			{
 				pDoc->WorkingInfo.LastJob.bEngraveCleanner = TRUE;
+#ifdef USE_MPE
 				pView->m_pMpe->Write(_T("MB44014E"), 1);
+#endif
 			}
 			else
 			{
 				pDoc->WorkingInfo.LastJob.bEngraveCleanner = FALSE;
+#ifdef USE_MPE
 				pView->m_pMpe->Write(_T("MB44014E"), 0);
+#endif
 			}
 			break;
 			//if (!(pDoc->m_pMpeSignal[5] & (0x01 << 14)))
@@ -1950,12 +1992,16 @@ LRESULT CDlgMenu03::OnMyBtnDown(WPARAM wPara, LPARAM lPara)
 			if (!(pDoc->WorkingInfo.LastJob.bAoiDnCleanner))
 			{
 				pDoc->WorkingInfo.LastJob.bAoiDnCleanner = TRUE;
+#ifdef USE_MPE
 				pView->m_pMpe->Write(_T("MB44014F"), 1);
+#endif
 			}
 			else
 			{
 				pDoc->WorkingInfo.LastJob.bAoiDnCleanner = FALSE;
+#ifdef USE_MPE
 				pView->m_pMpe->Write(_T("MB44014F"), 0);
+#endif
 			}
 			break;
 			//if (!(pDoc->m_pMpeSignal[5] & (0x01 << 15)))
@@ -2013,6 +2059,7 @@ LRESULT CDlgMenu03::OnMyBtnUp(WPARAM wPara, LPARAM lPara)
 		switch(nCtrlID)
 		{
 		// Main
+#ifdef USE_MPE
 		case IDC_CHK_34:		// 마킹부 운전준비 스위치
 			pView->m_pMpe->Write(_T("MB005503"), lData);
 			break;
@@ -2194,7 +2241,7 @@ LRESULT CDlgMenu03::OnMyBtnUp(WPARAM wPara, LPARAM lPara)
 		case IDC_CHK_36:		// 언코일러 클린롤러누름 상승/하강 스위치
 			pView->m_pMpe->Write(_T("MB005404"), lData);
 			break;
-	
+#endif
 // 		// Torque Motor
 // 		case IDC_CHK_2:		// 마킹부 텐션 ON (PC가 ON/OFF시킴)
 // 			pView->m_pMpe->Write(_T("MB440155"), lData);
@@ -2238,20 +2285,22 @@ BOOL CDlgMenu03::GetCw()
 	int nInSeg = pDoc->MkIo.MpeIo.nInSeg;
 	int nOutSeg = pDoc->MkIo.MpeIo.nOutSeg;
 
+#ifdef USE_MPE
 	if(pDoc->m_pMpeIo[nInSeg + 5] & (0x01<<3))		//[29] 마킹부 피딩 정회전 스위치 램프
 		return TRUE;
 	if(pDoc->m_pMpeIo[nInSeg + 8] & (0x01<<3))		//[32] 검사부 피딩 정회전 스위치 램프
 		return TRUE;
-
+#endif
 	return FALSE;
 }
 
 void CDlgMenu03::SetCw(BOOL bOn) 
 {
 	long lData = 1;
+#ifdef USE_MPE
 	pView->m_pMpe->Write(_T("MB440161"), lData);	// 마킹부 피딩 ON (PLC가 피딩완료 후 OFF)
 	pView->m_pMpe->Write(_T("MB440160"), lData);	// 검사부 피딩 ON (PLC가 피딩완료 후 OFF)
-
+#endif
 }
 
 BOOL CDlgMenu03::GetCcw() 
@@ -2263,22 +2312,25 @@ BOOL CDlgMenu03::GetCcw()
 	int nInSeg = pDoc->MkIo.MpeIo.nInSeg;
 	int nOutSeg = pDoc->MkIo.MpeIo.nOutSeg;
 
+#ifdef USE_MPE
 	if(pDoc->m_pMpeIo[nInSeg + 5] & (0x01<<4))		//[29] 마킹부 피딩 역회전 스위치 램프 
 		return TRUE;
 	if(pDoc->m_pMpeIo[nInSeg + 8] & (0x01<<4))		//[32] 검사부 피딩 역회전 스위치 램프
 		return TRUE;
-
+#endif
 	return FALSE;
 }
 
 void CDlgMenu03::SetCcw(BOOL bOn) 
 {
 	long lData = 1;
+#ifdef USE_MPE
 	if(pView->m_pMpe)
 	{
 		pView->m_pMpe->Write(_T("MB440161"), lData);	// 마킹부 피딩 ON (PLC가 피딩완료 후 OFF)
 		pView->m_pMpe->Write(_T("MB440160"), lData);	// 검사부 피딩 ON (PLC가 피딩완료 후 OFF)
 	}
+#endif
 }
 
 void CDlgMenu03::MoveMk(double dOffset)
@@ -2292,6 +2344,7 @@ void CDlgMenu03::MoveMk(double dOffset)
 	fAcc = pDoc->GetOnePnlAcc();
 	fTarget = fLen + dOffset;
 
+#ifdef USE_MPE
 	if(pView->m_pMpe)
 	{
 		long lData = (long)(fTarget * 1000.0);
@@ -2299,7 +2352,7 @@ void CDlgMenu03::MoveMk(double dOffset)
 
 		MoveMk();
 	}
-	
+#endif
 // 	if(pView->m_pMotion)
 // 	{
 // 		if(!pView->m_pMotion->Move(MS_MKFD, fTarget, fVel, fAcc, fAcc, INC, NO_WAIT))
@@ -2317,11 +2370,13 @@ void CDlgMenu03::TimMoveMk(int nDir)
 
 void CDlgMenu03::MoveMk(int nDir) 
 {
+#ifdef USE_MPE
 	if(pDoc->WorkingInfo.LastJob.bMkOnePnl)
 	{
 		if(pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB440161"), 1);	// 마킹부 피딩 ON (PLC가 피딩완료 후 OFF)
 	}
+#endif
 }
 
 void CDlgMenu03::StopMk() 
@@ -2347,6 +2402,7 @@ void CDlgMenu03::MoveAoi(double dOffset)
 	fAcc = pDoc->GetOnePnlAcc();
 	fTarget = fLen - dOffset;
 
+#ifdef USE_MPE
 	if(pView->m_pMpe)
 	{
  		long lData = (long)(fTarget * 1000.0);
@@ -2355,6 +2411,7 @@ void CDlgMenu03::MoveAoi(double dOffset)
 
 		MoveAoi();
 	}
+#endif
 } 
 
 void CDlgMenu03::TimMoveAoi(int nDir)
@@ -2364,11 +2421,13 @@ void CDlgMenu03::TimMoveAoi(int nDir)
 
 void CDlgMenu03::MoveAoi(int nDir) 
 {
+#ifdef USE_MPE
 	if(pDoc->WorkingInfo.LastJob.bAoiOnePnl)
 	{
 		if(pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB440160"), 1);	// 검사부 피딩 ON (PLC가 피딩완료 후 OFF)
 	}
+#endif
 }
 
 void CDlgMenu03::StopAoi() 
@@ -2446,6 +2505,7 @@ BOOL CDlgMenu03::GetRelation()
 	int nInSeg = pDoc->MkIo.MpeIo.nInSeg;
 	int nOutSeg = pDoc->MkIo.MpeIo.nOutSeg;
 
+#ifdef USE_MPE
 	if(!(pDoc->m_pMpeIo[nInSeg + 16] & (0x01<<1)))	//[40] 리코일러 연동 온/오프 스위치 램프
 		return FALSE;
 	if(!(pDoc->m_pMpeIo[nInSeg] & (0x01<<1)))		//[24] 언코일러 연동 온/오프 스위치 램프
@@ -2457,7 +2517,7 @@ BOOL CDlgMenu03::GetRelation()
 		return FALSE;
 	if(!(pDoc->m_pMpeIo[nInSeg + 12] & (0x01<<1)))	//[36] 검사부 하 연동 온/오프 스위치 램프
 		return FALSE;
-
+#endif
 	return TRUE;
 }
 
@@ -2544,8 +2604,10 @@ void CDlgMenu03::SetMkTq(BOOL bOn)
 // 			pView->m_pMotion->ServoOnOff(AXIS_MKTQ, OFF);		// Amp OFF
 // 	}
 // 
+#ifdef USE_MPE
 	if(pView->m_pMpe)
 		pView->m_pMpe->Write(_T("MB440155"), bOn?1:0);	// 마킹부 텐션 ON (PC가 ON/OFF시킴)
+#endif
 	CString sData, sPath=PATH_WORKING_INFO;
 	sData.Format(_T("%d"), pDoc->WorkingInfo.Motion.bMkTq?1:0);
 	::WritePrivateProfileString(_T("Motion"), _T("MARKING_TENSION_SERVO_TORQUE_ON"), sData, sPath);
@@ -2566,8 +2628,10 @@ void CDlgMenu03::SetAoiTq(BOOL bOn)
 // 			pView->m_pMotion->ServoOnOff(AXIS_AOITQ, OFF);		// Amp OFF
 // 	}
 // 
+#ifdef USE_MPE
 	if(pView->m_pMpe)
 		pView->m_pMpe->Write(_T("MB440156"), bOn?1:0);	// 검사부 텐션 ON (PC가 ON/OFF시킴)
+#endif
 	CString sData, sPath=PATH_WORKING_INFO;
 	sData.Format(_T("%d"), pDoc->WorkingInfo.Motion.bAoiTq?1:0);
 	::WritePrivateProfileString(_T("Motion"), _T("AOI_TENSION_SERVO_TORQUE_ON"), sData, sPath);	
@@ -2575,8 +2639,10 @@ void CDlgMenu03::SetAoiTq(BOOL bOn)
 
 void CDlgMenu03::SetEngraveTq(BOOL bOn)
 {
+#ifdef USE_MPE
 	if(pView->m_pMpe)
 		pView->m_pMpe->Write(_T("MB440154"), bOn?1:0);	// 검사부 텐션 ON (PC가 ON/OFF시킴)
+#endif
 	CString sData, sPath=PATH_WORKING_INFO;
 	sData.Format(_T("%d"), pDoc->WorkingInfo.Motion.bEngraveTq?1:0);
 	::WritePrivateProfileString(_T("Motion"), _T("ENGRAVE_TENSION_SERVO_TORQUE_ON"), sData, sPath);	
@@ -2584,9 +2650,10 @@ void CDlgMenu03::SetEngraveTq(BOOL bOn)
 
 void CDlgMenu03::SetMkOnePnl(BOOL bOn)
 {
+#ifdef USE_MPE
 	//pView->IoWrite("MB440151", bOn?1:0);	// 한판넬 이송상태 ON (PC가 ON, OFF)
 	pView->m_pMpe->Write(_T("MB440151"), bOn?1:0);
-
+#endif
 	CString sData, sPath=PATH_WORKING_INFO;
 	pDoc->WorkingInfo.LastJob.bMkOnePnl = bOn;
 	sData.Format(_T("%d"), pDoc->WorkingInfo.LastJob.bMkOnePnl?1:0);
@@ -2596,8 +2663,9 @@ void CDlgMenu03::SetMkOnePnl(BOOL bOn)
 
 void CDlgMenu03::SetEngraveCleanner(BOOL bOn)
 {
+#ifdef USE_MPE
 	pView->m_pMpe->Write(_T("MB44014E"), bOn ? 1 : 0); // [각인부 세정기]
-
+#endif
 	CString sData, sPath = PATH_WORKING_INFO;
 	pDoc->WorkingInfo.LastJob.bEngraveCleanner = bOn;
 	sData.Format(_T("%d"), pDoc->WorkingInfo.LastJob.bEngraveCleanner ? 1 : 0);
@@ -2606,8 +2674,9 @@ void CDlgMenu03::SetEngraveCleanner(BOOL bOn)
 
 void CDlgMenu03::SetAoiDnCleanner(BOOL bOn)
 {
+#ifdef USE_MPE
 	pView->m_pMpe->Write(_T("MB44014F"), bOn ? 1 : 0); // [AOI(하) 세정기]
-
+#endif
 	CString sData, sPath = PATH_WORKING_INFO;
 	pDoc->WorkingInfo.LastJob.bAoiDnCleanner = bOn;
 	sData.Format(_T("%d"), pDoc->WorkingInfo.LastJob.bAoiDnCleanner ? 1 : 0);
@@ -2616,9 +2685,10 @@ void CDlgMenu03::SetAoiDnCleanner(BOOL bOn)
 
 void CDlgMenu03::SetAoiOnePnl(BOOL bOn)
 {
+#ifdef USE_MPE
 	//pView->IoWrite("MB440151", bOn?1:0);	// 한판넬 이송상태 ON (PC가 ON, OFF)
 	pView->m_pMpe->Write(_T("MB440151"), bOn?1:0);
-
+#endif
 	CString sData, sPath=PATH_WORKING_INFO;
 	pDoc->WorkingInfo.LastJob.bAoiOnePnl = bOn;
 	sData.Format(_T("%d"), pDoc->WorkingInfo.LastJob.bAoiOnePnl?1:0);
@@ -2880,9 +2950,10 @@ void CDlgMenu03::SwStop()
 		pView->DispStsBar(_T("정지-3"), 0);
 		pView->DispMain(_T("정 지"), RGB_RED);
 	pView->TowerLamp(RGB_RED, TRUE, FALSE);
+#ifdef USE_MPE
 	//pView->IoWrite("MB440162", 1); // 마킹부 정지 스위치 램프 ON(PC가 On/Off시킴)  - 20141021
 	pView->m_pMpe->Write(_T("MB440162"), 1);
-
+#endif
 	pView->ClrDispMsg();
 }
 
@@ -3019,7 +3090,10 @@ BOOL CDlgMenu03::IsMkTblBlw()
 	int nInSeg = pDoc->MkIo.MpeIo.nInSeg;
 	int nOutSeg = pDoc->MkIo.MpeIo.nOutSeg;
 
-	BOOL bOn = pDoc->m_pMpeIo[nInSeg + 5] & (0x01<<2);		//[29] 마킹부 테이블 브로워 스위치 램프
+	BOOL bOn = FALSE;
+#ifdef USE_MPE
+	bOn = pDoc->m_pMpeIo[nInSeg + 5] & (0x01<<2);		//[29] 마킹부 테이블 브로워 스위치 램프
+#endif
 	return bOn;
 }
 
@@ -3056,7 +3130,10 @@ BOOL CDlgMenu03::IsMkFdVac()
 	int nInSeg = pDoc->MkIo.MpeIo.nInSeg;
 	int nOutSeg = pDoc->MkIo.MpeIo.nOutSeg;
 
-	BOOL bOn = pDoc->m_pMpeIo[nInSeg + 5] & (0x01<<5);	//[29] MB003715,	Y4255	,	마킹부 피딩 진공 스위치 램프
+	BOOL bOn = FALSE;
+#ifdef USE_MPE
+	bOn = pDoc->m_pMpeIo[nInSeg + 5] & (0x01<<5);	//[29] MB003715,	Y4255	,	마킹부 피딩 진공 스위치 램프
+#endif
 	return bOn;
 }
 
@@ -3098,7 +3175,10 @@ BOOL CDlgMenu03::IsMkTqVac()
 	int nInSeg = pDoc->MkIo.MpeIo.nInSeg;
 	int nOutSeg = pDoc->MkIo.MpeIo.nOutSeg;
 
-	BOOL bOn = pDoc->m_pMpeIo[nInSeg + 5] & (0x01<<6);		//[29] MB003716,	Y4256	,	마킹부 토크 진공 스위치 램프
+	BOOL bOn = FALSE;
+#ifdef USE_MPE
+	bOn = pDoc->m_pMpeIo[nInSeg + 5] & (0x01<<6);		//[29] MB003716,	Y4256	,	마킹부 토크 진공 스위치 램프
+#endif
 	return bOn;
 }
 
@@ -3140,7 +3220,10 @@ BOOL CDlgMenu03::IsMkTblVac()
 	int nInSeg = pDoc->MkIo.MpeIo.nInSeg;
 	int nOutSeg = pDoc->MkIo.MpeIo.nOutSeg;
 
-	BOOL bOn = pDoc->m_pMpeIo[nInSeg + 5] & (0x01<<7);		//[29] MB003717,	Y4257	,	마킹부 테이블 진공 스위치 램프
+	BOOL bOn = FALSE;
+#ifdef USE_MPE
+	bOn = pDoc->m_pMpeIo[nInSeg + 5] & (0x01<<7);		//[29] MB003717,	Y4257	,	마킹부 테이블 진공 스위치 램프
+#endif
 	return bOn;
 }
 
@@ -3245,7 +3328,10 @@ BOOL CDlgMenu03::IsBufRolSol()
 	int nInSeg = pDoc->MkIo.MpeIo.nInSeg;
 	int nOutSeg = pDoc->MkIo.MpeIo.nOutSeg;
 
-	BOOL bOn = pDoc->m_pMpeIo[nInSeg + 5] & (0x01<<11);		//[29] MB00371B,	Y425B	,	마킹부 댄서롤 상승/하강 스위치 램프
+	BOOL bOn = FALSE;
+#ifdef USE_MPE
+	bOn = pDoc->m_pMpeIo[nInSeg + 5] & (0x01<<11);		//[29] MB00371B,	Y425B	,	마킹부 댄서롤 상승/하강 스위치 램프
+#endif
 	return bOn;
 }
 
@@ -3359,7 +3445,10 @@ void CDlgMenu03::SwAoiTblBlw()
 
 BOOL CDlgMenu03::IsAoiFdVac()
 {
-	BOOL bOn = pDoc->m_pMpeIb[9] & (0x01<<4);
+	BOOL bOn = FALSE;
+#ifdef USE_MPE
+	bOn = pDoc->m_pMpeIb[9] & (0x01<<4);
+#endif
 	return bOn;
 }
 
@@ -3425,7 +3514,8 @@ BOOL CDlgMenu03::IsAoiLdRun()
 {
 	BOOL bRtn = TRUE;
 
- 	BOOL bOn0 = (pDoc->m_pMpeIb[10] & (0x01<<11)) ? TRUE : FALSE;		// 검사부 상 자동 운전 <-> X432B I/F
+#ifdef USE_MPE
+	BOOL bOn0 = (pDoc->m_pMpeIb[10] & (0x01 << 11)) ? TRUE : FALSE;		// 검사부 상 자동 운전 <-> X432B I/F
  	BOOL bOn1 = (pDoc->m_pMpeIb[14] & (0x01<<11)) ? TRUE : FALSE;		// 검사부 하 자동 운전 <-> X442B I/F
 
 	BOOL bDualTest = pDoc->WorkingInfo.LastJob.bDualTest;
@@ -3474,7 +3564,7 @@ BOOL CDlgMenu03::IsAoiLdRun()
 
 		return FALSE;
 	}
-
+#endif
 	return bRtn;
 }
 
@@ -3511,18 +3601,22 @@ void CDlgMenu03::SwAoiReset(BOOL bOn)
 {
 	if(bOn)
 	{
+#ifdef USE_MPE
 		//pView->IoWrite("MB00382A", 1); // 검사부 상 Reset <-> Y436A I/F
 		pView->m_pMpe->Write(_T("MB00382A"), 1);
 		//pView->IoWrite("MB00392A", 1); // 검사부 하 Reset <-> Y446A I/F
 		pView->m_pMpe->Write(_T("MB00392A"), 1);
+#endif
 		SetTimer(TIM_AOI_RESET_OFF, 500, NULL);
 	}
 	else
 	{
+#ifdef USE_MPE
 		//pView->IoWrite("MB00382A", 0); // 검사부 상 Reset <-> Y436A I/F
 		pView->m_pMpe->Write(_T("MB00382A"), 0);
 		//pView->IoWrite("MB00392A", 0); // 검사부 하 Reset <-> Y446A I/F
 		pView->m_pMpe->Write(_T("MB00392A"), 0);
+#endif
 	}
 
 // 	if(bOn)
@@ -4213,8 +4307,9 @@ void CDlgMenu03::OnChk62()
 
 void CDlgMenu03::SetCore150mmRecoiler(BOOL bOn)
 {
+#ifdef USE_MPE
 	pView->m_pMpe->Write(_T("MB44017E"), bOn?1:0);
-
+#endif
 	CString sData, sPath=PATH_WORKING_INFO;
 	pDoc->WorkingInfo.LastJob.bCore150Recoiler = bOn;
 	sData.Format(_T("%d"), pDoc->WorkingInfo.LastJob.bCore150Recoiler?1:0);
@@ -4223,8 +4318,9 @@ void CDlgMenu03::SetCore150mmRecoiler(BOOL bOn)
 
 void CDlgMenu03::SetCore150mmUncoiler(BOOL bOn)
 {
+#ifdef USE_MPE
 	pView->m_pMpe->Write(_T("MB44017F"), bOn?1:0);
-
+#endif
 	CString sData, sPath=PATH_WORKING_INFO;
 	pDoc->WorkingInfo.LastJob.bCore150Uncoiler = bOn;
 	sData.Format(_T("%d"), pDoc->WorkingInfo.LastJob.bCore150Uncoiler?1:0);
@@ -4362,9 +4458,10 @@ BOOL CDlgMenu03::OnEraseBkgnd(CDC* pDC)
 
 void CDlgMenu03::SetEngraveOnePnl(BOOL bOn)
 {
+#ifdef USE_MPE
 	//pView->IoWrite("MB440151", bOn?1:0);	// 한판넬 이송상태 ON (PC가 ON, OFF)
 	pView->m_pMpe->Write(_T("MB440151"), bOn ? 1 : 0);
-
+#endif
 	CString sData, sPath = PATH_WORKING_INFO;
 	pDoc->WorkingInfo.LastJob.bEngraveOnePnl = bOn;
 	sData.Format(_T("%d"), pDoc->WorkingInfo.LastJob.bEngraveOnePnl ? 1 : 0);
@@ -4393,9 +4490,10 @@ void CDlgMenu03::MoveEngrave(double dOffset)
 
 	if (pView->m_pMpe)
 	{
+#ifdef USE_MPE
 		long lData = (long)(fTarget * 1000.0);
 		pView->m_pMpe->Write(_T("ML45078"), lData);	// 각인부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄, PC가 쓰고 PLC에서 지움)
-
+#endif
 		MoveEngrave();
 	}
 }
@@ -4404,8 +4502,10 @@ void CDlgMenu03::MoveEngrave(int nDir)
 {
 	if (pDoc->WorkingInfo.LastJob.bEngraveOnePnl)
 	{
+#ifdef USE_MPE
 		if (pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB44017C"), 1);	// 각인부 피딩 CW ON (PLC가 피딩완료 후 OFF)
+#endif
 	}
 }
 

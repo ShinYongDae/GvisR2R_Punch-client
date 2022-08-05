@@ -1485,12 +1485,16 @@ void CDlgMenu02::SwMyBtnDown(int nCtrlID)
 		}
 		break;
 	case IDC_BTN_BUFF_UP:		// 마킹부 피딩 정회전 스위치
+#ifdef USE_MPE
 		if(pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB005513"), 1);
+#endif
 		break;
 	case IDC_BTN_BUFF_DN:		// 마킹부 피딩 역회전 스위치
+#ifdef USE_MPE
 		if(pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB005514"), 1);
+#endif
 		break;
 	case IDC_BTN_JOG_UP:
 		if(pView->m_pMotion)
@@ -1551,12 +1555,16 @@ void CDlgMenu02::SwMyBtnUp(int nCtrlID)
 		m_bTIM_LIGHT_DN2 = FALSE;
 		break;
 	case IDC_BTN_BUFF_UP:		// 마킹부 피딩 정회전 스위치
+#ifdef USE_MPE
 		if(pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB005513"), 0);
+#endif
 		break;
 	case IDC_BTN_BUFF_DN:		// 마킹부 피딩 역회전 스위치
+#ifdef USE_MPE
 		if(pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB005514"), 0);
+#endif
 		break;
 	case IDC_BTN_JOG_UP:
 	case IDC_BTN_JOG_DN:
@@ -3313,9 +3321,10 @@ void CDlgMenu02::OnBtnBuffHome()
 	{
 		pView->DispMsg(_T("Homming"),_T("Searching Buffer Home Position..."),RGB_GREEN,2000,TRUE);
 		//pView->m_pMotion->SearchHomeBuf(FALSE);
+#ifdef USE_MPE
 		if(pView->m_pMpe)
 			pView->m_pMpe->Write(_T("MB440152"), 1);	// 마킹부 버퍼롤러 홈동작 ON
-
+#endif
 		pView->m_bBufHomeDone = FALSE;
 		if(pView->m_pDlgMenu03)
 			pView->m_pDlgMenu03->ChkBufHomeDone();
@@ -3326,9 +3335,10 @@ void CDlgMenu02::OnBtnBuffInitMove()
 {
 	// TODO: Add your control notification handler code here
 	pView->DispMsg(_T("Moving"),_T("Searching Buffer Initial Position..."),RGB_GREEN,2000,TRUE);
+#ifdef USE_MPE
 	if(pView->m_pMpe)
 		pView->m_pMpe->Write(_T("MB44015A"), 1);	// 마킹부 버퍼 초기위치 이동(PC가 ON, PLC가 OFF)
-
+#endif
 	if(pView->m_pDlgMenu03)
 		pView->m_pDlgMenu03->ChkBufInitDone();
 
@@ -4511,8 +4521,10 @@ BOOL CDlgMenu02::Do2PtAlign0(int nPos, BOOL bDraw)
 		m_dMkFdOffsetX[0][0] = (double(nCamSzX / 2) - dX) * dResX; // -: 제품 덜옴, +: 제품 더옴.
 		m_dMkFdOffsetY[0][0] = (double(nCamSzY / 2) - dY) * dResY; // -: 제품 나옴, +: 제품 들어감.
 
+#ifdef USE_MPE
 		//pView->IoWrite("ML45066", (long)(-1.0 * m_dMkFdOffsetX[0] * 1000.0));	// 마킹부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄)
 		pView->m_pMpe->Write(_T("ML45066"), (long)(-1.0 * m_dMkFdOffsetX[0][0] * 1000.0));
+#endif
 	}
 
 	if (nPos == 1)
@@ -4662,8 +4674,10 @@ BOOL CDlgMenu02::Do2PtAlign1(int nPos, BOOL bDraw)
 		m_dMkFdOffsetX[1][0] = (double(nCamSzX / 2) - dX) * dResX; // -: 제품 덜옴, +: 제품 더옴.
 		m_dMkFdOffsetY[1][0] = (double(nCamSzY / 2) - dY) * dResY; // -: 제품 나옴, +: 제품 들어감.
 
-																//pView->IoWrite("ML45066", (long)(-1.0 * m_dMkFdOffsetX[1] * 1000.0));	// 마킹부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄)
+#ifdef USE_MPE
+		//pView->IoWrite("ML45066", (long)(-1.0 * m_dMkFdOffsetX[1] * 1000.0));	// 마킹부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄)
 		pView->m_pMpe->Write(_T("ML45066"), (long)(-1.0 * m_dMkFdOffsetX[1][0] * 1000.0));
+#endif
 	}
 
 	if (nPos == 1)
@@ -4827,9 +4841,10 @@ BOOL CDlgMenu02::Do4PtAlign0(int nPos, BOOL bDraw)
 	{
 		m_dMkFdOffsetX[0][0] = (double(nCamSzX / 2) - dX) * dResX; // -: 제품 덜옴, +: 제품 더옴.
 		m_dMkFdOffsetY[0][0] = (double(nCamSzY / 2) - dY) * dResY; // -: 제품 나옴, +: 제품 들어감.
-
+#ifdef USE_MPE
 		//pView->IoWrite("ML45066", (long)(-1.0 * m_dMkFdOffsetX[0] * 1000.0));	// 마킹부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄)
 		pView->m_pMpe->Write(_T("ML45066"), (long)(-1.0 * m_dMkFdOffsetX[0][0] * 1000.0));
+#endif
 	}
 	else if (nPos == 1)
 	{
@@ -4997,9 +5012,10 @@ BOOL CDlgMenu02::Do4PtAlign1(int nPos, BOOL bDraw)
 	{
 		m_dMkFdOffsetX[1][0] = (double(nCamSzX / 2) - dX) * dResX; // -: 제품 덜옴, +: 제품 더옴.
 		m_dMkFdOffsetY[1][0] = (double(nCamSzY / 2) - dY) * dResY; // -: 제품 나옴, +: 제품 들어감.
-
+#ifdef USE_MPE
 		//pView->IoWrite("ML45066", (long)(-1.0 * m_dMkFdOffsetX[1] * 1000.0));	// 마킹부 Feeding 롤러 Offset(*1000, +:더 보냄, -덜 보냄)
 		pView->m_pMpe->Write(_T("ML45066"), (long)(-1.0 * m_dMkFdOffsetX[1][0] * 1000.0));
+#endif
 	}
 	else if (nPos == 1)
 	{

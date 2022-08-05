@@ -1030,14 +1030,18 @@ void CDlgUtil04::DispStatus()
 	unsigned short usIn=0, usOut=0;
 	if(m_nSel==0) // MpeIO
 	{
+#ifdef USE_MPE
 		if(m_nComboIndex<m_nInSeg)
 			usIn = pDoc->m_pMpeIb[m_nComboIndex];
 		else
+#endif
 			usIn = 0;
 
+#ifdef USE_MPE
 		if(m_nInSeg+m_nComboIndex<m_nMaxSeg)
 			usOut = pDoc->m_pMpeIo[m_nInSeg+m_nComboIndex];
 		else
+#endif
 			usOut = 0;
 	}
 // 	else if(m_nSel==1)	// SliceIO

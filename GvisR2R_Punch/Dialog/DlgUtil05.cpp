@@ -295,6 +295,7 @@ BOOL CDlgUtil05::IsDblSol()
 void CDlgUtil05::OnBtn00() 
 {
 	// TODO: Add your control notification handler code here
+#ifdef USE_MPE
 	BOOL bOn;
 
 	if(m_nIdxMpeIo > -1)
@@ -319,11 +320,13 @@ void CDlgUtil05::OnBtn00()
 // 	}
 	else
 		AfxMessageBox(_T("Failed IO control..."));
+#endif
 }
 
 void CDlgUtil05::OnBtn01() 
 {
 	// TODO: Add your control notification handler code here
+#ifdef USE_MPE
 	BOOL bOn;
 
 	if(m_nIdxMpeIo > -1)
@@ -348,6 +351,7 @@ void CDlgUtil05::OnBtn01()
 // 	}
 	else
 		AfxMessageBox(_T("Failed IO control..."));
+#endif
 }
 
 void CDlgUtil05::OnBtn02() 
@@ -372,11 +376,12 @@ void CDlgUtil05::OnPaint()
 void CDlgUtil05::DispIo() 
 {
 	BOOL bStatus=FALSE;
+#ifdef USE_MPE
 	if(m_nIdxMpeIo > -1)
 		bStatus = pDoc->m_pMpeIo[m_nSegment] & (0x01<<m_nIdxMpeIo);
 // 	else if(m_nIdxSliceIo > -1)
 // 		bStatus = pDoc->m_pSliceIo[m_nSegment] & (0x01<<m_nIdxSliceIo);
-
+#endif
 	if(bStatus)
 	{
 		if(myBtn[0].GetImage() != BTN_IMG_DN)
